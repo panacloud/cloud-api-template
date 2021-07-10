@@ -1,23 +1,22 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
-import { TypeScriptWriter, ClassDefinition } from "@yellicode/typescript";
+import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../functions/Appsync";
 import { DynamoDB } from "../../functions/dynamoDB";
 import { Lambda } from "../../functions/lambda";
 import { BasicClass } from "../../functions/utils/class";
+const {USER_WORKING_DIRECTORY} = require('../../model.json')
 const path = require('path')
-
-const USER_WORKING_DIRECTORY = path.resolve(".");
+const generatePath = path.relative(path.resolve('.'), `/${USER_WORKING_DIRECTORY}`)
 
 Generator.generateFromModel(
-  { outputFile: `${USER_WORKING_DIRECTORY}/panacloud/lib/panacloud-stack.ts`},
+  {outputFile: `${generatePath}/lib/panacloud-stack.ts`},
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
     const lambda = new Lambda(output);
     const db = new DynamoDB(output);
     const appsync = new Appsync(output);
     const cls = new BasicClass(output);
-    console.log("from code generator====>",USER_WORKING_DIRECTORY)
 
     ts.writeImports("@aws-cdk/core", "cdk");
     appsync.importAppsync(output);

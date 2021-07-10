@@ -3,14 +3,16 @@ import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
 const path = require('path')
-const USER_WORKING_DIRECTORY = path.resolve(".");
+const {USER_WORKING_DIRECTORY} = require('../../model.json')
+
+const generatePath = path.relative(path.resolve('.'), `/${USER_WORKING_DIRECTORY}`)
 
 Generator.generateFromModel(
-  { outputFile: `${USER_WORKING_DIRECTORY}/panacloud/lambda-fns/main.ts` },
+  { outputFile: `${generatePath}/lambda-fns/main.ts` },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
     const lambda = new LambdaFunction(output);
-
+    console.log("USER_WORKING_DIRECTORY  2===>",USER_WORKING_DIRECTORY)
     for (var key in model.type.Query) {
       lambda.importIndividualFunction(output, key, `./${key}`);
     }
