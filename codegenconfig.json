@@ -1,0 +1,17 @@
+{
+    "templates": [
+      {
+        "templateFile": "./codeBuild/codeGenerator/class/index.js",
+        "modelFile": "model.json"
+      },
+      {
+        "templateFile": "./codeBuild/codeGenerator/lambda/initializeLambdaFunction.js",
+        "modelFile": "model.json"
+      },
+      {
+        "templateFile": "./codeBuild/codeGenerator/lambda/individualFunction.js"
+      }
+    ],
+    "compileTypeScript": false
+  }
+  
