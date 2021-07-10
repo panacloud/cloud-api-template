@@ -11,7 +11,7 @@ Object.keys(jsonObj.type.Query).forEach((key) => {
     });
 });
 Object.keys(jsonObj.type.Mutation).forEach((key) => {
-    templating_1.Generator.generate({ outputFile: `${USER_WORKING_DIRECTORY}/lambda-fns/${key}.ts` }, (writer) => {
+    templating_1.Generator.generate({ outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/${key}.ts` }, (writer) => {
         const lambda = new lambdaFunction_1.LambdaFunction(writer);
         lambda.helloWorldFunction(key);
     });
