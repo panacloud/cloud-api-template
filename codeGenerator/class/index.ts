@@ -10,7 +10,7 @@ const path = require('path')
 const generatePath = path.relative(path.resolve('.'), `/${USER_WORKING_DIRECTORY}`)
 
 Generator.generateFromModel(
-  {outputFile: `${generatePath}/lib/panacloud-stack.ts`},
+  {outputFile: `${generatePath}/lib/${USER_WORKING_DIRECTORY}-stack.ts`},
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
     const lambda = new Lambda(output);

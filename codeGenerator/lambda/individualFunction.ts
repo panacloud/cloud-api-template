@@ -3,7 +3,7 @@ import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
 const path = require('path')
 const {USER_WORKING_DIRECTORY} = require('../../model.json')
-const jsonObj = require(`${USER_WORKING_DIRECTORY}/codeBuild/model.json`);
+const jsonObj = require(`../../model.json`);
 const generatePath = path.relative(path.resolve('.'), `/${USER_WORKING_DIRECTORY}`)
 
 Object.keys(jsonObj.type.Query).forEach((key) => {

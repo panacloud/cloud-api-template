@@ -9,7 +9,7 @@ var class_1 = require("../../functions/utils/class");
 var USER_WORKING_DIRECTORY = require('../../model.json').USER_WORKING_DIRECTORY;
 var path = require('path');
 var generatePath = path.relative(path.resolve('.'), "/" + USER_WORKING_DIRECTORY);
-templating_1.Generator.generateFromModel({ outputFile: generatePath + "/lib/panacloud-stack.ts" }, function (output, model) {
+templating_1.Generator.generateFromModel({ outputFile: generatePath + "/lib/" + USER_WORKING_DIRECTORY + "-stack.ts" }, function (output, model) {
     var ts = new typescript_1.TypeScriptWriter(output);
     var lambda = new lambda_1.Lambda(output);
     var db = new dynamoDB_1.DynamoDB(output);

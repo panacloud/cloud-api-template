@@ -1,32 +1,43 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 exports.LambdaFunction = void 0;
-const core_1 = require("@yellicode/core");
-const typescript_1 = require("@yellicode/typescript");
-class LambdaFunction extends core_1.CodeWriter {
-    initializeLambdaFunction(content, output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeLine(`exports.handler = async (event:Event) => {`);
-        ts.writeLine(`switch (event.info.fieldName) {`);
+var core_1 = require("@yellicode/core");
+var typescript_1 = require("@yellicode/typescript");
+var LambdaFunction = /** @class */ (function (_super) {
+    __extends(LambdaFunction, _super);
+    function LambdaFunction() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    LambdaFunction.prototype.initializeLambdaFunction = function (content, output) {
+        var ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeLine("exports.handler = async (event:Event) => {");
+        ts.writeLine("switch (event.info.fieldName) {");
         ts.writeLine();
         content();
         ts.writeLine();
-        ts.writeLine(`}`);
-        ts.writeLine(`}`);
-    }
-    importIndividualFunction(output, name, path) {
-        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeLine("}");
+        ts.writeLine("}");
+    };
+    LambdaFunction.prototype.importIndividualFunction = function (output, name, path) {
+        var ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(path, [name]);
-    }
-    helloWorldFunction(name) {
-        this.writeLineIndented(`
-    const AWS = require('aws-sdk');
-    
-    export const ${name} = async() => {
-      // write your code here
-    }
-    `);
-    }
-}
+    };
+    LambdaFunction.prototype.helloWorldFunction = function (name) {
+        this.writeLineIndented("\n    const AWS = require('aws-sdk');\n    \n    export const " + name + " = async() => {\n      // write your code here\n    }\n    ");
+    };
+    return LambdaFunction;
+}(core_1.CodeWriter));
 exports.LambdaFunction = LambdaFunction;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGFtYmRhRnVuY3Rpb24uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJsYW1iZGFGdW5jdGlvbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwwQ0FBeUQ7QUFDekQsc0RBQXlEO0FBRXpELE1BQWEsY0FBZSxTQUFRLGlCQUFVO0lBQ3JDLHdCQUF3QixDQUFDLE9BQVksRUFBRSxNQUFrQjtRQUM5RCxNQUFNLEVBQUUsR0FBRyxJQUFJLDZCQUFnQixDQUFDLE1BQU0sQ0FBQyxDQUFDO1FBQ3hDLEVBQUUsQ0FBQyxTQUFTLENBQUMsNENBQTRDLENBQUMsQ0FBQztRQUMzRCxFQUFFLENBQUMsU0FBUyxDQUFDLGlDQUFpQyxDQUFDLENBQUM7UUFDaEQsRUFBRSxDQUFDLFNBQVMsRUFBRSxDQUFDO1FBQ2YsT0FBTyxFQUFFLENBQUM7UUFDVixFQUFFLENBQUMsU0FBUyxFQUFFLENBQUM7UUFDZixFQUFFLENBQUMsU0FBUyxDQUFDLEdBQUcsQ0FBQyxDQUFDO1FBQ2xCLEVBQUUsQ0FBQyxTQUFTLENBQUMsR0FBRyxDQUFDLENBQUM7SUFDcEIsQ0FBQztJQUNNLHdCQUF3QixDQUM3QixNQUFrQixFQUNsQixJQUFZLEVBQ1osSUFBWTtRQUVaLE1BQU0sRUFBRSxHQUFHLElBQUksNkJBQWdCLENBQUMsTUFBTSxDQUFDLENBQUM7UUFDeEMsRUFBRSxDQUFDLFlBQVksQ0FBQyxJQUFJLEVBQUUsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDO0lBQ2hDLENBQUM7SUFDTSxrQkFBa0IsQ0FBQyxJQUFZO1FBQ3BDLElBQUksQ0FBQyxpQkFBaUIsQ0FBQzs7O21CQUdSLElBQUk7OztLQUdsQixDQUFDLENBQUM7SUFDTCxDQUFDO0NBQ0Y7QUE1QkQsd0NBNEJDIn0=
