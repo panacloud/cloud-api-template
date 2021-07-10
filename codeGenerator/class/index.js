@@ -1,25 +1,24 @@
 "use strict";
-exports.__esModule = true;
-var templating_1 = require("@yellicode/templating");
-var typescript_1 = require("@yellicode/typescript");
-var Appsync_1 = require("../../functions/Appsync");
-var dynamoDB_1 = require("../../functions/dynamoDB");
-var lambda_1 = require("../../functions/lambda");
-var class_1 = require("../../functions/utils/class");
-var USER_WORKING_DIRECTORY = require('../../model.json').USER_WORKING_DIRECTORY;
-var path = require('path');
-var generatePath = path.relative(path.resolve('.'), "/" + USER_WORKING_DIRECTORY);
-templating_1.Generator.generateFromModel({ outputFile: generatePath + "/lib/" + USER_WORKING_DIRECTORY + "-stack.ts" }, function (output, model) {
-    var ts = new typescript_1.TypeScriptWriter(output);
-    var lambda = new lambda_1.Lambda(output);
-    var db = new dynamoDB_1.DynamoDB(output);
-    var appsync = new Appsync_1.Appsync(output);
-    var cls = new class_1.BasicClass(output);
+Object.defineProperty(exports, "__esModule", { value: true });
+const templating_1 = require("@yellicode/templating");
+const typescript_1 = require("@yellicode/typescript");
+const Appsync_1 = require("../../functions/Appsync");
+const dynamoDB_1 = require("../../functions/dynamoDB");
+const lambda_1 = require("../../functions/lambda");
+const class_1 = require("../../functions/utils/class");
+const model = require('../../model.json');
+const { USER_WORKING_DIRECTORY } = model;
+templating_1.Generator.generateFromModel({ outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts` }, (output, model) => {
+    const ts = new typescript_1.TypeScriptWriter(output);
+    const lambda = new lambda_1.Lambda(output);
+    const db = new dynamoDB_1.DynamoDB(output);
+    const appsync = new Appsync_1.Appsync(output);
+    const cls = new class_1.BasicClass(output);
     ts.writeImports("@aws-cdk/core", "cdk");
     appsync.importAppsync(output);
     lambda.importLambda(output);
     db.importDynamodb(output);
-    cls.initializeClass("PanacloudStack", function () {
+    cls.initializeClass("PanacloudStack", () => {
         var _a, _b;
         appsync.initializeAppsync("api");
         ts.writeLine();
