@@ -4,7 +4,7 @@ var templating_1 = require("@yellicode/templating");
 var lambdaFunction_1 = require("../../functions/lambda/lambdaFunction");
 var path = require('path');
 var USER_WORKING_DIRECTORY = require('../../model.json').USER_WORKING_DIRECTORY;
-var jsonObj = require("../../model.json");
+var jsonObj = require(USER_WORKING_DIRECTORY + "/codeBuild/model.json");
 var generatePath = path.relative(path.resolve('.'), "/" + USER_WORKING_DIRECTORY);
 Object.keys(jsonObj.type.Query).forEach(function (key) {
     templating_1.Generator.generate({ outputFile: generatePath + "/lambda-fns/" + key + ".ts" }, function (writer) {

@@ -5,12 +5,10 @@ import { Appsync } from "../../functions/Appsync";
 import { DynamoDB } from "../../functions/dynamoDB";
 import { Lambda } from "../../functions/lambda";
 import { BasicClass } from "../../functions/utils/class";
-const {USER_WORKING_DIRECTORY} = require('../../model.json')
-const path = require('path')
-const generatePath = path.relative(path.resolve('.'), `/${USER_WORKING_DIRECTORY}`)
-
+const model = require('../../model.json')
+const {USER_WORKING_DIRECTORY} = model
 Generator.generateFromModel(
-  {outputFile: `${generatePath}/lib/${USER_WORKING_DIRECTORY}-stack.ts`},
+  {outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts`},
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
     const lambda = new Lambda(output);
