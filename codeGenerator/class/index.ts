@@ -1,12 +1,14 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { apiManager } from "../../functions/api-manager";
 import { Appsync } from "../../functions/Appsync";
 import { DynamoDB } from "../../functions/dynamoDB";
 import { Lambda } from "../../functions/lambda";
 import { BasicClass } from "../../functions/utils/class";
 const model = require('../../model.json')
 const {USER_WORKING_DIRECTORY} = model
+
 Generator.generateFromModel(
   {outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts`},
   (output: TextWriter, model: any) => {
@@ -14,16 +16,20 @@ Generator.generateFromModel(
     const lambda = new Lambda(output);
     const db = new DynamoDB(output);
     const appsync = new Appsync(output);
+    const manager = new apiManager(output)
     const cls = new BasicClass(output);
 
     ts.writeImports("@aws-cdk/core", "cdk");
     appsync.importAppsync(output);
+    manager.importApiManager(output)
     lambda.importLambda(output);
     db.importDynamodb(output);
 
     cls.initializeClass(
       "PanacloudStack",
       () => {
+        manager.apiManagerInitializer(output,USER_WORKING_DIRECTORY)
+        ts.writeLine();
         appsync.initializeAppsync("api");
         ts.writeLine();
         lambda.initializeLambda("todoLambda");
