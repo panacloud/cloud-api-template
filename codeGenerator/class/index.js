@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
+const api_manager_1 = require("../../functions/api-manager");
 const Appsync_1 = require("../../functions/Appsync");
 const dynamoDB_1 = require("../../functions/dynamoDB");
 const lambda_1 = require("../../functions/lambda");
@@ -13,13 +14,17 @@ templating_1.Generator.generateFromModel({ outputFile: `../../../${USER_WORKING_
     const lambda = new lambda_1.Lambda(output);
     const db = new dynamoDB_1.DynamoDB(output);
     const appsync = new Appsync_1.Appsync(output);
+    const manager = new api_manager_1.apiManager(output);
     const cls = new class_1.BasicClass(output);
     ts.writeImports("@aws-cdk/core", "cdk");
     appsync.importAppsync(output);
+    manager.importApiManager(output);
     lambda.importLambda(output);
     db.importDynamodb(output);
     cls.initializeClass("PanacloudStack", () => {
         var _a, _b;
+        manager.apiManagerInitializer(output, USER_WORKING_DIRECTORY);
+        ts.writeLine();
         appsync.initializeAppsync("api");
         ts.writeLine();
         lambda.initializeLambda("todoLambda");
