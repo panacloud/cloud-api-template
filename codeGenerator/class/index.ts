@@ -1,13 +1,14 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
-import { TypeScriptWriter, ClassDefinition } from "@yellicode/typescript";
+import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../functions/Appsync";
 import { DynamoDB } from "../../functions/dynamoDB";
 import { Lambda } from "../../functions/lambda";
-import { BasicClass } from "../../functions//utils/class";
-
+import { BasicClass } from "../../functions/utils/class";
+const model = require('../../model.json')
+const {USER_WORKING_DIRECTORY} = model
 Generator.generateFromModel(
-  { outputFile: "../../../panacloud/lib/panacloud-stack.ts" },
+  {outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts`},
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
     const lambda = new Lambda(output);

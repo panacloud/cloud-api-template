@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const lambdaFunction_1 = require("../../functions/lambda/lambdaFunction");
-templating_1.Generator.generateFromModel({ outputFile: "../../../panacloud/lambda-fns/main.ts" }, (output, model) => {
+const model = require('../../model.json');
+const { USER_WORKING_DIRECTORY } = model;
+templating_1.Generator.generateFromModel({ outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/main.ts` }, (output, model) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     const lambda = new lambdaFunction_1.LambdaFunction(output);
     for (var key in model.type.Query) {
