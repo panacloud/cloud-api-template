@@ -2,13 +2,14 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
+const model = require('../../model.json')
+const {USER_WORKING_DIRECTORY} = model
 
 Generator.generateFromModel(
-  { outputFile: "../../../panacloud/lambda-fns/main.ts" },
+  { outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/main.ts` },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
     const lambda = new LambdaFunction(output);
-
     for (var key in model.type.Query) {
       lambda.importIndividualFunction(output, key, `./${key}`);
     }
