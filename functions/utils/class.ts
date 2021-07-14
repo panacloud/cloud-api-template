@@ -6,12 +6,12 @@ export class BasicClass extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     const classDefinition: ClassDefinition = {
       name: name,
-      extends: ["cdk.Stack"],
+      extends: ["Stack"],
       export: true,
     };
     ts.writeClassBlock(classDefinition, () => {
       ts.writeLineIndented(` 
-      constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+      constructor(scope: Construct, id: string, props?: StackProps) {
           super(scope, id, props);
       `);
       contents();

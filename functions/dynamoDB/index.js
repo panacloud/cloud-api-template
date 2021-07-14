@@ -5,7 +5,7 @@ const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 class DynamoDB extends core_1.CodeWriter {
     initializeDynamodb(name) {
-        this.writeLineIndented(`const table = new ddb.Table(this, "${name}", {
+        this.writeLineIndented(`const table = new dynamodb.Table(this, "${name}", {
         tableName: "${name}",
         billingMode: ddb.BillingMode.PAY_PER_REQUEST,
         partitionKey: {
@@ -16,7 +16,7 @@ class DynamoDB extends core_1.CodeWriter {
     }
     importDynamodb(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("@aws-cdk/aws-dynamodb", "ddb");
+        ts.writeImports("aws-cdk-lib", ['aws_dynamodb as dynamodb']);
     }
     grantFullAccess(lambda) {
         this.writeLine(`table.grantFullAccess(${lambda});`);

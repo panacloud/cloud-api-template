@@ -1,8 +1,9 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 export declare class Appsync extends CodeWriter {
-    initializeAppsync(name: string): void;
+    private apiName;
+    private ds;
     importAppsync(output: TextWriter): void;
-    lambdaDataSource(name: string, lambda: string): void;
-    lambdaDataSourceResolverQuery(value: string): void;
-    lambdaDataSourceResolverMutation(value: string): void;
+    initializeAppsyncApi(name: string, output: TextWriter): void;
+    appsyncDataSource(output: TextWriter, dataSourceName: string): void;
+    lambdaDataSourceResolver(fieldName: string, typeName: string, dataSourceName: string): void;
 }
