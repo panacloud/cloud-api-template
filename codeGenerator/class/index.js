@@ -17,7 +17,8 @@ templating_1.Generator.generateFromModel({ outputFile: `../../../${USER_WORKING_
     const appsync = new Appsync_1.Appsync(output);
     const manager = new api_manager_1.apiManager(output);
     const cls = new class_1.BasicClass(output);
-    ts.writeImports("@aws-cdk/core", "cdk");
+    ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
+    ts.writeImports("constructs", ["Construct"]);
     appsync.importAppsync(output);
     manager.importApiManager(output);
     lambda.importLambda(output);
