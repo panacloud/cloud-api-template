@@ -20,7 +20,8 @@ Generator.generateFromModel(
     const manager = new apiManager(output)
     const cls = new BasicClass(output);
 
-    ts.writeImports("@aws-cdk/core", "cdk");
+    ts.writeImports("aws-cdk-lib", ["Stack","StackProps"]);
+    ts.writeImports("constructs", ["Construct"]);
     appsync.importAppsync(output);
     manager.importApiManager(output)
     lambda.importLambda(output);
