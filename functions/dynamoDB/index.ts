@@ -3,7 +3,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class DynamoDB extends CodeWriter {
   public initializeDynamodb(name: string) {
-    this.writeLineIndented(`const table = new ddb.Table(this, "${name}", {
+    this.writeLineIndented(`const table = new dynamodb.Table(this, "${name}", {
         tableName: "${name}",
         billingMode: ddb.BillingMode.PAY_PER_REQUEST,
         partitionKey: {
@@ -14,7 +14,7 @@ export class DynamoDB extends CodeWriter {
   }
   public importDynamodb(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
-    ts.writeImports("@aws-cdk/aws-dynamodb", "ddb");
+    ts.writeImports("aws-cdk-lib", ['aws_dynamodb as dynamodb']);
   }
   public grantFullAccess(lambda: string) {
     this.writeLine(`table.grantFullAccess(${lambda});`);
