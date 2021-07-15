@@ -2,8 +2,8 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
-const model = require('../../model.json')
-const {USER_WORKING_DIRECTORY} = model
+const model = require("../../model.json");
+const { USER_WORKING_DIRECTORY } = model;
 
 Generator.generateFromModel(
   { outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/main.ts` },
