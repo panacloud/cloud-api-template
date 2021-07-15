@@ -24,8 +24,8 @@ class Lambda extends core_1.CodeWriter {
             },
         }, "const");
     }
-    addEnvironment(name, value) {
-        this.writeLine(`lambdaFn.addEnvironment("${name}", ${value});`);
+    addEnvironment(lambda, envName, value) {
+        this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
     }
 }
 exports.Lambda = Lambda;
