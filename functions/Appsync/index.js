@@ -41,7 +41,7 @@ class Appsync extends core_1.CodeWriter {
             initializer: () => {
                 ts.writeLine(`new appsync.CfnGraphQLSchema(this,'${this.apiName}Schema',{
             apiId: ${this.apiName}_appsync.attrApiId,
-            definition:${ts.write(`${schema}`)}
+            definition:${`${schema}`}
           })`);
             },
         }, "const");
