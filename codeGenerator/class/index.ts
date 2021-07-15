@@ -32,7 +32,7 @@ Generator.generateFromModel(
     db.importDynamodb(output);
 
     cls.initializeClass(
-      "PanacloudStack",
+      `${USER_WORKING_DIRECTORY}`,
       () => {
         manager.apiManagerInitializer(output,USER_WORKING_DIRECTORY)
         ts.writeLine();
