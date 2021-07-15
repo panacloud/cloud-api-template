@@ -1,0 +1,16 @@
+{
+  "templates": [
+    {
+      "templateFile": "./codeGenerator/class/index.js",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/lambda/initializeLambdaFunction.js",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/lambda/individualFunction.js"
+    }
+  ],
+  "compileTypeScript": false
+}
