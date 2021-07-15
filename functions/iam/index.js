@@ -21,7 +21,7 @@ class Iam extends core_1.CodeWriter {
         }, "const");
     }
     attachLambdaPolicyToRole(roleName) {
-        this.writeLine(`${roleName}__servRole.addToPolicy(new iam.PolicyStatement({
+        this.writeLine(`${roleName}_servRole.addToPolicy(new iam.PolicyStatement({
             resources: ['*'],
             actions: ['lambda:InvokeFunction'],
           }));`);

@@ -8,20 +8,20 @@ export class DynamoDB extends CodeWriter {
     ts.writeImports("aws-cdk-lib", ['aws_dynamodb as dynamodb']);
   }
 
-  public initializeDynamodb(apiName: string , output:TextWriter) {
+  public initializeDynamodb(apiName: string,output:TextWriter) {
     const ts = new TypeScriptWriter(output)
     ts.writeVariableDeclaration({
       name:`${apiName}_table`,
       typeName:"dynamodb.Table",
       initializer:()=> {
-          ` new dynamodb.Table(this, "${apiName}Table", {
-            tableName: "${apiName}",
-            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-            partitionKey:{
-              name: "id",
-              type: dynamodb.AttributeType.STRING,
-            },
-          });`
+        ts.writeLine(` new dynamodb.Table(this, "${apiName}Table", {
+          tableName: "${apiName}",
+          billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+          partitionKey:{
+            name: "id",
+            type: dynamodb.AttributeType.STRING,
+          },
+        });`)
       }
     },"const")
   }
