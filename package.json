@@ -1,0 +1,17 @@
+{
+  "name": "cli-codegenerator-config",
+  "version": "1.0.0",
+  "description": "configration for code generation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@yellicode/core": "^1.5.0",
+    "@yellicode/templating": "^1.8.0",
+    "@yellicode/typescript": "^1.13.3",
+    "lodash": "^4.17.21"
+  }
+}
