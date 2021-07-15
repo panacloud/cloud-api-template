@@ -4,6 +4,10 @@ exports.DynamoDB = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 class DynamoDB extends core_1.CodeWriter {
+    importDynamodb(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports("aws-cdk-lib", ['aws_dynamodb as dynamodb']);
+    }
     initializeDynamodb(apiName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
@@ -21,12 +25,8 @@ class DynamoDB extends core_1.CodeWriter {
             }
         }, "const");
     }
-    importDynamodb(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ['aws_dynamodb as dynamodb']);
-    }
-    grantFullAccess(lambda) {
-        this.writeLine(`table.grantFullAccess(${lambda}_lambdaFn);`);
+    grantFullAccess(lambda, tableName) {
+        this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
     }
 }
 exports.DynamoDB = DynamoDB;

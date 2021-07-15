@@ -41,7 +41,7 @@ class Appsync extends core_1.CodeWriter {
             initializer: () => {
                 ts.writeLine(`new appsync.CfnGraphQLSchema(this,'${this.apiName}Schema',{
             apiId: ${this.apiName}_appsync.attrApiId,
-            definition:${schema}
+            definition:'${schema}'
           })`);
             },
         }, "const");
@@ -63,13 +63,13 @@ class Appsync extends core_1.CodeWriter {
           apiId: ${this.apiName}_appsync.attrApiId,
           type:"AWS_LAMBDA",
           lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn.functionArn},
-          serviceRoleArn:${serviceRole}.roleArn
+          serviceRoleArn:${serviceRole}_servRole.roleArn
          })`);
             },
         }, "const");
     }
     lambdaDataSourceResolver(fieldName, typeName, dataSourceName) {
-        this.writeLineIndented(`new appsync.CfnResolver(this,${fieldName}_resolver,{
+        this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
       apiId: ${this.apiName}_appsync.attrApiId,
       typeName: "${typeName}",
       fieldName: "${fieldName}",
