@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter, ClassDefinition } from "@yellicode/typescript";
-const _ = require('lodash');
+const _ = require("lodash");
 
 export class BasicClass extends CodeWriter {
   public initializeClass(name: string, contents: any, output: TextWriter) {
