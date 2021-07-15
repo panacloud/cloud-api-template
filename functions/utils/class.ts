@@ -1,11 +1,12 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter, ClassDefinition } from "@yellicode/typescript";
+const _ = require('lodash');
 
 export class BasicClass extends CodeWriter {
   public initializeClass(name: string, contents: any, output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     const classDefinition: ClassDefinition = {
-      name: name,
+      name: `${_.camelCase(name)}Stack`,
       extends: ["Stack"],
       export: true,
     };
