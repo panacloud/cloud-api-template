@@ -14,14 +14,14 @@ class DynamoDB extends core_1.CodeWriter {
             name: `${apiName}_table`,
             typeName: "dynamodb.Table",
             initializer: () => {
-                ` new dynamodb.Table(this, "${apiName}Table", {
-            tableName: "${apiName}",
-            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-            partitionKey:{
-              name: "id",
-              type: dynamodb.AttributeType.STRING,
-            },
-          });`;
+                ts.writeLine(` new dynamodb.Table(this, "${apiName}Table", {
+          tableName: "${apiName}",
+          billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+          partitionKey:{
+            name: "id",
+            type: dynamodb.AttributeType.STRING,
+          },
+        });`);
             }
         }, "const");
     }
