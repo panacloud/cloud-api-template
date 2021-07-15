@@ -8,7 +8,7 @@ class BasicClass extends core_1.CodeWriter {
     initializeClass(name, contents, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const classDefinition = {
-            name: `${_.camelCase(name)}Stack`,
+            name: `${_.upperFirst(_.camelCase(name))}Stack`,
             extends: ["Stack"],
             export: true,
         };

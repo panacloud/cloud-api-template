@@ -6,7 +6,7 @@ export class BasicClass extends CodeWriter {
   public initializeClass(name: string, contents: any, output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     const classDefinition: ClassDefinition = {
-      name: `${_.camelCase(name)}Stack`,
+      name: `${_.upperFirst(_.camelCase(name))}Stack`,
       extends: ["Stack"],
       export: true,
     };
