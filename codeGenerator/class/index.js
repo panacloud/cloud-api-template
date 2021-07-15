@@ -27,7 +27,7 @@ templating_1.Generator.generateFromModel({ outputFile: `../../../${USER_WORKING_
     lambda.importLambda(output);
     iam.importIam(output);
     db.importDynamodb(output);
-    cls.initializeClass("PanacloudStack", () => {
+    cls.initializeClass(`${USER_WORKING_DIRECTORY}`, () => {
         var _a, _b;
         manager.apiManagerInitializer(output, USER_WORKING_DIRECTORY);
         ts.writeLine();
