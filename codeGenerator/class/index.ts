@@ -42,13 +42,17 @@ Generator.generateFromModel(
         ts.writeLine();
         appsync.initializeApiKeyForAppsync(API_NAME)
         ts.writeLine();
+        iam.serviceRoleForAppsync(output,API_NAME)
+        ts.writeLine();
+        iam.attachLambdaPolicyToRole(API_NAME)
+        ts.writeLine();
         lambda.initializeLambda(API_NAME,output);
         ts.writeLine();
         appsync.appsyncDataSource(output,API_NAME,API_NAME)
         ts.writeLine();
-        iam.serviceRoleForAppsync(output,API_NAME)
+        db.initializeDynamodb(API_NAME,output);
         ts.writeLine();
-        iam.attachLambdaPolicyToRole(API_NAME)
+        db.grantFullAccess(`${API_NAME}`,`${API_NAME}_table`);
         ts.writeLine();
         for (var key in model?.type?.Query) {
           appsync.lambdaDataSourceResolver(key, "Query");
@@ -58,11 +62,7 @@ Generator.generateFromModel(
           appsync.lambdaDataSourceResolver(key,"Mutation");
         }
         ts.writeLine();
-        db.initializeDynamodb(API_NAME,output);
-        ts.writeLine();
-        db.grantFullAccess(`${API_NAME}`);
-        ts.writeLine();
-        lambda.addEnvironment(`${API_NAME}`,"TODOS_TABLE", `${API_NAME}_table.tableName`);
+        lambda.addEnvironment(`${API_NAME}`,`${API_NAME}_TABLE`, `${API_NAME}_table.tableName`);
         ts.writeLine();
       },
       output
