@@ -31,6 +31,7 @@ export class Appsync extends CodeWriter {
 
   public initializeAppsyncSchema(schema:string,output:TextWriter){
     const ts = new TypeScriptWriter(output);
+    const gqlSchema = "`"+schema+"`"
     ts.writeVariableDeclaration(
       {
         name: `${this.apiName}_schema`,
@@ -38,7 +39,7 @@ export class Appsync extends CodeWriter {
         initializer: () => {
           ts.writeLine(`new appsync.CfnGraphQLSchema(this,'${this.apiName}Schema',{
             apiId: ${this.apiName}_appsync.attrApiId,
-            definition:${`${schema}`}
+            definition:${gqlSchema}
           })`);
         },
       },

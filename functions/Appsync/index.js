@@ -35,13 +35,14 @@ class Appsync extends core_1.CodeWriter {
     }
     initializeAppsyncSchema(schema, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
+        const gqlSchema = "`" + schema + "`";
         ts.writeVariableDeclaration({
             name: `${this.apiName}_schema`,
             typeName: "appsync.CfnGraphQLSchema",
             initializer: () => {
                 ts.writeLine(`new appsync.CfnGraphQLSchema(this,'${this.apiName}Schema',{
             apiId: ${this.apiName}_appsync.attrApiId,
-            definition:${`${schema}`}
+            definition:${gqlSchema}
           })`);
             },
         }, "const");
