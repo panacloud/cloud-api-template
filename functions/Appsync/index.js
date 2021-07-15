@@ -19,7 +19,7 @@ class Appsync extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
     }
-    initializeAppsyncApi(name, output) {
+    initializeAppsyncApi(name, output, authenticationType) {
         this.apiName = name;
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
@@ -33,22 +33,27 @@ class Appsync extends core_1.CodeWriter {
             },
         }, "const");
     }
-    appsyncDataSource(output, dataSourceName) {
+    initializeAppsyncSchema(schema, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        this.ds = `ds_${dataSourceName}`;
         ts.writeVariableDeclaration({
-            name: "servRole",
-            typeName: "iam.Role",
+            name: `${this.apiName}_schema`,
+            typeName: "appsync.CfnGraphQLSchema",
             initializer: () => {
-                ts.writeLine(`new iam.Role(this,'appsynServiceRole',{
-          assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
-         });`);
+                ts.writeLine(`new appsync.CfnGraphQLSchema(this,'${this.apiName}Schema',{
+            apiId: ${this.apiName}_appsync.attrApiId,
+            definition:${schema}
+          })`);
             },
         }, "const");
-        ts.writeLine(`servRole.addToPolicy(new iam.PolicyStatement({
-      resources: ['*'],
-      actions: ['lambda:InvokeFunction'],
-    }));`);
+    }
+    initializeApiKeyForAppsync(apiName) {
+        this.writeLine(`new appsync.CfnApiKey(this,"apiKey",{
+        apiId:${apiName}_appsync.attrApiId
+      })`);
+    }
+    appsyncDataSource(output, dataSourceName, serviceRole) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        this.ds = `ds_${dataSourceName}`;
         ts.writeVariableDeclaration({
             name: `ds_${dataSourceName}`,
             typeName: "appsync.CfnDataSource",
@@ -58,13 +63,13 @@ class Appsync extends core_1.CodeWriter {
           apiId: ${this.apiName}_appsync.attrApiId,
           type:"AWS_LAMBDA",
           lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn.functionArn},
-          serviceRoleArn:servRole.roleArn
+          serviceRoleArn:${serviceRole}.roleArn
          })`);
             },
         }, "const");
     }
     lambdaDataSourceResolver(fieldName, typeName, dataSourceName) {
-        this.writeLineIndented(`new appsync.CfnResolver(this,"res",{
+        this.writeLineIndented(`new appsync.CfnResolver(this,${fieldName}_resolver,{
       apiId: ${this.apiName}_appsync.attrApiId,
       typeName: "${typeName}",
       fieldName: "${fieldName}",

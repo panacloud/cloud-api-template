@@ -27,7 +27,7 @@ export class Lambda extends CodeWriter {
       "const"
     );
   }
-  public addEnvironment(name: string, value: string) {
-    this.writeLine(`lambdaFn.addEnvironment("${name}", ${value});`);
+  public addEnvironment(lambda:string, envName: string, value: string) {
+    this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
   }
 }
