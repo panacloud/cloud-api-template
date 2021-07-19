@@ -1,5 +1,3 @@
 node_modules/
-/functions/**/*.js
 /functions/**/*.d.ts
-/codeGenerator/**/*.js
 /codeGenerator/**/*.d.ts
