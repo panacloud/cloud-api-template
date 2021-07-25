@@ -8,24 +8,24 @@ class Lambda extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
     }
-    initializeLambda(apiName, output) {
+    initializeLambda(apiName, output, functionName) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
-            name: `${apiName}_lambdaFn`,
+            name: `${apiName}_lambdaFn_${functionName}`,
             typeName: "lambda.Function",
             initializer: () => {
-                ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
-        functionName: "${apiName}Lambda",
+                ts.writeLine(`new lambda.Function(this, "${apiName}Lambda${functionName}", {
+        functionName: "${apiName}Lambda${functionName}",
         runtime: lambda.Runtime.NODEJS_12_X,
-        handler: "main.handler",
+        handler: "${functionName}.handler",
         code: lambda.Code.fromAsset("lambda-fns"),
         memorySize: 1024,
       });`);
             },
         }, "const");
     }
-    addEnvironment(lambda, envName, value) {
-        this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
+    addEnvironment(lambda, functionName, envName, value) {
+        this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
     }
 }
 exports.Lambda = Lambda;

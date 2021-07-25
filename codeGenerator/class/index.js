@@ -45,8 +45,18 @@ templating_1.Generator.generateFromModel({
         ts.writeLine();
         iam.attachLambdaPolicyToRole(API_NAME);
         ts.writeLine();
-        lambda.initializeLambda(API_NAME, output);
-        ts.writeLine();
+        if (model.type.Mutation) {
+            Object.keys(model.type.Mutation).forEach((key) => {
+                lambda.initializeLambda(API_NAME, output, key);
+                ts.writeLine();
+            });
+        }
+        if (model.type.Query) {
+            Object.keys(model.type.Query).forEach((key) => {
+                lambda.initializeLambda(API_NAME, output, key);
+                ts.writeLine();
+            });
+        }
         appsync.appsyncDataSource(output, API_NAME, API_NAME);
         ts.writeLine();
         db.initializeDynamodb(API_NAME, output);
@@ -65,7 +75,17 @@ templating_1.Generator.generateFromModel({
             }
             ts.writeLine();
         }
-        lambda.addEnvironment(`${API_NAME}`, `${API_NAME}_TABLE`, `${API_NAME}_table.tableName`);
-        ts.writeLine();
+        if (model.type.Mutation) {
+            Object.keys(model.type.Mutation).forEach((key) => {
+                lambda.addEnvironment(`${API_NAME}`, `${API_NAME}_TABLE`, `${API_NAME}_table.tableName`, `${key}`);
+                ts.writeLine();
+            });
+        }
+        if (model.type.Query) {
+            Object.keys(model.type.Query).forEach((key) => {
+                lambda.addEnvironment(`${API_NAME}`, `${API_NAME}_TABLE`, `${API_NAME}_table.tableName`, `${key}`);
+                ts.writeLine();
+            });
+        }
     }, output);
 });
