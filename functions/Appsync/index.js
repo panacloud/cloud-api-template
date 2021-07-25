@@ -7,7 +7,6 @@ class Appsync extends core_1.CodeWriter {
     constructor() {
         super(...arguments);
         this.apiName = "appsync_api";
-        this.ds = "ds_";
         // public lambdaDataSourceResolverMutation(value: string) {
         //   this.writeLineIndented(` lambdaDs.createResolver({
         //     typeName: "Mutation",
@@ -15,6 +14,7 @@ class Appsync extends core_1.CodeWriter {
         //   });`);
         // }
     }
+    // public ds: string = "ds_";
     importAppsync(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
@@ -54,13 +54,13 @@ class Appsync extends core_1.CodeWriter {
     }
     appsyncDataSource(output, dataSourceName, serviceRole, functionName) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        this.ds = `ds_${dataSourceName}_${functionName}`;
+        // this.ds = `ds_${dataSourceName}_${functionName}`;
         ts.writeVariableDeclaration({
-            name: `ds_${dataSourceName}`,
+            name: `ds_${dataSourceName}_${functionName}`,
             typeName: "appsync.CfnDataSource",
             initializer: () => {
                 ts.writeLine(`new appsync.CfnDataSource(this,'${this.apiName + "dataSourceGraphql"}',{
-          name: '${this.apiName + dataSourceName}',
+          name: '${this.apiName + dataSourceName + functionName}',
           apiId: ${this.apiName}_appsync.attrApiId,
           type:"AWS_LAMBDA",
           lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn_${functionName}.functionArn},

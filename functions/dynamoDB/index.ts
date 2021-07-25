@@ -29,6 +29,6 @@ export class DynamoDB extends CodeWriter {
   }
 
   public grantFullAccess(lambda: string, tableName: string, functionName: string) {
-    this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn)_${functionName};`);
+    this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`);
   }
 }
