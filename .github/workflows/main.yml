@@ -1,0 +1,34 @@
+name: Js Files
+
+on:   
+  push:   
+    branches:
+      - "*"
+
+jobs:
+  # This workflow contains a single job called "build"
+  generateJsfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: |
+          npm install
+          npm install typescript -g
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          tsc -b
+          git add .
+          git commit -m "updated js files" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
