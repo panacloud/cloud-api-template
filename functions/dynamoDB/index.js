@@ -25,8 +25,8 @@ class DynamoDB extends core_1.CodeWriter {
             },
         }, "const");
     }
-    grantFullAccess(lambda, tableName) {
-        this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
+    grantFullAccess(lambda, tableName, functionName) {
+        this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn)_${functionName};`);
     }
 }
 exports.DynamoDB = DynamoDB;
