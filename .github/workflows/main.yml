@@ -1,6 +1,9 @@
 name: Js Files
 
-on: [push]
+on:   
+  push:   
+    branches:
+      - ${{ github.ref }}
 
 jobs:
   # This workflow contains a single job called "build"
