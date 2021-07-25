@@ -52,9 +52,9 @@ class Appsync extends core_1.CodeWriter {
         apiId:${apiName}_appsync.attrApiId
       })`);
     }
-    appsyncDataSource(output, dataSourceName, serviceRole) {
+    appsyncDataSource(output, dataSourceName, serviceRole, functionName) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        this.ds = `ds_${dataSourceName}`;
+        this.ds = `ds_${dataSourceName}_${functionName}`;
         ts.writeVariableDeclaration({
             name: `ds_${dataSourceName}`,
             typeName: "appsync.CfnDataSource",
@@ -63,7 +63,7 @@ class Appsync extends core_1.CodeWriter {
           name: '${this.apiName + dataSourceName}',
           apiId: ${this.apiName}_appsync.attrApiId,
           type:"AWS_LAMBDA",
-          lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn.functionArn},
+          lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn_${functionName}.functionArn},
           serviceRoleArn:${serviceRole}_servRole.roleArn
          })`);
             },
@@ -75,7 +75,7 @@ class Appsync extends core_1.CodeWriter {
       apiId: ${this.apiName}_appsync.attrApiId,
       typeName: "${typeName}",
       fieldName: "${fieldName}",
-      dataSourceName: ${this.ds}.name
+      dataSourceName: ${dataSourceName}.name
     })`);
     }
 }

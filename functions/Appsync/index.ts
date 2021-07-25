@@ -59,10 +59,11 @@ export class Appsync extends CodeWriter {
   public appsyncDataSource(
     output: TextWriter,
     dataSourceName: string,
-    serviceRole: string
+    serviceRole: string,
+    functionName: string
   ) {
     const ts = new TypeScriptWriter(output);
-    this.ds = `ds_${dataSourceName}`;
+    this.ds = `ds_${dataSourceName}_${functionName}`;
     ts.writeVariableDeclaration(
       {
         name: `ds_${dataSourceName}`,
@@ -76,7 +77,7 @@ export class Appsync extends CodeWriter {
           type:"AWS_LAMBDA",
           lambdaConfig: {lambdaFunctionArn:${
             this.apiName
-          }_lambdaFn.functionArn},
+          }_lambdaFn_${functionName}.functionArn},
           serviceRoleArn:${serviceRole}_servRole.roleArn
          })`);
         },
@@ -88,14 +89,14 @@ export class Appsync extends CodeWriter {
   public lambdaDataSourceResolver(
     fieldName: string,
     typeName: string,
-    dataSourceName?: string
+    dataSourceName: string
   ) {
     this
       .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
       apiId: ${this.apiName}_appsync.attrApiId,
       typeName: "${typeName}",
       fieldName: "${fieldName}",
-      dataSourceName: ${this.ds}.name
+      dataSourceName: ${dataSourceName}.name
     })`);
   }
 

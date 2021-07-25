@@ -64,23 +64,45 @@ Generator.generateFromModel(
           })
         }
         
-        appsync.appsyncDataSource(output, API_NAME, API_NAME);
-        ts.writeLine();
+        if(model.type.Mutation) {
+          Object.keys(model.type.Mutation).forEach((key) => {
+            appsync.appsyncDataSource(output, API_NAME, API_NAME, key);
+            ts.writeLine();
+          })
+        }
+        if(model.type.Query) {
+          Object.keys(model.type.Query).forEach((key) => {
+            appsync.appsyncDataSource(output, API_NAME, API_NAME, key);
+            ts.writeLine();
+          })
+        }
+
         db.initializeDynamodb(API_NAME, output);
         ts.writeLine();
-        db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`);
-        ts.writeLine();
+        if(model.type.Mutation) {
+          Object.keys(model.type.Mutation).forEach((key) => {
+            db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, key);
+            ts.writeLine();
+          })
+        }
+        if(model.type.Query) {
+          Object.keys(model.type.Query).forEach((key) => {
+            db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, key);
+            ts.writeLine();
+          })
+        }
+
 
         if (model?.type?.Query) {
           for (var key in model?.type?.Query) {
-            appsync.lambdaDataSourceResolver(key, "Query");
+            appsync.lambdaDataSourceResolver(key, "Query", `ds_${API_NAME}_${key}`);
           }
           ts.writeLine();
         }
 
         if (model?.type?.Mutation) {
           for (var key in model?.type?.Mutation) {
-            appsync.lambdaDataSourceResolver(key, "Mutation");
+            appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${API_NAME}_${key}`);
           }
           ts.writeLine();
         }
@@ -89,9 +111,9 @@ Generator.generateFromModel(
           Object.keys(model.type.Mutation).forEach((key) => {
             lambda.addEnvironment(
               `${API_NAME}`,
+              `${key}`,
               `${API_NAME}_TABLE`,
               `${API_NAME}_table.tableName`,
-              `${key}`
             );
             ts.writeLine();
           })
@@ -100,9 +122,9 @@ Generator.generateFromModel(
           Object.keys(model.type.Query).forEach((key) => {
             lambda.addEnvironment(
               `${API_NAME}`,
+              `${key}`,
               `${API_NAME}_TABLE`,
               `${API_NAME}_table.tableName`,
-              `${key}`
             );
             ts.writeLine();
           })
