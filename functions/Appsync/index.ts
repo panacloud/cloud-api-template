@@ -3,7 +3,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
-  public ds: string = "ds_";
+  // public ds: string = "ds_";
 
   public importAppsync(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
@@ -63,16 +63,16 @@ export class Appsync extends CodeWriter {
     functionName: string
   ) {
     const ts = new TypeScriptWriter(output);
-    this.ds = `ds_${dataSourceName}_${functionName}`;
+    // this.ds = `ds_${dataSourceName}_${functionName}`;
     ts.writeVariableDeclaration(
       {
-        name: `ds_${dataSourceName}`,
+        name: `ds_${dataSourceName}_${functionName}`,
         typeName: "appsync.CfnDataSource",
         initializer: () => {
           ts.writeLine(`new appsync.CfnDataSource(this,'${
             this.apiName + "dataSourceGraphql"
           }',{
-          name: '${this.apiName + dataSourceName}',
+          name: '${this.apiName + dataSourceName + functionName}',
           apiId: ${this.apiName}_appsync.attrApiId,
           type:"AWS_LAMBDA",
           lambdaConfig: {lambdaFunctionArn:${
