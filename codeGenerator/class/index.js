@@ -48,7 +48,7 @@ templating_1.Generator.generateFromModel({
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-        console.log(mutationsAndQueries);
+        // console.log(mutationsAndQueries);
         if (LAMBDA_STYLE === "single lambda") {
             lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE);
         }
