@@ -45,82 +45,36 @@ templating_1.Generator.generateFromModel({
         ts.writeLine();
         iam.attachLambdaPolicyToRole(API_NAME);
         ts.writeLine();
-        // const mutationsAndQueries = {
-        //   ...model.type.Mutation,
-        //   ...model.type.Query
-        // }
-        // console.log(mutationsAndQueries);
-        if (model.type.Mutation) {
-            Object.keys(model.type.Mutation).forEach((key) => {
+        const mutations = model.type.Mutation ? model.type.Mutation : {};
+        const queries = model.type.Query ? model.type.Query : {};
+        const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
+        console.log(mutationsAndQueries);
+        if (LAMBDA_STYLE === "single lambda") {
+            lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE);
+        }
+        else if (LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE, key);
-                // if (LAMBDA_STYLE === "single lambda") {
-                //   lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE);
-                // }
-                // else if(LAMBDA_STYLE === "multiple lambda") {
-                //   lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE, key);
-                // }
                 ts.writeLine();
             });
         }
-        if (model.type.Query) {
-            Object.keys(model.type.Query).forEach((key) => {
-                lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE, key);
-                // if (LAMBDA_STYLE === "single lambda") {
-                //   lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE);
-                // }
-                // else if(LAMBDA_STYLE === "multiple lambda") {
-                //   lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE, key);
-                // }
-                ts.writeLine();
-            });
+        if (LAMBDA_STYLE === "single lambda") {
+            appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE);
         }
-        if (model.type.Mutation) {
-            Object.keys(model.type.Mutation).forEach((key) => {
+        else if (LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
                 appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE, key);
-                // if (LAMBDA_STYLE === "single lambda") {
-                //   appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE);
-                // }
-                // else if(LAMBDA_STYLE === "multiple lambda") {
-                //   appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE, key);
-                // }
-                ts.writeLine();
-            });
-        }
-        if (model.type.Query) {
-            Object.keys(model.type.Query).forEach((key) => {
-                appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE, key);
-                // if (LAMBDA_STYLE === "single lambda") {
-                //   appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE);
-                // }
-                // else if(LAMBDA_STYLE === "multiple lambda") {
-                //   appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE, key);
-                // }
                 ts.writeLine();
             });
         }
         db.initializeDynamodb(API_NAME, output);
         ts.writeLine();
-        if (model.type.Mutation) {
-            Object.keys(model.type.Mutation).forEach((key) => {
-                db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE, key);
-                // if (LAMBDA_STYLE === "single lambda") {
-                //   db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE);
-                // }
-                // else if(LAMBDA_STYLE === "multiple lambda") {
-                //   db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE, key);
-                // }
-                ts.writeLine();
-            });
+        if (LAMBDA_STYLE === "single lambda") {
+            db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE);
         }
-        if (model.type.Query) {
-            Object.keys(model.type.Query).forEach((key) => {
+        else if (LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
                 db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE, key);
-                // if (LAMBDA_STYLE === "single lambda") {
-                //   db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE);
-                // }
-                // else if(LAMBDA_STYLE === "multiple lambda") {
-                //   db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE, key);
-                // }
                 ts.writeLine();
             });
         }
@@ -146,14 +100,11 @@ templating_1.Generator.generateFromModel({
             }
             ts.writeLine();
         }
-        if (model.type.Mutation) {
-            Object.keys(model.type.Mutation).forEach((key) => {
-                lambda.addEnvironment(`${API_NAME}`, `${API_NAME}_TABLE`, `${API_NAME}_table.tableName`, LAMBDA_STYLE, `${key}`);
-                ts.writeLine();
-            });
+        if (LAMBDA_STYLE === "single lambda") {
+            lambda.addEnvironment(`${API_NAME}`, `${API_NAME}_TABLE`, `${API_NAME}_table.tableName`, LAMBDA_STYLE);
         }
-        if (model.type.Query) {
-            Object.keys(model.type.Query).forEach((key) => {
+        else if (LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.addEnvironment(`${API_NAME}`, `${API_NAME}_TABLE`, `${API_NAME}_table.tableName`, LAMBDA_STYLE, `${key}`);
                 ts.writeLine();
             });
