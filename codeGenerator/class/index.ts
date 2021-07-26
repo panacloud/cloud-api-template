@@ -56,7 +56,7 @@ Generator.generateFromModel(
         const mutationsAndQueries = {
           ...mutations, ...queries
         }
-        console.log(mutationsAndQueries);
+        // console.log(mutationsAndQueries);
 
         if (LAMBDA_STYLE === "single lambda") {
           lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE);
