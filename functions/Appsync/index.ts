@@ -60,30 +60,58 @@ export class Appsync extends CodeWriter {
     output: TextWriter,
     dataSourceName: string,
     serviceRole: string,
-    functionName: string
+    lambdaStyle: string,
+    functionName?: string
   ) {
     const ts = new TypeScriptWriter(output);
     // this.ds = `ds_${dataSourceName}_${functionName}`;
-    ts.writeVariableDeclaration(
-      {
-        name: `ds_${dataSourceName}_${functionName}`,
-        typeName: "appsync.CfnDataSource",
-        initializer: () => {
-          ts.writeLine(`new appsync.CfnDataSource(this,'${
-            this.apiName + "dataSourceGraphql"
-          }',{
-          name: '${this.apiName + dataSourceName + functionName}',
-          apiId: ${this.apiName}_appsync.attrApiId,
-          type:"AWS_LAMBDA",
-          lambdaConfig: {lambdaFunctionArn:${
-            this.apiName
-          }_lambdaFn_${functionName}.functionArn},
-          serviceRoleArn:${serviceRole}_servRole.roleArn
-         })`);
+
+    if(lambdaStyle === "single lambda") {
+      ts.writeVariableDeclaration(
+        {
+          name: `ds_${dataSourceName}`,
+          typeName: "appsync.CfnDataSource",
+          initializer: () => {
+            ts.writeLine(`new appsync.CfnDataSource(this,'${
+              this.apiName + "dataSourceGraphql"
+            }',{
+            name: '${this.apiName + dataSourceName}',
+            apiId: ${this.apiName}_appsync.attrApiId,
+            type:"AWS_LAMBDA",
+            lambdaConfig: {lambdaFunctionArn:${
+              this.apiName
+            }_lambdaFn.functionArn},
+            serviceRoleArn:${serviceRole}_servRole.roleArn
+           })`);
+          },
         },
-      },
-      "const"
-    );
+        "const"
+      );
+    }
+    else if(lambdaStyle === "multiple lambda") {
+      ts.writeVariableDeclaration(
+        {
+          name: `ds_${dataSourceName}_${functionName}`,
+          typeName: "appsync.CfnDataSource",
+          initializer: () => {
+            ts.writeLine(`new appsync.CfnDataSource(this,'${
+              this.apiName + "dataSourceGraphql"
+            }',{
+            name: '${this.apiName + dataSourceName + functionName}',
+            apiId: ${this.apiName}_appsync.attrApiId,
+            type:"AWS_LAMBDA",
+            lambdaConfig: {lambdaFunctionArn:${
+              this.apiName
+            }_lambdaFn_${functionName}.functionArn},
+            serviceRoleArn:${serviceRole}_servRole.roleArn
+           })`);
+          },
+        },
+        "const"
+      );
+    }
+
+
   }
 
   public lambdaDataSourceResolver(
