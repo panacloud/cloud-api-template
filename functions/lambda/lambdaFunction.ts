@@ -7,7 +7,7 @@ export class LambdaFunction extends CodeWriter {
 
     if(lambdaStyle === "multiple lambda") {
       ts.writeLineIndented(`
-      const AWS = require('aws-sdk');
+      var AWS = require('aws-sdk');
       
       exports.handler = async() => {
         // write your code here
