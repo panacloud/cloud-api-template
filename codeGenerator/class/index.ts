@@ -8,7 +8,7 @@ import { Iam } from "../../functions/iam";
 import { Lambda } from "../../functions/lambda";
 import { BasicClass } from "../../functions/utils/class";
 const model = require("../../model.json");
-const { USER_WORKING_DIRECTORY, API_NAME } = model;
+const { USER_WORKING_DIRECTORY, API_NAME, LAMBDA_STYLE } = model;
 const fs = require("fs");
 
 Generator.generateFromModel(
@@ -50,35 +50,93 @@ Generator.generateFromModel(
         ts.writeLine();
         iam.attachLambdaPolicyToRole(API_NAME);
         ts.writeLine();
-        lambda.initializeLambda(API_NAME, output);
-        ts.writeLine();
-        appsync.appsyncDataSource(output, API_NAME, API_NAME);
-        ts.writeLine();
+
+        const mutations = model.type.Mutation? model.type.Mutation : {}
+        const queries = model.type.Query? model.type.Query : {}
+        const mutationsAndQueries = {
+          ...mutations, ...queries
+        }
+        // console.log(mutationsAndQueries);
+
+        if (LAMBDA_STYLE === "single lambda") {
+          lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE);
+        }
+        else if(LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
+              lambda.initializeLambda(API_NAME, output, LAMBDA_STYLE, key);
+              ts.writeLine();
+            })
+        }
+
+        if (LAMBDA_STYLE === "single lambda") {
+          appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE);
+        }
+        else if(LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
+              appsync.appsyncDataSource(output, API_NAME, API_NAME, LAMBDA_STYLE, key);
+              ts.writeLine();
+            })
+        }
+
         db.initializeDynamodb(API_NAME, output);
         ts.writeLine();
-        db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`);
-        ts.writeLine();
+
+        if (LAMBDA_STYLE === "single lambda") {
+          db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE);
+        }
+        else if(LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
+              db.grantFullAccess(`${API_NAME}`, `${API_NAME}_table`, LAMBDA_STYLE, key);
+              ts.writeLine();
+            })
+        }
+
 
         if (model?.type?.Query) {
           for (var key in model?.type?.Query) {
-            appsync.lambdaDataSourceResolver(key, "Query");
+            if (LAMBDA_STYLE === "single lambda") {
+              appsync.lambdaDataSourceResolver(key, "Query", `ds_${API_NAME}`);
+            }
+            else if(LAMBDA_STYLE === "multiple lambda") {
+              appsync.lambdaDataSourceResolver(key, "Query", `ds_${API_NAME}_${key}`);
+            }
+            
           }
           ts.writeLine();
         }
 
         if (model?.type?.Mutation) {
           for (var key in model?.type?.Mutation) {
-            appsync.lambdaDataSourceResolver(key, "Mutation");
+            if (LAMBDA_STYLE === "single lambda") {
+              appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${API_NAME}`);
+            }
+            else if(LAMBDA_STYLE === "multiple lambda") {
+              appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${API_NAME}_${key}`);
+            }
           }
           ts.writeLine();
         }
 
-        lambda.addEnvironment(
-          `${API_NAME}`,
-          `${API_NAME}_TABLE`,
-          `${API_NAME}_table.tableName`
-        );
-        ts.writeLine();
+        if (LAMBDA_STYLE === "single lambda") {
+          lambda.addEnvironment(
+            `${API_NAME}`,
+            `${API_NAME}_TABLE`,
+            `${API_NAME}_table.tableName`,
+            LAMBDA_STYLE
+          );
+        }
+        else if(LAMBDA_STYLE === "multiple lambda") {
+            Object.keys(mutationsAndQueries).forEach((key) => {
+              lambda.addEnvironment(
+                `${API_NAME}`,
+                `${API_NAME}_TABLE`,
+                `${API_NAME}_table.tableName`,
+                LAMBDA_STYLE,
+                `${key}`
+              );
+              ts.writeLine();
+            })
+        }
       },
       output
     );

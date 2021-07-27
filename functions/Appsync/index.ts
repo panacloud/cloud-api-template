@@ -3,7 +3,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
-  public ds: string = "ds_";
+  // public ds: string = "ds_";
 
   public importAppsync(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
@@ -59,43 +59,72 @@ export class Appsync extends CodeWriter {
   public appsyncDataSource(
     output: TextWriter,
     dataSourceName: string,
-    serviceRole: string
+    serviceRole: string,
+    lambdaStyle: string,
+    functionName?: string
   ) {
     const ts = new TypeScriptWriter(output);
-    this.ds = `ds_${dataSourceName}`;
-    ts.writeVariableDeclaration(
-      {
-        name: `ds_${dataSourceName}`,
-        typeName: "appsync.CfnDataSource",
-        initializer: () => {
-          ts.writeLine(`new appsync.CfnDataSource(this,'${
-            this.apiName + "dataSourceGraphql"
-          }',{
-          name: '${this.apiName + dataSourceName}',
-          apiId: ${this.apiName}_appsync.attrApiId,
-          type:"AWS_LAMBDA",
-          lambdaConfig: {lambdaFunctionArn:${
-            this.apiName
-          }_lambdaFn.functionArn},
-          serviceRoleArn:${serviceRole}_servRole.roleArn
-         })`);
+    // this.ds = `ds_${dataSourceName}_${functionName}`;
+
+    if(lambdaStyle === "single lambda") {
+      ts.writeVariableDeclaration(
+        {
+          name: `ds_${dataSourceName}`,
+          typeName: "appsync.CfnDataSource",
+          initializer: () => {
+            ts.writeLine(`new appsync.CfnDataSource(this,'${
+              this.apiName + "dataSourceGraphql"
+            }',{
+            name: '${this.apiName + dataSourceName}',
+            apiId: ${this.apiName}_appsync.attrApiId,
+            type:"AWS_LAMBDA",
+            lambdaConfig: {lambdaFunctionArn:${
+              this.apiName
+            }_lambdaFn.functionArn},
+            serviceRoleArn:${serviceRole}_servRole.roleArn
+           })`);
+          },
         },
-      },
-      "const"
-    );
+        "const"
+      );
+    }
+    else if(lambdaStyle === "multiple lambda") {
+      ts.writeVariableDeclaration(
+        {
+          name: `ds_${dataSourceName}_${functionName}`,
+          typeName: "appsync.CfnDataSource",
+          initializer: () => {
+            ts.writeLine(`new appsync.CfnDataSource(this,'${
+              this.apiName + "dataSourceGraphql"
+            }',{
+            name: '${this.apiName + dataSourceName + functionName}',
+            apiId: ${this.apiName}_appsync.attrApiId,
+            type:"AWS_LAMBDA",
+            lambdaConfig: {lambdaFunctionArn:${
+              this.apiName
+            }_lambdaFn_${functionName}.functionArn},
+            serviceRoleArn:${serviceRole}_servRole.roleArn
+           })`);
+          },
+        },
+        "const"
+      );
+    }
+
+
   }
 
   public lambdaDataSourceResolver(
     fieldName: string,
     typeName: string,
-    dataSourceName?: string
+    dataSourceName: string
   ) {
     this
       .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
       apiId: ${this.apiName}_appsync.attrApiId,
       typeName: "${typeName}",
       fieldName: "${fieldName}",
-      dataSourceName: ${this.ds}.name
+      dataSourceName: ${dataSourceName}.name
     })`);
   }
 
