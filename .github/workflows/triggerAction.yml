@@ -3,7 +3,8 @@ name: Trigger Action in CLI repo
 on:   
   push:   
     branches: [dev]
-
+  workflow_dispatch:
+  
 jobs:
   triggerActio:
     runs-on: ubuntu-latest
@@ -11,4 +12,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Dispatch Action
         run: |
-          curl -XPOST -u "${{ secrets.GITHUB_USERNAME}}:${{secrets.GITHUB_TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/panacloud/cli/dispatches --data '{"event_type": "webhook"}'
+          curl -XPOST -u "${{ secrets.USERNAME_GITHUB}}:${{secrets.TOKEN_GITHUB}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/panacloud/cli/dispatches --data '{"event_type": "webhook"}'
