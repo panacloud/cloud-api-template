@@ -7,6 +7,33 @@ export class Iam extends CodeWriter {
     ts.writeImports("aws-cdk-lib", ["aws_iam as iam"]);
   }
 
+  public serviceRoleForLambda(
+    apiName: string,
+    output: TextWriter,
+    managedPolicies?: string[]
+  ) {
+    const ts = new TypeScriptWriter(output);
+    const policies = managedPolicies
+      ? `managedPolicies: [
+      ${managedPolicies.map((v) => `${v}`)}
+    ]`
+      : ts.clearIndent();
+
+    ts.writeVariableDeclaration(
+      {
+        name: `${apiName}_serviceRole`,
+        typeName: "iam.Role",
+        initializer: () => {
+          ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
+                assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+               ${policies}
+          });`);
+        },
+      },
+      "const"
+    );
+  }
+
   public serviceRoleForAppsync(output: TextWriter, apiName: string) {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
