@@ -28,7 +28,12 @@ export class DynamoDB extends CodeWriter {
     );
   }
 
-  public grantFullAccess(lambda: string, tableName: string) {
-    this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
+  public grantFullAccess(lambda: string, tableName: string, lambdaStyle: string, functionName?: string) {
+    if(lambdaStyle === "single lambda") {
+      this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
+    }
+    else if(lambdaStyle === "multiple lambda") {
+      this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`);
+    }
   }
 }
