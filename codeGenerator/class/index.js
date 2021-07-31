@@ -12,7 +12,7 @@ const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY, API_NAME, LAMBDA_STYLE } = model;
 const fs = require("fs");
 templating_1.Generator.generateFromModel({
-    outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts`,
+    outputFile: `../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
 }, (output, model) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     const lambda = new lambda_1.Lambda(output);
@@ -22,7 +22,7 @@ templating_1.Generator.generateFromModel({
     const manager = new api_manager_1.apiManager(output);
     const cls = new class_1.BasicClass(output);
     const schema = fs
-        .readFileSync(`../../../${USER_WORKING_DIRECTORY}/graphql/schema.graphql`)
+        .readFileSync(`../../../graphql/schema.graphql`)
         .toString("utf8");
     ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
     ts.writeImports("constructs", ["Construct"]);
