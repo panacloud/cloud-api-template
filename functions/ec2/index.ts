@@ -7,7 +7,11 @@ export class Ec2 extends CodeWriter {
     ts.writeImports("aws-cdk-lib", ["aws_ec2 as ec2"]);
   }
 
-  public initializeVpc(apiName: string, output: TextWriter) {
+  public initializeVpc(
+    apiName: string,
+    output: TextWriter,
+    subnetConfig?: string
+  ) {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
       {
@@ -16,11 +20,7 @@ export class Ec2 extends CodeWriter {
         initializer: () => {
           ts.writeLine(` new ec2.Vpc(this, "${apiName}Vpc", {
             subnetConfiguration: [
-              {
-                cidrMask: 24, 
-                name: 'Indgress',
-                subnetType: ec2.SubnetType.ISOLATED,
-              }
+              ${subnetConfig}
             ]
           });`);
         },
@@ -41,7 +41,7 @@ export class Ec2 extends CodeWriter {
         typeName: "",
         initializer: () => {
           ts.writeLine(`new ec2.SecurityGroup(this, "${apiName}SecurityGroup", {
-            ${vpcName},
+            vpc: ${vpcName},
             allowAllOutbound: true,
             description: "${apiName} security group",
             securityGroupName: "${apiName}SecurityGroup",

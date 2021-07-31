@@ -30,7 +30,11 @@ export class Neptune extends CodeWriter {
     );
   }
 
-  public initializeNeptuneSubnet(apiName: string, output: TextWriter) {
+  public initializeNeptuneSubnet(
+    apiName: string,
+    vpcName: string,
+    output: TextWriter
+  ) {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
       {
@@ -42,7 +46,7 @@ export class Neptune extends CodeWriter {
             "${apiName}neptuneSubnetGroup",
             {
               dbSubnetGroupDescription: "${apiName} Subnet",
-              subnetIds: vpc.selectSubnets({ subnetType: ec2.SubnetType.ISOLATED })
+              subnetIds: ${vpcName}.selectSubnets({ subnetType: ec2.SubnetType.ISOLATED })
                 .subnetIds,
               dbSubnetGroupName: "${apiName}_subnetgroup",
             }
@@ -62,7 +66,7 @@ export class Neptune extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
       {
-        name: `${apiName}neptuneInstance`,
+        name: `${apiName}_neptuneInstance`,
         typeName: "",
         initializer: () => {
           ts.writeLine(`new neptune.CfnDBInstance(this, "${apiName}instance", {
