@@ -10,6 +10,15 @@
     },
     {
       "templateFile": "./codeGenerator/lambda/individualFunction.js"
+    },
+    {
+      "templateFile":"./codeGenerator/test/dynamodb.js"
+    },
+    {
+      "templateFile":"./codeGenerator/test/appsync.js"
+    },
+    {
+      "templateFile":"./codeGenerator/test/lambda.js"
     }
   ],
   "compileTypeScript": false
