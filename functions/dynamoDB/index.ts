@@ -1,5 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import ts = require("typescript");
 
 export class DynamoDB extends CodeWriter {
   public importDynamodb(output: TextWriter) {
@@ -26,6 +27,28 @@ export class DynamoDB extends CodeWriter {
       },
       "const"
     );
+  }
+
+  public initializeTestForDynamodb(TableName:string){
+    this.writeLine(`expect(actual).to(
+      haveResource("AWS::DynamoDB::Table", {
+        KeySchema: [
+          {
+            AttributeName: "id",
+            KeyType: "HASH",
+          },
+        ],
+        AttributeDefinitions: [
+          {
+            AttributeName: "id",
+            AttributeType: "S",
+          },
+        ],
+        BillingMode: "PAY_PER_REQUEST",
+        TableName: "${TableName}",
+      })
+    );
+  `)
   }
 
   public grantFullAccess(lambda: string, tableName: string, lambdaStyle: string, functionName?: string) {

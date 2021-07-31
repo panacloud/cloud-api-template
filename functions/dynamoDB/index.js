@@ -25,6 +25,27 @@ class DynamoDB extends core_1.CodeWriter {
             },
         }, "const");
     }
+    initializeTestForDynamodb(TableName) {
+        this.writeLine(`expect(actual).to(
+      haveResource("AWS::DynamoDB::Table", {
+        KeySchema: [
+          {
+            AttributeName: "id",
+            KeyType: "HASH",
+          },
+        ],
+        AttributeDefinitions: [
+          {
+            AttributeName: "id",
+            AttributeType: "S",
+          },
+        ],
+        BillingMode: "PAY_PER_REQUEST",
+        TableName: "${TableName}",
+      })
+    );
+  `);
+    }
     grantFullAccess(lambda, tableName, lambdaStyle, functionName) {
         if (lambdaStyle === "single lambda") {
             this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
