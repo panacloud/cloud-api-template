@@ -13,7 +13,7 @@ const fs = require("fs");
 
 Generator.generateFromModel(
   {
-    outputFile: `../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
+    outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
   },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);

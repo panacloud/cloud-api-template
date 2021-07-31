@@ -9,7 +9,7 @@ if (LAMBDA_STYLE === "single lambda") {
     Object.keys(jsonObj.type.Query).forEach((key) => {
       Generator.generate(
         {
-          outputFile: `../../../lambda-fns/${key}.ts`,
+          outputFile: `../../../../lambda-fns/${key}.ts`,
         },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
@@ -23,7 +23,7 @@ if (LAMBDA_STYLE === "single lambda") {
     Object.keys(jsonObj.type.Mutation).forEach((key) => {
       Generator.generate(
         {
-          outputFile: `../../../lambda-fns/${key}.ts`,
+          outputFile: `../../../../lambda-fns/${key}.ts`,
         },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);

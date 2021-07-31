@@ -8,7 +8,7 @@ const { USER_WORKING_DIRECTORY, LAMBDA_STYLE } = model;
 
 if(LAMBDA_STYLE === "single lambda") {
   Generator.generateFromModel(
-    { outputFile: `../../../lambda-fns/main.ts` },
+    { outputFile: `../../../../lambda-fns/main.ts` },
     (output: TextWriter, model: any) => {
       const ts = new TypeScriptWriter(output);
       const lambda = new LambdaFunction(output);
@@ -48,7 +48,7 @@ else if(LAMBDA_STYLE === "multiple lambda") {
   if (model.type.Mutation) {
     Object.keys(model.type.Mutation).forEach((key) => {
       Generator.generate(
-        { outputFile: `../../../lambda-fns/${key}.ts` },
+        { outputFile: `../../../../lambda-fns/${key}.ts` },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
           lambda.initializeLambdaFunction(writer, LAMBDA_STYLE);
@@ -60,7 +60,7 @@ else if(LAMBDA_STYLE === "multiple lambda") {
   if (model.type.Query) {
     Object.keys(model.type.Query).forEach((key) => {
       Generator.generate(
-        { outputFile: `../../../lambda-fns/${key}.ts` },
+        { outputFile: `../../../../lambda-fns/${key}.ts` },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
           lambda.initializeLambdaFunction(writer, LAMBDA_STYLE);
