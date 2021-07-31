@@ -22,7 +22,7 @@ templating_1.Generator.generateFromModel({
     const manager = new api_manager_1.apiManager(output);
     const cls = new class_1.BasicClass(output);
     const schema = fs
-        .readFileSync(`../../../graphql/schema.graphql`)
+        .readFileSync(`../../../../graphql/schema.graphql`)
         .toString("utf8");
     ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
     ts.writeImports("constructs", ["Construct"]);
