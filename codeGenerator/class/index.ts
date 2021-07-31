@@ -24,7 +24,7 @@ Generator.generateFromModel(
     const manager = new apiManager(output);
     const cls = new BasicClass(output);
     const schema = fs
-      .readFileSync(`../../../graphql/schema.graphql`)
+      .readFileSync(`../../../../graphql/schema.graphql`)
       .toString("utf8");
 
     ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
