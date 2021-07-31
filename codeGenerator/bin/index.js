@@ -5,9 +5,9 @@ const typescript_1 = require("@yellicode/typescript");
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");
-templating_1.Generator.generateFromModel({
+templating_1.Generator.generate({
     outputFile: `../../../../bin/${USER_WORKING_DIRECTORY}.ts`,
-}, (output, model) => {
+}, (output) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     ts.writeImports("aws-cdk-lib", "* as cdk");
     ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack.ts`, [`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`]);
