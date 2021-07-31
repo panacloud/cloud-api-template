@@ -1,0 +1,29 @@
+import { TextWriter } from "@yellicode/core";
+import { Generator } from "@yellicode/templating";
+import { TypeScriptWriter } from "@yellicode/typescript";
+const model = require("../../model.json");
+const { USER_WORKING_DIRECTORY } = model;
+const _ = require("lodash")
+
+Generator.generateFromModel(
+    {
+      outputFile: `../../../../bin/${USER_WORKING_DIRECTORY}.ts`,
+    },
+    (output: TextWriter, model: any) => {
+        const ts = new TypeScriptWriter(output);
+        ts.writeImports("aws-cdk-lib", "* as cdk");
+        ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack.ts`, [`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`])
+
+        ts.writeVariableDeclaration(
+            {
+              name: `app`,
+              typeName: "cdk.App",
+              initializer: () => {
+                ts.writeLine(`new cdk.App()`);
+              },
+            },
+            "const"
+        );
+
+        output.writeLineIndented(`new ${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack(app, "${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack", {});`)
+})
