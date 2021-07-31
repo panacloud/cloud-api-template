@@ -66,7 +66,7 @@ export class Appsync extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     // this.ds = `ds_${dataSourceName}_${functionName}`;
 
-    if(lambdaStyle === "single lambda") {
+    if (lambdaStyle === "single lambda") {
       ts.writeVariableDeclaration(
         {
           name: `ds_${dataSourceName}`,
@@ -75,7 +75,7 @@ export class Appsync extends CodeWriter {
             ts.writeLine(`new appsync.CfnDataSource(this,'${
               this.apiName + "dataSourceGraphql"
             }',{
-            name: '${this.apiName + dataSourceName}',
+            name: '${dataSourceName}_dataSource',
             apiId: ${this.apiName}_appsync.attrApiId,
             type:"AWS_LAMBDA",
             lambdaConfig: {lambdaFunctionArn:${
@@ -87,8 +87,7 @@ export class Appsync extends CodeWriter {
         },
         "const"
       );
-    }
-    else if(lambdaStyle === "multiple lambda") {
+    } else if (lambdaStyle === "multiple lambda") {
       ts.writeVariableDeclaration(
         {
           name: `ds_${dataSourceName}_${functionName}`,
@@ -97,7 +96,7 @@ export class Appsync extends CodeWriter {
             ts.writeLine(`new appsync.CfnDataSource(this,'${
               this.apiName + "dataSourceGraphql"
             }',{
-            name: '${this.apiName + dataSourceName + functionName}',
+            name: '${this.apiName}_dataSource',
             apiId: ${this.apiName}_appsync.attrApiId,
             type:"AWS_LAMBDA",
             lambdaConfig: {lambdaFunctionArn:${
@@ -110,22 +109,93 @@ export class Appsync extends CodeWriter {
         "const"
       );
     }
-
-
   }
 
-  public lambdaDataSourceResolver(
-    fieldName: string,
-    typeName: string,
-    dataSourceName: string
-  ) {
-    this
-      .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
-      apiId: ${this.apiName}_appsync.attrApiId,
-      typeName: "${typeName}",
-      fieldName: "${fieldName}",
-      dataSourceName: ${dataSourceName}.name
-    })`);
+  public lambdaDataSourceResolver(fieldName: string, typeName: string, dataSourceName: string) {
+    this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
+        apiId: ${this.apiName}_appsync.attrApiId,
+        typeName: "${typeName}",
+        fieldName: "${fieldName}",
+        dataSourceName: ${dataSourceName}.name
+      })`
+    );
+  }
+
+  public appsyncApiTest() {
+    this.writeLine(`expect(actual).to(
+      haveResource("AWS::AppSync::GraphQLApi", {
+        AuthenticationType: "API_KEY",
+        Name: "${this.apiName}",
+      })
+    );`);
+    this.writeLine();
+    this.writeLine(`expect(actual).to(
+      haveResource("AWS::AppSync::GraphQLSchema", {
+        ApiId: {
+          "Fn::GetAtt": [
+            "${this.apiName}",
+             "ApiId"
+          ],
+        },
+      })
+    );`
+    );
+  }
+
+  public appsyncApiKeyTest() {
+    this.writeLine(`expect(actual).to(
+      haveResource("AWS::AppSync::ApiKey", {
+        ApiId: {
+          "Fn::GetAtt": ["${this.apiName}", "ApiId"],
+        },
+      })
+    );
+  `);
+  }
+
+  public appsyncDatasourceTest() {
+    this.writeLine();
+    this.writeLine(`expect(actual).to(
+        haveResource("AWS::AppSync::DataSource", {
+          ApiId: {
+            "Fn::GetAtt": ["${this.apiName}", "ApiId"],
+          },
+          Name: "${this.apiName}_dataSource",
+          Type: "AWS_LAMBDA",
+          LambdaConfig: {
+            LambdaFunctionArn: {
+              "Fn::GetAtt": [
+                stack.getLogicalId(
+                  lambda_func[0].node.defaultChild as cdk.CfnElement
+                ),
+                "Arn",
+              ],
+            },
+          },
+          ServiceRoleArn: {
+            "Fn::GetAtt": [
+              stack.getLogicalId(role[0].node.defaultChild as cdk.CfnElement),
+              "Arn",
+            ],
+          },
+        })
+      );`
+    );
+  }
+
+  public appsyncResolverTest() {
+    this.writeLine(`expect(actual).to(
+      haveResource("AWS::AppSync::Resolver", {
+          "ApiId": {
+              "Fn::GetAtt": [
+                "${this.apiName}",
+                "ApiId"
+              ]
+            },
+          "DataSourceName": "${this.apiName}_dataSource"
+        })
+    );`
+    );
   }
 
   // public lambdaDataSourceResolverMutation(value: string) {
