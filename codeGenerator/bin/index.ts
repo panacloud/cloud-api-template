@@ -5,11 +5,11 @@ const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash")
 
-Generator.generateFromModel(
+Generator.generate(
     {
       outputFile: `../../../../bin/${USER_WORKING_DIRECTORY}.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
         const ts = new TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", "* as cdk");
         ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack.ts`, [`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`])

@@ -5,6 +5,9 @@
       "modelFile": "model.json"
     },
     {
+      "templateFile": "./codeGenerator/bin/index.js"
+    },
+    {
       "templateFile": "./codeGenerator/lambda/initializeLambdaFunction.js",
       "modelFile": "model.json"
     },
