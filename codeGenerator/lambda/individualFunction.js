@@ -9,7 +9,7 @@ if (LAMBDA_STYLE === "single lambda") {
     if ((_a = jsonObj === null || jsonObj === void 0 ? void 0 : jsonObj.type) === null || _a === void 0 ? void 0 : _a.Query) {
         Object.keys(jsonObj.type.Query).forEach((key) => {
             templating_1.Generator.generate({
-                outputFile: `../../../lambda-fns/${key}.ts`,
+                outputFile: `../../../../lambda-fns/${key}.ts`,
             }, (writer) => {
                 const lambda = new lambdaFunction_1.LambdaFunction(writer);
                 lambda.helloWorldFunction(key);
@@ -19,7 +19,7 @@ if (LAMBDA_STYLE === "single lambda") {
     if (jsonObj.type.Mutation) {
         Object.keys(jsonObj.type.Mutation).forEach((key) => {
             templating_1.Generator.generate({
-                outputFile: `../../../lambda-fns/${key}.ts`,
+                outputFile: `../../../../lambda-fns/${key}.ts`,
             }, (writer) => {
                 const lambda = new lambdaFunction_1.LambdaFunction(writer);
                 lambda.helloWorldFunction(key);

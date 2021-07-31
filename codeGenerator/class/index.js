@@ -12,7 +12,7 @@ const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY, API_NAME, LAMBDA_STYLE } = model;
 const fs = require("fs");
 templating_1.Generator.generateFromModel({
-    outputFile: `../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
+    outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
 }, (output, model) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     const lambda = new lambda_1.Lambda(output);
