@@ -13,7 +13,7 @@ const fs = require("fs");
 
 Generator.generateFromModel(
   {
-    outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts`,
+    outputFile: `../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
   },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
@@ -24,7 +24,7 @@ Generator.generateFromModel(
     const manager = new apiManager(output);
     const cls = new BasicClass(output);
     const schema = fs
-      .readFileSync(`../../../${USER_WORKING_DIRECTORY}/graphql/schema.graphql`)
+      .readFileSync(`../../../graphql/schema.graphql`)
       .toString("utf8");
 
     ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
