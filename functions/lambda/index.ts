@@ -25,21 +25,25 @@ export class Lambda extends CodeWriter {
   ) {
     const ts = new TypeScriptWriter(output);
 
-    let vpc = vpcName ? `vpc: ${vpcName}` : ts.clearIndent();
+    let vpc = vpcName ? `vpc: ${vpcName},` : "";
     let securityGroups = securityGroupsName
-      ? `securityGroups: [${securityGroupsName}]`
-      : ts.clearIndent();
+      ? `securityGroups: [${securityGroupsName}],`
+      : "";
     let env = environments
       ? `environment: {
-      ${environments.map((v) => `${v.name}: ${v.value}`)}
-    }`
-      : ts.clearIndent();
+      ${environments.map((v) => `${v.name}: ${v.value}`)},
+      },`
+      : "";
     let vpcSubnet = vpcSubnets
-      ? `vpcSubnets: { subnetType: "${vpcSubnets}" }`
-      : ts.clearIndent();
-    let role = roleName ? `role: ${roleName}` : ts.clearIndent();
+      ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+      : "";
+    let role = roleName ? `role: ${roleName},` : "";
 
-    if (lambdaStyle === "single lambda") {
+    console.log(vpc);
+    console.log(securityGroups);
+    console.log(env);
+
+    if (lambdaStyle === "single") {
       ts.writeVariableDeclaration(
         {
           name: `${apiName}_lambdaFn`,
@@ -50,17 +54,17 @@ export class Lambda extends CodeWriter {
           runtime: lambda.Runtime.NODEJS_12_X,
           handler: "main.handler",
           code: lambda.Code.fromAsset("lambda-fns"),
-          ${role},
-         ${vpc},
-          ${securityGroups},
-          ${env},
-          ${vpcSubnet},
-          `);
+          ${role}
+         ${vpc}
+          ${securityGroups}
+          ${env}
+          ${vpcSubnet}
+             })`);
           },
         },
         "const"
       );
-    } else if (lambdaStyle === "multiple lambda") {
+    } else if (lambdaStyle === "multiple") {
       ts.writeVariableDeclaration(
         {
           name: `${apiName}_lambdaFn_${functionName}`,
@@ -71,12 +75,12 @@ export class Lambda extends CodeWriter {
           runtime: lambda.Runtime.NODEJS_12_X,
           handler: "${functionName}.handler",
           code: lambda.Code.fromAsset("lambda-fns"),
-          ${role},
-         ${vpc},
-          ${securityGroups},
-          ${env},
-          ${vpcSubnet},
-        });`);
+          ${role}
+         ${vpc}
+          ${securityGroups}
+          ${env}
+          ${vpcSubnet}
+        })`);
           },
         },
         "const"

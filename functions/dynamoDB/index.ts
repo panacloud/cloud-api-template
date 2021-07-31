@@ -28,12 +28,18 @@ export class DynamoDB extends CodeWriter {
     );
   }
 
-  public grantFullAccess(lambda: string, tableName: string, lambdaStyle: string, functionName?: string) {
-    if(lambdaStyle === "single lambda") {
+  public grantFullAccess(
+    lambda: string,
+    tableName: string,
+    lambdaStyle: string,
+    functionName?: string
+  ) {
+    if (lambdaStyle === "single") {
       this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
-    }
-    else if(lambdaStyle === "multiple lambda") {
-      this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`);
+    } else if (lambdaStyle === "multiple") {
+      this.writeLine(
+        `${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`
+      );
     }
   }
 }

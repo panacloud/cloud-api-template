@@ -15,13 +15,15 @@ export class Iam extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     const policies = managedPolicies
       ? `managedPolicies: [
-      ${managedPolicies.map((v) => `${v}`)}
-    ]`
-      : ts.clearIndent();
+      ${managedPolicies.map(
+        (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName(${v}),`
+      )}
+    ],`
+      : " ";
 
     ts.writeVariableDeclaration(
       {
-        name: `${apiName}_serviceRole`,
+        name: `${apiName}Lambda_serviceRole`,
         typeName: "iam.Role",
         initializer: () => {
           ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
@@ -38,7 +40,7 @@ export class Iam extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
       {
-        name: `${apiName}_servRole`,
+        name: `${apiName}Appsync_serviceRole`,
         typeName: "iam.Role",
         initializer: () => {
           ts.writeLine(`new iam.Role(this,'appsyncServiceRole',{
@@ -51,9 +53,11 @@ export class Iam extends CodeWriter {
   }
 
   public attachLambdaPolicyToRole(roleName: string) {
-    this.writeLine(`${roleName}_servRole.addToPolicy(new iam.PolicyStatement({
+    this
+      .writeLine(`${roleName}_serviceRole.addToPolicy(new iam.PolicyStatement({
             resources: ['*'],
             actions: ['lambda:InvokeFunction'],
           }));`);
   }
+
 }

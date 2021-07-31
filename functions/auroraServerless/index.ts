@@ -15,11 +15,11 @@ export class AuroraServerless extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
       {
-        name: `${apiName}_servRole`,
+        name: `${apiName}_db`,
         typeName: "",
         initializer: () => {
           ts.writeLine(`new rds.ServerlessCluster(this, "${apiName}DB", {
-            ${vpcName},
+            vpc: ${vpcName},
             engine: rds.DatabaseClusterEngine.auroraMysql({
               version: rds.AuroraMysqlEngineVersion.VER_5_7_12,
             }),
