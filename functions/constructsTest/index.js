@@ -20,7 +20,7 @@ class TestingConstructs extends core_1.CodeWriter {
     ImportsForTest(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", "cdk");
-        ts.writeImports("@aws-cdk/assert", ["countResources", "haveResource", "expect"]);
+        ts.writeImports("@aws-cdk/assert", ["countResources", "haveResource", "expect", "countResourcesLike"]);
         ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack`, "PanacloudApi");
     }
 }
