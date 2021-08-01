@@ -24,7 +24,7 @@ export class AuroraServerless extends CodeWriter {
               version: rds.AuroraMysqlEngineVersion.VER_5_7_12,
             }),
             scaling: {
-              autoPause: cdk.Duration.minutes(10), 
+              autoPause: Duration.minutes(10), 
               minCapacity: rds.AuroraCapacityUnit.ACU_8, 
               maxCapacity: rds.AuroraCapacityUnit.ACU_32,
             },

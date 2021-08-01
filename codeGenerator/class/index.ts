@@ -9,7 +9,6 @@ import { AuroraServerless } from "../../functions/auroraServerless";
 import { Iam } from "../../functions/iam";
 import { Ec2 } from "../../functions/ec2";
 import { Cdk } from "../../functions/cdk";
-import { SecretsManager } from "../../functions/secretsManager";
 import { Lambda } from "../../functions/lambda";
 import { BasicClass } from "../../functions/utils/class";
 const model = require("../../model.json");
@@ -30,7 +29,6 @@ Generator.generateFromModel(
     const ec2 = new Ec2(output);
     const cdk = new Cdk(output);
     const iam = new Iam(output);
-    const sm = new SecretsManager(output);
     const manager = new apiManager(output);
     const cls = new BasicClass(output);
     const schema = fs
@@ -56,7 +54,6 @@ Generator.generateFromModel(
       ts.writeImports("aws-cdk-lib", ["Duration"]);
       aurora.importRds(output);
       ec2.importEc2(output);
-      sm.importSecretsManager(output);
     } else {
       ts.writeLine();
     }
@@ -74,7 +71,7 @@ Generator.generateFromModel(
         ts.writeLine();
         iam.serviceRoleForAppsync(output, apiName);
         ts.writeLine();
-        iam.attachLambdaPolicyToRole(apiName);
+        iam.attachLambdaPolicyToRole(`${apiName}Appsync`);
         ts.writeLine();
 
         const mutations = model.type.Mutation ? model.type.Mutation : {};
@@ -145,6 +142,17 @@ Generator.generateFromModel(
             "service-role/AWSLambdaVPCAccessExecutionRole",
           ]);
           ts.writeLine();
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}_secret`,
+              typeName: "",
+              initializer: () => {
+                ts.writeLine(`${apiName}_db.secret?.secretArn || "secret"`);
+              },
+            },
+            "const"
+          );
+          ts.writeLine();
           aurora.connectionsAllowFromAnyIpv4(`${apiName}_db`);
         } else {
           ts.writeLine();
@@ -178,6 +186,7 @@ Generator.generateFromModel(
               `ec2.SubnetType.ISOLATED`
             );
           } else if (database === "AuroraServerless") {
+            ts.writeLine();
             lambda.initializeLambda(
               apiName,
               output,
@@ -188,13 +197,11 @@ Generator.generateFromModel(
               [
                 {
                   name: "INSTANCE_CREDENTIALS",
-                  value: `${sm.fromSecretAttributes(
-                    `${apiName}_db.secret?.secretArn`
-                  )}`,
+                  value: `${apiName}_secret`,
                 },
               ],
               undefined,
-              `${apiName}__serviceRole`
+              `${apiName}Lambda_serviceRole`
             );
           } else {
             ts.writeLine();
@@ -244,13 +251,11 @@ Generator.generateFromModel(
                 [
                   {
                     name: "INSTANCE_CREDENTIALS",
-                    value: `${sm.fromSecretAttributes(
-                      `${apiName}_db.secret?.secretArn`
-                    )}`,
+                    value: `${apiName}_secret`,
                   },
                 ],
                 undefined,
-                `${apiName}__serviceRole`
+                `${apiName}Lambda_serviceRole`
               );
               ts.writeLine();
             });
@@ -282,13 +287,18 @@ Generator.generateFromModel(
         }
 
         if (lambdaStyle === "single") {
-          appsync.appsyncDataSource(output, apiName, apiName, lambdaStyle);
+          appsync.appsyncDataSource(
+            output,
+            apiName,
+            `${apiName}Appsync`,
+            lambdaStyle
+          );
         } else if (lambdaStyle === "multiple") {
           Object.keys(mutationsAndQueries).forEach((key) => {
             appsync.appsyncDataSource(
               output,
               apiName,
-              apiName,
+              `${apiName}Appsync`,
               lambdaStyle,
               key
             );
