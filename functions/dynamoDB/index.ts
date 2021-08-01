@@ -29,9 +29,9 @@ export class DynamoDB extends CodeWriter {
     );
   }
 
-  public initializeTestForDynamodb(TableName:string){
+  public initializeTestForDynamodb(TableName: string) {
     this.writeLine(`expect(actual).to(
-      haveResource("AWS::DynamoDB::Table", {
+      countResourcesLike("AWS::DynamoDB::Table",1, {
         KeySchema: [
           {
             AttributeName: "id",
@@ -48,15 +48,21 @@ export class DynamoDB extends CodeWriter {
         TableName: "${TableName}",
       })
     );
-  `)
+  `);
   }
 
-  public grantFullAccess(lambda: string, tableName: string, lambdaStyle: string, functionName?: string) {
-    if(lambdaStyle === "single lambda") {
+  public grantFullAccess(
+    lambda: string,
+    tableName: string,
+    lambdaStyle: string,
+    functionName?: string
+  ) {
+    if (lambdaStyle === "single lambda") {
       this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
-    }
-    else if(lambdaStyle === "multiple lambda") {
-      this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`);
+    } else if (lambdaStyle === "multiple lambda") {
+      this.writeLine(
+        `${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`
+      );
     }
   }
 }

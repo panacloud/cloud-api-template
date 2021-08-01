@@ -27,7 +27,7 @@ class DynamoDB extends core_1.CodeWriter {
     }
     initializeTestForDynamodb(TableName) {
         this.writeLine(`expect(actual).to(
-      haveResource("AWS::DynamoDB::Table", {
+      countResourcesLike("AWS::DynamoDB::Table",1, {
         KeySchema: [
           {
             AttributeName: "id",
