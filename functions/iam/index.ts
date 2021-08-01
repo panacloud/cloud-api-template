@@ -91,9 +91,9 @@ export class Iam extends CodeWriter {
     );`)
   }
 
-  public lambdaServiceRolePolicyTestForDynodb(){
+  public lambdaServiceRolePolicyTestForDynodb(policyCount:number){
       this.writeLine(`expect(actual).to(
-        haveResource("AWS::IAM::Policy", {
+        countResourcesLike("AWS::IAM::Policy",${policyCount}, {
           PolicyDocument: {
             Statement: [
               {
@@ -115,12 +115,7 @@ export class Iam extends CodeWriter {
               },
             ],
             Version: "2012-10-17",
-          },
-          Roles: [
-            {
-              Ref: stack.getLogicalId(lambda_role[0].node.defaultChild as cdk.CfnElement),
-            },
-          ],
+          }
         })
       );`)
   }
