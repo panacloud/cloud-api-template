@@ -49,10 +49,10 @@ class Lambda extends core_1.CodeWriter {
             this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
         }
     }
-    initializeTestForLambdaWithDynodb(apiName, handlerName = "main") {
+    initializeTestForLambdaWithDynodb(funcName, handlerName) {
         this.writeLine(`expect(actual).to(
       haveResource("AWS::Lambda::Function", {
-        FunctionName: "${apiName}Lambda",
+        FunctionName: "${funcName}",
         Handler: "${handlerName}.handler",
         MemorySize: 1024,
         Runtime: "nodejs12.x",

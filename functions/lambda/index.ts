@@ -60,10 +60,10 @@ export class Lambda extends CodeWriter {
       );
     }
   }
-  public initializeTestForLambdaWithDynodb(apiName:string,handlerName:string="main"){
+  public initializeTestForLambdaWithDynodb(funcName:string,handlerName:string){
     this.writeLine(`expect(actual).to(
       haveResource("AWS::Lambda::Function", {
-        FunctionName: "${apiName}Lambda",
+        FunctionName: "${funcName}",
         Handler: "${handlerName}.handler",
         MemorySize: 1024,
         Runtime: "nodejs12.x",
