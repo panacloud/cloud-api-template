@@ -56,16 +56,8 @@ export class Appsync extends CodeWriter {
       })`);
   }
 
-  public appsyncDataSource(
-    output: TextWriter,
-    dataSourceName: string,
-    serviceRole: string,
-    lambdaStyle: string,
-    functionName?: string
-  ) {
+  public appsyncDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle: string,functionName?: string) {
     const ts = new TypeScriptWriter(output);
-    // this.ds = `ds_${dataSourceName}_${functionName}`;
-
     if (lambdaStyle === "single lambda") {
       ts.writeVariableDeclaration(
         {
@@ -94,9 +86,9 @@ export class Appsync extends CodeWriter {
           typeName: "appsync.CfnDataSource",
           initializer: () => {
             ts.writeLine(`new appsync.CfnDataSource(this,'${
-              this.apiName + "dataSourceGraphql"
+              this.apiName + "dataSourceGraphql" + functionName
             }',{
-            name: '${this.apiName}_dataSource',
+            name: '${this.apiName}_dataSource_${functionName}',
             apiId: ${this.apiName}_appsync.attrApiId,
             type:"AWS_LAMBDA",
             lambdaConfig: {lambdaFunctionArn:${
@@ -111,26 +103,30 @@ export class Appsync extends CodeWriter {
     }
   }
 
-  public lambdaDataSourceResolver(fieldName: string, typeName: string, dataSourceName: string) {
-    this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
+  public lambdaDataSourceResolver(
+    fieldName: string,
+    typeName: string,
+    dataSourceName: string
+  ) {
+    this
+      .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
         apiId: ${this.apiName}_appsync.attrApiId,
         typeName: "${typeName}",
         fieldName: "${fieldName}",
         dataSourceName: ${dataSourceName}.name
-      })`
-    );
+      })`);
   }
 
   public appsyncApiTest() {
     this.writeLine(`expect(actual).to(
-      haveResource("AWS::AppSync::GraphQLApi", {
+      countResourcesLike("AWS::AppSync::GraphQLApi",1, {
         AuthenticationType: "API_KEY",
         Name: "${this.apiName}",
       })
     );`);
     this.writeLine();
     this.writeLine(`expect(actual).to(
-      haveResource("AWS::AppSync::GraphQLSchema", {
+      countResourcesLike("AWS::AppSync::GraphQLSchema",1, {
         ApiId: {
           "Fn::GetAtt": [
             "${this.apiName}",
@@ -138,8 +134,7 @@ export class Appsync extends CodeWriter {
           ],
         },
       })
-    );`
-    );
+    );`);
   }
 
   public appsyncApiKeyTest() {
@@ -153,20 +148,20 @@ export class Appsync extends CodeWriter {
   `);
   }
 
-  public appsyncDatasourceTest() {
+  public appsyncDatasourceTest(dataSourceName:string,lambdaFuncIndex:number) {
     this.writeLine();
     this.writeLine(`expect(actual).to(
-        haveResource("AWS::AppSync::DataSource", {
+      countResourcesLike("AWS::AppSync::DataSource",1, {
           ApiId: {
             "Fn::GetAtt": ["${this.apiName}", "ApiId"],
           },
-          Name: "${this.apiName}_dataSource",
+          Name: "${dataSourceName}",
           Type: "AWS_LAMBDA",
           LambdaConfig: {
             LambdaFunctionArn: {
               "Fn::GetAtt": [
                 stack.getLogicalId(
-                  lambda_func[0].node.defaultChild as cdk.CfnElement
+                  lambda_func[${lambdaFuncIndex}].node.defaultChild as cdk.CfnElement
                 ),
                 "Arn",
               ],
@@ -179,23 +174,23 @@ export class Appsync extends CodeWriter {
             ],
           },
         })
-      );`
-    );
+      );`);
   }
 
-  public appsyncResolverTest() {
+  public appsyncResolverTest(fieldName:string,typeName:string, dataSourceName:string ){
     this.writeLine(`expect(actual).to(
-      haveResource("AWS::AppSync::Resolver", {
+      countResourcesLike("AWS::AppSync::Resolver",1, {
           "ApiId": {
               "Fn::GetAtt": [
                 "${this.apiName}",
                 "ApiId"
               ]
             },
-          "DataSourceName": "${this.apiName}_dataSource"
+            "FieldName": "${fieldName}",
+            "TypeName": "${typeName}",    
+            "DataSourceName": "${dataSourceName}"
         })
-    );`
-    );
+    );`);
   }
 
   // public lambdaDataSourceResolverMutation(value: string) {
