@@ -13,16 +13,17 @@ export class Ec2 extends CodeWriter {
     subnetConfig?: string
   ) {
     const ts = new TypeScriptWriter(output);
+    const config = subnetConfig
+      ? `, {subnetConfiguration: [
+      ${subnetConfig}
+    ] }`
+      : " ";
     ts.writeVariableDeclaration(
       {
         name: `${apiName}_vpc`,
         typeName: "",
         initializer: () => {
-          ts.writeLine(` new ec2.Vpc(this, "${apiName}Vpc", {
-            subnetConfiguration: [
-              ${subnetConfig}
-            ]
-          });`);
+          ts.writeLine(` new ec2.Vpc(this, "${apiName}Vpc" ${config} );`);
         },
       },
       "const"

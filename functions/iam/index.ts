@@ -16,7 +16,7 @@ export class Iam extends CodeWriter {
     const policies = managedPolicies
       ? `managedPolicies: [
       ${managedPolicies.map(
-        (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName(${v}),`
+        (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}"),`
       )}
     ],`
       : " ";
@@ -59,5 +59,4 @@ export class Iam extends CodeWriter {
             actions: ['lambda:InvokeFunction'],
           }));`);
   }
-
 }
