@@ -19,7 +19,7 @@ export class TestingConstructs extends CodeWriter {
   public ImportsForTest(output:TextWriter){
     const ts = new TypeScriptWriter(output);
     ts.writeImports("aws-cdk-lib","cdk")
-    ts.writeImports("@aws-cdk/assert",["countResources","haveResource","expect"])
+    ts.writeImports("@aws-cdk/assert",["countResources","haveResource","expect","countResourcesLike"])
     ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack`,"PanacloudApi")
   }
 }

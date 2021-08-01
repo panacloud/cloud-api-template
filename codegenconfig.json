@@ -15,10 +15,12 @@
       "templateFile":"./codeGenerator/test/dynamodb.js"
     },
     {
-      "templateFile":"./codeGenerator/test/appsync.js"
+      "templateFile":"./codeGenerator/test/appsync.js",
+      "modelFile": "model.json"
     },
     {
-      "templateFile":"./codeGenerator/test/lambda.js"
+      "templateFile":"./codeGenerator/test/lambda.js",
+      "modelFile": "model.json"
     }
   ],
   "compileTypeScript": false
