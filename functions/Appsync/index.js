@@ -54,7 +54,6 @@ class Appsync extends core_1.CodeWriter {
     }
     appsyncDataSource(output, dataSourceName, serviceRole, lambdaStyle, functionName) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        // this.ds = `ds_${dataSourceName}_${functionName}`;
         if (lambdaStyle === "single lambda") {
             ts.writeVariableDeclaration({
                 name: `ds_${dataSourceName}`,
@@ -75,8 +74,8 @@ class Appsync extends core_1.CodeWriter {
                 name: `ds_${dataSourceName}_${functionName}`,
                 typeName: "appsync.CfnDataSource",
                 initializer: () => {
-                    ts.writeLine(`new appsync.CfnDataSource(this,'${this.apiName + "dataSourceGraphql"}',{
-            name: '${this.apiName}_dataSource',
+                    ts.writeLine(`new appsync.CfnDataSource(this,'${this.apiName + "dataSourceGraphql" + functionName}',{
+            name: '${this.apiName}_dataSource_${functionName}',
             apiId: ${this.apiName}_appsync.attrApiId,
             type:"AWS_LAMBDA",
             lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn_${functionName}.functionArn},
@@ -87,7 +86,8 @@ class Appsync extends core_1.CodeWriter {
         }
     }
     lambdaDataSourceResolver(fieldName, typeName, dataSourceName) {
-        this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
+        this
+            .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
         apiId: ${this.apiName}_appsync.attrApiId,
         typeName: "${typeName}",
         fieldName: "${fieldName}",
@@ -96,14 +96,14 @@ class Appsync extends core_1.CodeWriter {
     }
     appsyncApiTest() {
         this.writeLine(`expect(actual).to(
-      haveResource("AWS::AppSync::GraphQLApi", {
+      countResourcesLike("AWS::AppSync::GraphQLApi",1, {
         AuthenticationType: "API_KEY",
         Name: "${this.apiName}",
       })
     );`);
         this.writeLine();
         this.writeLine(`expect(actual).to(
-      haveResource("AWS::AppSync::GraphQLSchema", {
+      countResourcesLike("AWS::AppSync::GraphQLSchema",1, {
         ApiId: {
           "Fn::GetAtt": [
             "${this.apiName}",
@@ -123,20 +123,20 @@ class Appsync extends core_1.CodeWriter {
     );
   `);
     }
-    appsyncDatasourceTest() {
+    appsyncDatasourceTest(dataSourceName, lambdaFuncIndex) {
         this.writeLine();
         this.writeLine(`expect(actual).to(
-        haveResource("AWS::AppSync::DataSource", {
+      countResourcesLike("AWS::AppSync::DataSource",1, {
           ApiId: {
             "Fn::GetAtt": ["${this.apiName}", "ApiId"],
           },
-          Name: "${this.apiName}_dataSource",
+          Name: "${dataSourceName}",
           Type: "AWS_LAMBDA",
           LambdaConfig: {
             LambdaFunctionArn: {
               "Fn::GetAtt": [
                 stack.getLogicalId(
-                  lambda_func[0].node.defaultChild as cdk.CfnElement
+                  lambda_func[${lambdaFuncIndex}].node.defaultChild as cdk.CfnElement
                 ),
                 "Arn",
               ],
@@ -151,16 +151,18 @@ class Appsync extends core_1.CodeWriter {
         })
       );`);
     }
-    appsyncResolverTest() {
+    appsyncResolverTest(fieldName, typeName, dataSourceName) {
         this.writeLine(`expect(actual).to(
-      haveResource("AWS::AppSync::Resolver", {
+      countResourcesLike("AWS::AppSync::Resolver",1, {
           "ApiId": {
               "Fn::GetAtt": [
                 "${this.apiName}",
                 "ApiId"
               ]
             },
-          "DataSourceName": "${this.apiName}_dataSource"
+            "FieldName": "${fieldName}",
+            "TypeName": "${typeName}",    
+            "DataSourceName": "${dataSourceName}"
         })
     );`);
     }
