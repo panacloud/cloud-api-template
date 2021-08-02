@@ -26,10 +26,10 @@ class DynamoDB extends core_1.CodeWriter {
         }, "const");
     }
     grantFullAccess(lambda, tableName, lambdaStyle, functionName) {
-        if (lambdaStyle === "single lambda") {
+        if (lambdaStyle === "single") {
             this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
         }
-        else if (lambdaStyle === "multiple lambda") {
+        else if (lambdaStyle === "multiple") {
             this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`);
         }
     }

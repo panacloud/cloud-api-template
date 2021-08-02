@@ -8,9 +8,22 @@ class Lambda extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
     }
-    initializeLambda(apiName, output, lambdaStyle, functionName) {
+    initializeLambda(apiName, output, lambdaStyle, functionName, vpcName, securityGroupsName, environments, vpcSubnets, roleName) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        if (lambdaStyle === "single lambda") {
+        let vpc = vpcName ? `vpc: ${vpcName},` : "";
+        let securityGroups = securityGroupsName
+            ? `securityGroups: [${securityGroupsName}],`
+            : "";
+        let env = environments
+            ? `environment: {
+      ${environments.map((v) => `${v.name}: ${v.value}`)},
+      },`
+            : "";
+        let vpcSubnet = vpcSubnets
+            ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+            : "";
+        let role = roleName ? `role: ${roleName},` : "";
+        if (lambdaStyle === "single") {
             ts.writeVariableDeclaration({
                 name: `${apiName}_lambdaFn`,
                 typeName: "lambda.Function",
@@ -20,12 +33,16 @@ class Lambda extends core_1.CodeWriter {
           runtime: lambda.Runtime.NODEJS_12_X,
           handler: "main.handler",
           code: lambda.Code.fromAsset("lambda-fns"),
-          memorySize: 1024,
-        });`);
+          ${role}
+         ${vpc}
+          ${securityGroups}
+          ${env}
+          ${vpcSubnet}
+             })`);
                 },
             }, "const");
         }
-        else if (lambdaStyle === "multiple lambda") {
+        else if (lambdaStyle === "multiple") {
             ts.writeVariableDeclaration({
                 name: `${apiName}_lambdaFn_${functionName}`,
                 typeName: "lambda.Function",
@@ -35,11 +52,18 @@ class Lambda extends core_1.CodeWriter {
           runtime: lambda.Runtime.NODEJS_12_X,
           handler: "${functionName}.handler",
           code: lambda.Code.fromAsset("lambda-fns"),
-          memorySize: 1024,
-        });`);
+          ${role}
+         ${vpc}
+          ${securityGroups}
+          ${env}
+          ${vpcSubnet}
+        })`);
                 },
             }, "const");
         }
+    }
+    nodeAddDependency(sourceName, valueName) {
+        this.writeLine(`${sourceName}.node.addDependency(${valueName});`);
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {
         if (lambdaStyle === "single lambda") {

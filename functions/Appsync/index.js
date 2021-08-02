@@ -54,8 +54,7 @@ class Appsync extends core_1.CodeWriter {
     }
     appsyncDataSource(output, dataSourceName, serviceRole, lambdaStyle, functionName) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        // this.ds = `ds_${dataSourceName}_${functionName}`;
-        if (lambdaStyle === "single lambda") {
+        if (lambdaStyle === "single") {
             ts.writeVariableDeclaration({
                 name: `ds_${dataSourceName}`,
                 typeName: "appsync.CfnDataSource",
@@ -65,12 +64,12 @@ class Appsync extends core_1.CodeWriter {
             apiId: ${this.apiName}_appsync.attrApiId,
             type:"AWS_LAMBDA",
             lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn.functionArn},
-            serviceRoleArn:${serviceRole}_servRole.roleArn
+            serviceRoleArn:${serviceRole}_serviceRole.roleArn
            })`);
                 },
             }, "const");
         }
-        else if (lambdaStyle === "multiple lambda") {
+        else if (lambdaStyle === "multiple") {
             ts.writeVariableDeclaration({
                 name: `ds_${dataSourceName}_${functionName}`,
                 typeName: "appsync.CfnDataSource",
@@ -80,7 +79,7 @@ class Appsync extends core_1.CodeWriter {
             apiId: ${this.apiName}_appsync.attrApiId,
             type:"AWS_LAMBDA",
             lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn_${functionName}.functionArn},
-            serviceRoleArn:${serviceRole}_servRole.roleArn
+            serviceRoleArn:${serviceRole}_serviceRole.roleArn
            })`);
                 },
             }, "const");

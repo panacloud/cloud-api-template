@@ -6,7 +6,7 @@ const typescript_1 = require("@yellicode/typescript");
 class LambdaFunction extends core_1.CodeWriter {
     initializeLambdaFunction(output, lambdaStyle, content) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        if (lambdaStyle === "multiple lambda") {
+        if (lambdaStyle === "multiple") {
             ts.writeLineIndented(`
       var AWS = require('aws-sdk');
       
