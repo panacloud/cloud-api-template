@@ -12,9 +12,10 @@ class Iam extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         const policies = managedPolicies
             ? `managedPolicies: [
-      ${managedPolicies.map((v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}"),`)}
+      ${managedPolicies.map((v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`)}
     ],`
             : " ";
+        console.log(policies);
         ts.writeVariableDeclaration({
             name: `${apiName}Lambda_serviceRole`,
             typeName: "iam.Role",
