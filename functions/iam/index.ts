@@ -16,10 +16,13 @@ export class Iam extends CodeWriter {
     const policies = managedPolicies
       ? `managedPolicies: [
       ${managedPolicies.map(
-        (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}"),`
+        (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`
       )}
     ],`
       : " ";
+
+      console.log(policies);
+      
 
     ts.writeVariableDeclaration(
       {
