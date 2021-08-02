@@ -3,7 +3,6 @@ import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
 const model = require("../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
 const { lambdaStyle } = model.api;
 
 if (lambdaStyle === "single") {
