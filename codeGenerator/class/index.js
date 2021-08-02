@@ -12,6 +12,7 @@ const ec2_1 = require("../../functions/ec2");
 const cdk_1 = require("../../functions/cdk");
 const lambda_1 = require("../../functions/lambda");
 const class_1 = require("../../functions/utils/class");
+const cloud_api_constants_1 = require("../../cloud-api-constants");
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const fs = require("fs");
@@ -39,15 +40,15 @@ templating_1.Generator.generateFromModel({
     manager.importApiManager(output);
     lambda.importLambda(output);
     iam.importIam(output);
-    if (database === "DynamoDB") {
+    if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
         dynamoDB.importDynamodb(output);
     }
-    else if (database === "Neptune") {
+    else if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
         ts.writeImports("aws-cdk-lib", ["Tags"]);
         neptune.importNeptune(output);
         ec2.importEc2(output);
     }
-    else if (database === "AuroraServerless") {
+    else if (database === cloud_api_constants_1.DATABASE.auroraDb) {
         ts.writeImports("aws-cdk-lib", ["Duration"]);
         aurora.importRds(output);
         ec2.importEc2(output);
@@ -72,7 +73,7 @@ templating_1.Generator.generateFromModel({
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-        if (database === "Neptune") {
+        if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
             ec2.initializeVpc(apiName, output, `
           {
             cidrMask: 24, 
@@ -87,17 +88,17 @@ templating_1.Generator.generateFromModel({
             ec2.securityGroupAddIngressRule(apiName, `${apiName}_sg`);
             ts.writeLine();
         }
-        else if (database === "AuroraServerless") {
+        else if (database === cloud_api_constants_1.DATABASE.auroraDb) {
             ec2.initializeVpc(apiName, output);
         }
         else {
             ts.writeLine();
         }
-        if (database === "DynamoDB") {
+        if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
             dynamoDB.initializeDynamodb(apiName, output);
             ts.writeLine();
         }
-        else if (database === "Neptune") {
+        else if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
             neptune.initializeNeptuneSubnet(apiName, `${apiName}_vpc`, output);
             ts.writeLine();
             neptune.initializeNeptuneCluster(apiName, `${apiName}_neptuneSubnet`, `${apiName}_sg`, output);
@@ -107,7 +108,7 @@ templating_1.Generator.generateFromModel({
             neptune.addDependsOn(`${apiName}_neptuneInstance`, `${apiName}_neptuneCluster`);
             ts.writeLine();
         }
-        else if (database === "AuroraServerless") {
+        else if (database === cloud_api_constants_1.DATABASE.auroraDb) {
             aurora.initializeAuroraCluster(apiName, `${apiName}_vpc`, output);
             ts.writeLine();
             iam.serviceRoleForLambda(apiName, output, [
@@ -128,11 +129,11 @@ templating_1.Generator.generateFromModel({
         else {
             ts.writeLine();
         }
-        if (lambdaStyle === "single") {
-            if (database === "DynamoDB") {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+            if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
                 lambda.initializeLambda(apiName, output, lambdaStyle, undefined, undefined, undefined, [{ name: "TABLE_NAME", value: `${apiName}_table.tableName` }]);
             }
-            else if (database === "Neptune") {
+            else if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
                 lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `${apiName}_vpc`, `${apiName}_sg`, [
                     {
                         name: "NEPTUNE_ENDPOINT",
@@ -140,7 +141,7 @@ templating_1.Generator.generateFromModel({
                     },
                 ], `ec2.SubnetType.ISOLATED`);
             }
-            else if (database === "AuroraServerless") {
+            else if (database === cloud_api_constants_1.DATABASE.auroraDb) {
                 ts.writeLine();
                 lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `${apiName}_vpc`, undefined, [
                     {
@@ -153,14 +154,14 @@ templating_1.Generator.generateFromModel({
                 ts.writeLine();
             }
         }
-        else if (lambdaStyle === "multiple") {
-            if (database === "DynamoDB") {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+            if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
                     lambda.initializeLambda(apiName, output, lambdaStyle, key, undefined, undefined, [{ name: "TABLE_NAME", value: `${apiName}_table.tableName` }]);
                     ts.writeLine();
                 });
             }
-            else if (database === "Neptune") {
+            else if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
                     lambda.initializeLambda(apiName, output, lambdaStyle, key, `${apiName}_vpc`, `${apiName}_sg`, [
                         {
@@ -171,7 +172,7 @@ templating_1.Generator.generateFromModel({
                     ts.writeLine();
                 });
             }
-            else if (database === "AuroraServerless") {
+            else if (database === cloud_api_constants_1.DATABASE.auroraDb) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
                     lambda.initializeLambda(apiName, output, lambdaStyle, key, `${apiName}_vpc`, undefined, [
                         {
@@ -189,21 +190,21 @@ templating_1.Generator.generateFromModel({
         else {
             ts.writeLine();
         }
-        if (database === "DynamoDB") {
-            if (lambdaStyle === "single") {
+        if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
+            if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
                 dynamoDB.grantFullAccess(`${apiName}`, `${apiName}_table`, lambdaStyle);
             }
-            else if (lambdaStyle === "multiple") {
+            else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
                     dynamoDB.grantFullAccess(`${apiName}`, `${apiName}_table`, lambdaStyle, key);
                     ts.writeLine();
                 });
             }
         }
-        if (lambdaStyle === "single") {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
             appsync.appsyncDataSource(output, apiName, `${apiName}Appsync`, lambdaStyle);
         }
-        else if (lambdaStyle === "multiple") {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 appsync.appsyncDataSource(output, apiName, `${apiName}Appsync`, lambdaStyle, key);
                 ts.writeLine();
@@ -214,10 +215,10 @@ templating_1.Generator.generateFromModel({
         }
         if ((_a = model === null || model === void 0 ? void 0 : model.type) === null || _a === void 0 ? void 0 : _a.Query) {
             for (var key in (_b = model === null || model === void 0 ? void 0 : model.type) === null || _b === void 0 ? void 0 : _b.Query) {
-                if (lambdaStyle === "single") {
+                if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
                     appsync.lambdaDataSourceResolver(key, "Query", `ds_${apiName}`);
                 }
-                else if (lambdaStyle === "multiple") {
+                else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
                     appsync.lambdaDataSourceResolver(key, "Query", `ds_${apiName}_${key}`);
                 }
             }
@@ -225,10 +226,10 @@ templating_1.Generator.generateFromModel({
         }
         if ((_c = model === null || model === void 0 ? void 0 : model.type) === null || _c === void 0 ? void 0 : _c.Mutation) {
             for (var key in (_d = model === null || model === void 0 ? void 0 : model.type) === null || _d === void 0 ? void 0 : _d.Mutation) {
-                if (lambdaStyle === "single") {
+                if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
                     appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${apiName}`);
                 }
-                else if (lambdaStyle === "multiple") {
+                else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
                     appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${apiName}_${key}`);
                 }
             }

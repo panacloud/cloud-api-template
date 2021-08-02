@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Appsync = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
+const cloud_api_constants_1 = require("../../cloud-api-constants");
 class Appsync extends core_1.CodeWriter {
     constructor() {
         super(...arguments);
@@ -54,7 +55,7 @@ class Appsync extends core_1.CodeWriter {
     }
     appsyncDataSource(output, dataSourceName, serviceRole, lambdaStyle, functionName) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        if (lambdaStyle === "single") {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
             ts.writeVariableDeclaration({
                 name: `ds_${dataSourceName}`,
                 typeName: "appsync.CfnDataSource",
@@ -69,7 +70,7 @@ class Appsync extends core_1.CodeWriter {
                 },
             }, "const");
         }
-        else if (lambdaStyle === "multiple") {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             ts.writeVariableDeclaration({
                 name: `ds_${dataSourceName}_${functionName}`,
                 typeName: "appsync.CfnDataSource",
