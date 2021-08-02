@@ -58,7 +58,8 @@ export class Appsync extends CodeWriter {
 
   public appsyncDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle: string,functionName?: string) {
     const ts = new TypeScriptWriter(output);
-    if (lambdaStyle === "single lambda") {
+
+    if (lambdaStyle === "single") {
       ts.writeVariableDeclaration(
         {
           name: `ds_${dataSourceName}`,
@@ -73,13 +74,13 @@ export class Appsync extends CodeWriter {
             lambdaConfig: {lambdaFunctionArn:${
               this.apiName
             }_lambdaFn.functionArn},
-            serviceRoleArn:${serviceRole}_servRole.roleArn
+            serviceRoleArn:${serviceRole}_serviceRole.roleArn
            })`);
           },
         },
         "const"
       );
-    } else if (lambdaStyle === "multiple lambda") {
+    } else if (lambdaStyle === "multiple") {
       ts.writeVariableDeclaration(
         {
           name: `ds_${dataSourceName}_${functionName}`,
@@ -94,7 +95,7 @@ export class Appsync extends CodeWriter {
             lambdaConfig: {lambdaFunctionArn:${
               this.apiName
             }_lambdaFn_${functionName}.functionArn},
-            serviceRoleArn:${serviceRole}_servRole.roleArn
+            serviceRoleArn:${serviceRole}_serviceRole.roleArn
            })`);
           },
         },
