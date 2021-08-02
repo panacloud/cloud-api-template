@@ -66,10 +66,10 @@ class Lambda extends core_1.CodeWriter {
         this.writeLine(`${sourceName}.node.addDependency(${valueName});`);
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {
-        if (lambdaStyle === "single lambda") {
+        if (lambdaStyle === "single") {
             this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
         }
-        else if (lambdaStyle === "multiple lambda") {
+        else if (lambdaStyle === "multiple") {
             this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
         }
     }

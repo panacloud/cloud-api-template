@@ -15,7 +15,6 @@ class Iam extends core_1.CodeWriter {
       ${managedPolicies.map((v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`)}
     ],`
             : " ";
-        console.log(policies);
         ts.writeVariableDeclaration({
             name: `${apiName}Lambda_serviceRole`,
             typeName: "iam.Role",
