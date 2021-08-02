@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const lambdaFunction_1 = require("../../functions/lambda/lambdaFunction");
 const jsonObj = require(`../../model.json`);
-const { USER_WORKING_DIRECTORY } = jsonObj;
 const { lambdaStyle } = jsonObj.api;
 if (lambdaStyle === "single") {
     if ((_a = jsonObj === null || jsonObj === void 0 ? void 0 : jsonObj.type) === null || _a === void 0 ? void 0 : _a.Query) {
