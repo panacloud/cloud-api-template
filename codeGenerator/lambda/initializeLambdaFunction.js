@@ -4,7 +4,6 @@ const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const lambdaFunction_1 = require("../../functions/lambda/lambdaFunction");
 const model = require("../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
 const { lambdaStyle } = model.api;
 if (lambdaStyle === "single") {
     templating_1.Generator.generateFromModel({ outputFile: `../../../../lambda-fns/main.ts` }, (output, model) => {
