@@ -5,7 +5,7 @@ import { Appsync } from "../../functions/Appsync";
 import { Iam } from "../../functions/iam";
 import { TestingConstructs } from "../../functions/constructsTest/index";
 const jsonObj = require(`../../model.json`);
-const { USER_WORKING_DIRECTORY, API_NAME, LAMBDA_STYLE } = jsonObj;
+const { USER_WORKING_DIRECTORY } = jsonObj;
 
 const API_TYPE = "GRAPHQL";
 
@@ -15,6 +15,7 @@ if (API_TYPE === "GRAPHQL") {
       outputFile: `../../../${USER_WORKING_DIRECTORY}/test/${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     },
     (output: TextWriter, model: any) => {
+      const { apiName, lambdaStyle, database } = model.api;
       const ts = new TypeScriptWriter(output);
       const iam = new Iam(output);
       const appsync = new Appsync(output);
@@ -24,7 +25,7 @@ if (API_TYPE === "GRAPHQL") {
       const mutationsAndQueries = { ...mutations, ...queries };
       testClass.ImportsForTest(output);
       testClass.initializeTest("Appsync Api Constructs Test",() => {
-          appsync.apiName = API_NAME;
+          appsync.apiName = apiName;
           appsync.appsyncApiTest();
           ts.writeLine();
           appsync.appsyncApiKeyTest();
@@ -38,14 +39,14 @@ if (API_TYPE === "GRAPHQL") {
           iam.lambdaIdentifierFromStack();
           ts.writeLine();
 
-          if (LAMBDA_STYLE === "single lambda") {
-            let dsName = `${API_NAME}_dataSource`
+          if (lambdaStyle === "single") {
+            let dsName = `${apiName}_dataSource`
             appsync.appsyncDatasourceTest(dsName, 0);
           }
-          else if (LAMBDA_STYLE === "multiple lambda" && mutationsAndQueries) {
+          else if (lambdaStyle === "multiple" && mutationsAndQueries) {
             Object.keys(mutationsAndQueries).forEach((key,index)=>{
-              if (LAMBDA_STYLE === "multiple lambda") {
-                let dsName = `${API_NAME}_dataSource_${key}`
+              if (lambdaStyle === "multiple") {
+                let dsName = `${apiName}_dataSource_${key}`
                 appsync.appsyncDatasourceTest(dsName,index);
                 ts.writeLine();
               }
@@ -55,11 +56,11 @@ if (API_TYPE === "GRAPHQL") {
 
           if (model?.type?.Query) {
             for (var key in model?.type?.Query) {
-              if (LAMBDA_STYLE === "single lambda") {
-                appsync.appsyncResolverTest(key,"Query",`${API_NAME}_dataSource`);
+              if (lambdaStyle === "single") {
+                appsync.appsyncResolverTest(key,"Query",`${apiName}_dataSource`);
               }
-              if (LAMBDA_STYLE === "multiple lambda") {
-                appsync.appsyncResolverTest(key,"Query",`${API_NAME}_dataSource_${key}`);
+              if (lambdaStyle === "multiple") {
+                appsync.appsyncResolverTest(key,"Query",`${apiName}_dataSource_${key}`);
                 ts.writeLine();
               }
             }
@@ -68,12 +69,12 @@ if (API_TYPE === "GRAPHQL") {
 
           if (model?.type?.Mutation) {
             for (var key in model?.type?.Mutation) {
-              if (LAMBDA_STYLE === "single lambda") {
-                appsync.appsyncResolverTest(key,"Mutation",`${API_NAME}_dataSource`);
+              if (lambdaStyle === "single") {
+                appsync.appsyncResolverTest(key,"Mutation",`${apiName}_dataSource`);
                 ts.writeLine();
               }
-              if (LAMBDA_STYLE === "multiple lambda") {
-                appsync.appsyncResolverTest(key,"Mutation",`${API_NAME}_dataSource_${key}`);
+              if (lambdaStyle === "multiple") {
+                appsync.appsyncResolverTest(key,"Mutation",`${apiName}_dataSource_${key}`);
                 ts.writeLine();
               }
             }
