@@ -2,9 +2,10 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
 const jsonObj = require(`../../model.json`);
-const { USER_WORKING_DIRECTORY, LAMBDA_STYLE } = jsonObj;
+const { USER_WORKING_DIRECTORY } = jsonObj;
+const {  lambdaStyle } = jsonObj.api;
 
-if (LAMBDA_STYLE === "single lambda") {
+if (lambdaStyle === "single") {
   if (jsonObj?.type?.Query) {
     Object.keys(jsonObj.type.Query).forEach((key) => {
       Generator.generate(
