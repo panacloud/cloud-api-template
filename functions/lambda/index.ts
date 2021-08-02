@@ -39,10 +39,6 @@ export class Lambda extends CodeWriter {
       : "";
     let role = roleName ? `role: ${roleName},` : "";
 
-    console.log(vpc);
-    console.log(securityGroups);
-    console.log(env);
-
     if (lambdaStyle === "single") {
       ts.writeVariableDeclaration(
         {
