@@ -4,7 +4,6 @@ const _ = require("lodash");
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 
-
 export class TestingConstructs extends CodeWriter {
   public initializeTest(description: string, contents: any, output: TextWriter) {
     const ts = new TypeScriptWriter(output);

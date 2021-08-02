@@ -8,10 +8,28 @@ class Iam extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["aws_iam as iam"]);
     }
+    serviceRoleForLambda(apiName, output, managedPolicies) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        const policies = managedPolicies
+            ? `managedPolicies: [
+      ${managedPolicies.map((v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`)}
+    ],`
+            : " ";
+        ts.writeVariableDeclaration({
+            name: `${apiName}Lambda_serviceRole`,
+            typeName: "iam.Role",
+            initializer: () => {
+                ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
+                assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+               ${policies}
+          });`);
+            },
+        }, "const");
+    }
     serviceRoleForAppsync(output, apiName) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
-            name: `${apiName}_servRole`,
+            name: `${apiName}Appsync_serviceRole`,
             typeName: "iam.Role",
             initializer: () => {
                 ts.writeLine(`new iam.Role(this,'appsyncServiceRole',{
@@ -21,7 +39,8 @@ class Iam extends core_1.CodeWriter {
         }, "const");
     }
     attachLambdaPolicyToRole(roleName) {
-        this.writeLine(`${roleName}_servRole.addToPolicy(new iam.PolicyStatement({
+        this
+            .writeLine(`${roleName}_serviceRole.addToPolicy(new iam.PolicyStatement({
             resources: ['*'],
             actions: ['lambda:InvokeFunction'],
           }));`);
