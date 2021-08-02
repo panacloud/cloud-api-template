@@ -23,9 +23,6 @@ class Lambda extends core_1.CodeWriter {
             ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
             : "";
         let role = roleName ? `role: ${roleName},` : "";
-        console.log(vpc);
-        console.log(securityGroups);
-        console.log(env);
         if (lambdaStyle === "single") {
             ts.writeVariableDeclaration({
                 name: `${apiName}_lambdaFn`,
