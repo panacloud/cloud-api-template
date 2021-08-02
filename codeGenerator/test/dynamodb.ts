@@ -3,11 +3,10 @@ import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { TestingConstructs } from "../../functions/constructsTest";
 import { DynamoDB } from "../../functions/dynamoDB";
-const jsonObj = require(`../../model.json`);
-const { USER_WORKING_DIRECTORY , API_NAME } = jsonObj;
+const model = require(`../../model.json`);
+const { USER_WORKING_DIRECTORY } = model;
 
-const DATABASE = "DYNAMODB"
-if(DATABASE==="DYNAMODB"){
+if(model?.api?.database === "DynamoDB"){
     Generator.generate({outputFile:`../../../${USER_WORKING_DIRECTORY}/test/${USER_WORKING_DIRECTORY}-dynamodb.test.ts`,},
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
@@ -17,7 +16,7 @@ if(DATABASE==="DYNAMODB"){
       ts.writeLine()
       testClass.initializeTest("Dynamodb Constructs Test",()=>{
         ts.writeLine()
-        dynodb.initializeTestForDynamodb(API_NAME)
+        dynodb.initializeTestForDynamodb(model?.api?.apiName)
       },output)
     })
   }
