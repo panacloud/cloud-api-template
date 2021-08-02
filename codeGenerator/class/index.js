@@ -34,9 +34,6 @@ templating_1.Generator.generateFromModel({
         .readFileSync(`../../../../graphql/schema.graphql`)
         .toString("utf8");
     const { apiName, lambdaStyle, database } = model.api;
-    console.log("apiname: ", apiName);
-    console.log("lambdaStyle: ", lambdaStyle);
-    console.log("database: ", database);
     ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
     ts.writeImports("constructs", ["Construct"]);
     appsync.importAppsync(output);
