@@ -1,5 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { LAMBDA } from "../../cloud-api-constants";
 
 export class LambdaFunction extends CodeWriter {
   public initializeLambdaFunction(
@@ -9,7 +10,7 @@ export class LambdaFunction extends CodeWriter {
   ) {
     const ts = new TypeScriptWriter(output);
 
-    if (lambdaStyle === "multiple") {
+    if (lambdaStyle === LAMBDA.multiple) {
       ts.writeLineIndented(`
       var AWS = require('aws-sdk');
       
@@ -17,7 +18,7 @@ export class LambdaFunction extends CodeWriter {
         // write your code here
       }
       `);
-    } else if (lambdaStyle === "single") {
+    } else if (lambdaStyle === LAMBDA.single) {
       ts.writeLine(`exports.handler = async (event:Event) => {`);
       ts.writeLine(`switch (event.info.fieldName) {`);
       ts.writeLine();

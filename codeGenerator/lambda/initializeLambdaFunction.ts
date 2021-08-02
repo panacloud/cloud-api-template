@@ -2,10 +2,11 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
+import { LAMBDA } from "../../cloud-api-constants";
 const model = require("../../model.json");
 const { lambdaStyle } = model.api;
 
-if (lambdaStyle === "single") {
+if (lambdaStyle === LAMBDA.single) {
   Generator.generateFromModel(
     { outputFile: `../../../../lambda-fns/main.ts` },
     (output: TextWriter, model: any) => {
@@ -42,7 +43,7 @@ if (lambdaStyle === "single") {
       });
     }
   );
-} else if (lambdaStyle === "multiple") {
+} else if (lambdaStyle === LAMBDA.multiple) {
   if (model.type.Mutation) {
     Object.keys(model.type.Mutation).forEach((key) => {
       Generator.generate(
