@@ -2,10 +2,14 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class LambdaFunction extends CodeWriter {
-  public initializeLambdaFunction(output: TextWriter, lambdaStyle: string, content?: any) {
+  public initializeLambdaFunction(
+    output: TextWriter,
+    lambdaStyle: string,
+    content?: any
+  ) {
     const ts = new TypeScriptWriter(output);
 
-    if(lambdaStyle === "multiple lambda") {
+    if (lambdaStyle === "multiple") {
       ts.writeLineIndented(`
       var AWS = require('aws-sdk');
       
@@ -13,8 +17,7 @@ export class LambdaFunction extends CodeWriter {
         // write your code here
       }
       `);
-    }
-    else if(lambdaStyle === "single lambda") {
+    } else if (lambdaStyle === "single") {
       ts.writeLine(`exports.handler = async (event:Event) => {`);
       ts.writeLine(`switch (event.info.fieldName) {`);
       ts.writeLine();
@@ -23,9 +26,6 @@ export class LambdaFunction extends CodeWriter {
       ts.writeLine(`}`);
       ts.writeLine(`}`);
     }
-
-
-
   }
   public importIndividualFunction(
     output: TextWriter,

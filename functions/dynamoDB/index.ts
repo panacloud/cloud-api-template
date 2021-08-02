@@ -1,6 +1,5 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import ts = require("typescript");
 
 export class DynamoDB extends CodeWriter {
   public importDynamodb(output: TextWriter) {
@@ -57,9 +56,9 @@ export class DynamoDB extends CodeWriter {
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === "single lambda") {
+    if (lambdaStyle === "single") {
       this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
-    } else if (lambdaStyle === "multiple lambda") {
+    } else if (lambdaStyle === "multiple") {
       this.writeLine(
         `${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`
       );
