@@ -95,11 +95,11 @@ export class Lambda extends CodeWriter {
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === "single lambda") {
+    if (lambdaStyle === "single") {
       this.writeLine(
         `${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`
       );
-    } else if (lambdaStyle === "multiple lambda") {
+    } else if (lambdaStyle === "multiple") {
       this.writeLine(
         `${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`
       );

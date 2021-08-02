@@ -17,7 +17,7 @@ export class LambdaFunction extends CodeWriter {
         // write your code here
       }
       `);
-    } else if (lambdaStyle === "single lambda") {
+    } else if (lambdaStyle === "single") {
       ts.writeLine(`exports.handler = async (event:Event) => {`);
       ts.writeLine(`switch (event.info.fieldName) {`);
       ts.writeLine();

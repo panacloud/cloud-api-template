@@ -12,7 +12,7 @@ Generator.generate(
     (output: TextWriter) => {
         const ts = new TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", "cdk");
-        ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack.ts`, [`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`])
+        ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack`, [`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`])
 
         ts.writeVariableDeclaration(
             {

@@ -2,7 +2,6 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
 const jsonObj = require(`../../model.json`);
-const { USER_WORKING_DIRECTORY } = jsonObj;
 const {  lambdaStyle } = jsonObj.api;
 
 if (lambdaStyle === "single") {
