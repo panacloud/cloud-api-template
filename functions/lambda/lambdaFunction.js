@@ -17,7 +17,7 @@ class LambdaFunction extends core_1.CodeWriter {
       `);
         }
         else if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-           ts.writeLine(`exports.handler = async (event:Event) => {`);
+            ts.writeLine(`exports.handler = async (event:Event) => {`);
             ts.writeLine(`switch (event.info.fieldName) {`);
             ts.writeLine();
             content();
