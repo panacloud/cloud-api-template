@@ -101,6 +101,7 @@ export class Lambda extends CodeWriter {
         `${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`
       );
     } else if (lambdaStyle === LAMBDA.multiple) {
+
       this.writeLine(
         `${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`
       );

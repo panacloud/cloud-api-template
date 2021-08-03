@@ -21,9 +21,6 @@ export class Iam extends CodeWriter {
     ],`
       : " ";
 
-      console.log(policies);
-      
-
     ts.writeVariableDeclaration(
       {
         name: `${apiName}Lambda_serviceRole`,
