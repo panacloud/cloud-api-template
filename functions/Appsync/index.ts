@@ -1,5 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { LAMBDA } from "../../cloud-api-constants";
 
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
@@ -65,7 +66,7 @@ export class Appsync extends CodeWriter {
   ) {
     const ts = new TypeScriptWriter(output);
 
-    if (lambdaStyle === "single") {
+    if (lambdaStyle === LAMBDA.single) {
       ts.writeVariableDeclaration(
         {
           name: `ds_${dataSourceName}`,
@@ -86,7 +87,7 @@ export class Appsync extends CodeWriter {
         },
         "const"
       );
-    } else if (lambdaStyle === "multiple") {
+    } else if (lambdaStyle === LAMBDA.multiple) {
       ts.writeVariableDeclaration(
         {
           name: `ds_${dataSourceName}_${functionName}`,

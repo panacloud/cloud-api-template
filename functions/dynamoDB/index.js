@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DynamoDB = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
+const cloud_api_constants_1 = require("../../cloud-api-constants");
 class DynamoDB extends core_1.CodeWriter {
     importDynamodb(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -26,10 +27,10 @@ class DynamoDB extends core_1.CodeWriter {
         }, "const");
     }
     grantFullAccess(lambda, tableName, lambdaStyle, functionName) {
-        if (lambdaStyle === "single") {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
             this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
         }
-        else if (lambdaStyle === "multiple") {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`);
         }
     }

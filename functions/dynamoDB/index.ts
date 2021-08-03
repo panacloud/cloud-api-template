@@ -1,5 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { LAMBDA } from "../../cloud-api-constants";
 
 export class DynamoDB extends CodeWriter {
   public importDynamodb(output: TextWriter) {
@@ -34,9 +35,9 @@ export class DynamoDB extends CodeWriter {
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === "single") {
+    if (lambdaStyle === LAMBDA.single) {
       this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
-    } else if (lambdaStyle === "multiple") {
+    } else if (lambdaStyle === LAMBDA.multiple) {
       this.writeLine(
         `${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`
       );

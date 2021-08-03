@@ -11,13 +11,14 @@ import { Ec2 } from "../../functions/ec2";
 import { Cdk } from "../../functions/cdk";
 import { Lambda } from "../../functions/lambda";
 import { BasicClass } from "../../functions/utils/class";
+import { DATABASE, LAMBDA } from "../../cloud-api-constants";
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const fs = require("fs");
 
 Generator.generateFromModel(
   {
-    outputFile: `../../../${USER_WORKING_DIRECTORY}/lib/${USER_WORKING_DIRECTORY}-stack.ts`,
+    outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
   },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
@@ -32,11 +33,10 @@ Generator.generateFromModel(
     const manager = new apiManager(output);
     const cls = new BasicClass(output);
     const schema = fs
-      .readFileSync(`../../../${USER_WORKING_DIRECTORY}/graphql/schema.graphql`)
+      .readFileSync(`../../../../graphql/schema.graphql`)
       .toString("utf8");
 
     const { apiName, lambdaStyle, database } = model.api;
-
     ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
     ts.writeImports("constructs", ["Construct"]);
     appsync.importAppsync(output);
@@ -44,13 +44,13 @@ Generator.generateFromModel(
     lambda.importLambda(output);
     iam.importIam(output);
 
-    if (database === "DynamoDB") {
+    if (database === DATABASE.dynamoDb) {
       dynamoDB.importDynamodb(output);
-    } else if (database === "Neptune") {
+    } else if (database === DATABASE.neptuneDb) {
       ts.writeImports("aws-cdk-lib", ["Tags"]);
       neptune.importNeptune(output);
       ec2.importEc2(output);
-    } else if (database === "AuroraServerless") {
+    } else if (database === DATABASE.auroraDb) {
       ts.writeImports("aws-cdk-lib", ["Duration"]);
       aurora.importRds(output);
       ec2.importEc2(output);
@@ -82,7 +82,7 @@ Generator.generateFromModel(
           ...queries,
         };
 
-        if (database === "Neptune") {
+        if (database === DATABASE.neptuneDb) {
           ec2.initializeVpc(
             apiName,
             output,
@@ -100,16 +100,16 @@ Generator.generateFromModel(
           ts.writeLine();
           ec2.securityGroupAddIngressRule(apiName, `${apiName}_sg`);
           ts.writeLine();
-        } else if (database === "AuroraServerless") {
+        } else if (database === DATABASE.auroraDb) {
           ec2.initializeVpc(apiName, output);
         } else {
           ts.writeLine();
         }
 
-        if (database === "DynamoDB") {
+        if (database === DATABASE.dynamoDb) {
           dynamoDB.initializeDynamodb(apiName, output);
           ts.writeLine();
-        } else if (database === "Neptune") {
+        } else if (database === DATABASE.neptuneDb) {
           neptune.initializeNeptuneSubnet(apiName, `${apiName}_vpc`, output);
           ts.writeLine();
           neptune.initializeNeptuneCluster(
@@ -134,7 +134,7 @@ Generator.generateFromModel(
             `${apiName}_neptuneCluster`
           );
           ts.writeLine();
-        } else if (database === "AuroraServerless") {
+        } else if (database === DATABASE.auroraDb) {
           aurora.initializeAuroraCluster(apiName, `${apiName}_vpc`, output);
           ts.writeLine();
           iam.serviceRoleForLambda(apiName, output, [
@@ -158,8 +158,8 @@ Generator.generateFromModel(
           ts.writeLine();
         }
 
-        if (lambdaStyle === "single") {
-          if (database === "DynamoDB") {
+        if (lambdaStyle === LAMBDA.single) {
+          if (database === DATABASE.dynamoDb) {
             lambda.initializeLambda(
               apiName,
               output,
@@ -169,7 +169,7 @@ Generator.generateFromModel(
               undefined,
               [{ name: "TABLE_NAME", value: `${apiName}_table.tableName` }]
             );
-          } else if (database === "Neptune") {
+          } else if (database === DATABASE.neptuneDb) {
             lambda.initializeLambda(
               apiName,
               output,
@@ -185,7 +185,7 @@ Generator.generateFromModel(
               ],
               `ec2.SubnetType.ISOLATED`
             );
-          } else if (database === "AuroraServerless") {
+          } else if (database === DATABASE.auroraDb) {
             ts.writeLine();
             lambda.initializeLambda(
               apiName,
@@ -206,8 +206,8 @@ Generator.generateFromModel(
           } else {
             ts.writeLine();
           }
-        } else if (lambdaStyle === "multiple") {
-          if (database === "DynamoDB") {
+        } else if (lambdaStyle === LAMBDA.multiple) {
+          if (database === DATABASE.dynamoDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
               lambda.initializeLambda(
                 apiName,
@@ -220,7 +220,7 @@ Generator.generateFromModel(
               );
               ts.writeLine();
             });
-          } else if (database === "Neptune") {
+          } else if (database === DATABASE.neptuneDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
               lambda.initializeLambda(
                 apiName,
@@ -239,7 +239,7 @@ Generator.generateFromModel(
               );
               ts.writeLine();
             });
-          } else if (database === "AuroraServerless") {
+          } else if (database === DATABASE.auroraDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
               lambda.initializeLambda(
                 apiName,
@@ -266,14 +266,14 @@ Generator.generateFromModel(
           ts.writeLine();
         }
 
-        if (database === "DynamoDB") {
-          if (lambdaStyle === "single") {
+        if (database === DATABASE.dynamoDb) {
+          if (lambdaStyle === LAMBDA.single) {
             dynamoDB.grantFullAccess(
               `${apiName}`,
               `${apiName}_table`,
               lambdaStyle
             );
-          } else if (lambdaStyle === "multiple") {
+          } else if (lambdaStyle === LAMBDA.multiple) {
             Object.keys(mutationsAndQueries).forEach((key) => {
               dynamoDB.grantFullAccess(
                 `${apiName}`,
@@ -286,14 +286,14 @@ Generator.generateFromModel(
           }
         }
 
-        if (lambdaStyle === "single") {
+        if (lambdaStyle === LAMBDA.single) {
           appsync.appsyncDataSource(
             output,
             apiName,
             `${apiName}Appsync`,
             lambdaStyle
           );
-        } else if (lambdaStyle === "multiple") {
+        } else if (lambdaStyle === LAMBDA.multiple) {
           Object.keys(mutationsAndQueries).forEach((key) => {
             appsync.appsyncDataSource(
               output,
@@ -310,9 +310,9 @@ Generator.generateFromModel(
 
         if (model?.type?.Query) {
           for (var key in model?.type?.Query) {
-            if (lambdaStyle === "single") {
+            if (lambdaStyle === LAMBDA.single) {
               appsync.lambdaDataSourceResolver(key, "Query", `ds_${apiName}`);
-            } else if (lambdaStyle === "multiple") {
+            } else if (lambdaStyle === LAMBDA.multiple) {
               appsync.lambdaDataSourceResolver(
                 key,
                 "Query",
@@ -325,13 +325,13 @@ Generator.generateFromModel(
 
         if (model?.type?.Mutation) {
           for (var key in model?.type?.Mutation) {
-            if (lambdaStyle === "single") {
+            if (lambdaStyle === LAMBDA.single) {
               appsync.lambdaDataSourceResolver(
                 key,
                 "Mutation",
                 `ds_${apiName}`
               );
-            } else if (lambdaStyle === "multiple") {
+            } else if (lambdaStyle === LAMBDA.multiple) {
               appsync.lambdaDataSourceResolver(
                 key,
                 "Mutation",

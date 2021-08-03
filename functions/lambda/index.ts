@@ -1,5 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { LAMBDA } from "../../cloud-api-constants";
 
 interface Environment {
   name: string;
@@ -39,7 +40,7 @@ export class Lambda extends CodeWriter {
       : "";
     let role = roleName ? `role: ${roleName},` : "";
 
-    if (lambdaStyle === "single") {
+    if (lambdaStyle === LAMBDA.single) {
       ts.writeVariableDeclaration(
         {
           name: `${apiName}_lambdaFn`,
@@ -60,7 +61,7 @@ export class Lambda extends CodeWriter {
         },
         "const"
       );
-    } else if (lambdaStyle === "multiple") {
+    } else if (lambdaStyle === LAMBDA.multiple) {
       ts.writeVariableDeclaration(
         {
           name: `${apiName}_lambdaFn_${functionName}`,
@@ -95,11 +96,12 @@ export class Lambda extends CodeWriter {
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === "single") {
+    if (lambdaStyle === LAMBDA.single) {
       this.writeLine(
         `${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`
       );
-    } else if (lambdaStyle === "multiple") {
+    } else if (lambdaStyle === LAMBDA.multiple) {
+
       this.writeLine(
         `${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`
       );

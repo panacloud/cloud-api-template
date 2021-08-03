@@ -2,13 +2,13 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
+import { LAMBDA } from "../../cloud-api-constants";
 const model = require("../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
 const { lambdaStyle } = model.api;
 
-if (lambdaStyle === "single") {
+if (lambdaStyle === LAMBDA.single) {
   Generator.generateFromModel(
-    { outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/main.ts` },
+    { outputFile: `../../../../lambda-fns/main.ts` },
     (output: TextWriter, model: any) => {
       const ts = new TypeScriptWriter(output);
       const lambda = new LambdaFunction(output);
@@ -43,13 +43,11 @@ if (lambdaStyle === "single") {
       });
     }
   );
-} else if (lambdaStyle === "multiple") {
+} else if (lambdaStyle === LAMBDA.multiple) {
   if (model.type.Mutation) {
     Object.keys(model.type.Mutation).forEach((key) => {
       Generator.generate(
-        {
-          outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/${key}.ts`,
-        },
+        { outputFile: `../../../../lambda-fns/${key}.ts` },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
           lambda.initializeLambdaFunction(writer, lambdaStyle);
@@ -61,9 +59,7 @@ if (lambdaStyle === "single") {
   if (model.type.Query) {
     Object.keys(model.type.Query).forEach((key) => {
       Generator.generate(
-        {
-          outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/${key}.ts`,
-        },
+        { outputFile: `../../../../lambda-fns/${key}.ts` },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
           lambda.initializeLambdaFunction(writer, lambdaStyle);
