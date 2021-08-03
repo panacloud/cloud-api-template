@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
+import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
 import { LAMBDA } from "../../cloud-api-constants";
 const model = require("../../model.json");
 const { lambdaStyle } = model.api;

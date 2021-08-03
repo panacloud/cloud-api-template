@@ -1,9 +1,9 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
-import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
+import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
 import { LAMBDA } from "../../cloud-api-constants";
 const jsonObj = require(`../../model.json`);
-const {  lambdaStyle } = jsonObj.api;
+const { lambdaStyle } = jsonObj.api;
 
 if (lambdaStyle === LAMBDA.single) {
   if (jsonObj?.type?.Query) {
