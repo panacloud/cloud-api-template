@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const lambdaFunction_1 = require("../../functions/lambda/lambdaFunction");
+const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const model = require("../../model.json");
 const { lambdaStyle } = model.api;

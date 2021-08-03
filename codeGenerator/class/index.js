@@ -2,16 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const api_manager_1 = require("../../functions/api-manager");
-const Appsync_1 = require("../../functions/Appsync");
-const dynamoDB_1 = require("../../functions/dynamoDB");
-const neptune_1 = require("../../functions/neptune");
-const auroraServerless_1 = require("../../functions/auroraServerless");
-const iam_1 = require("../../functions/iam");
-const ec2_1 = require("../../functions/ec2");
-const cdk_1 = require("../../functions/cdk");
-const lambda_1 = require("../../functions/lambda");
-const class_1 = require("../../functions/utils/class");
+const ApiManager_1 = require("../../Constructs/ApiManager");
+const Appsync_1 = require("../../Constructs/Appsync");
+const DynamoDB_1 = require("../../Constructs/DynamoDB");
+const Neptune_1 = require("../../Constructs/Neptune");
+const AuroraServerless_1 = require("../../Constructs/AuroraServerless");
+const Iam_1 = require("../../Constructs/Iam");
+const Ec2_1 = require("../../Constructs/Ec2");
+const Cdk_1 = require("../../Constructs/Cdk");
+const Lambda_1 = require("../../Constructs/Lambda");
+const Stack_1 = require("../../Constructs/Stack");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
@@ -20,16 +20,16 @@ templating_1.Generator.generateFromModel({
     outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
 }, (output, model) => {
     const ts = new typescript_1.TypeScriptWriter(output);
-    const lambda = new lambda_1.Lambda(output);
-    const dynamoDB = new dynamoDB_1.DynamoDB(output);
-    const neptune = new neptune_1.Neptune(output);
-    const aurora = new auroraServerless_1.AuroraServerless(output);
+    const lambda = new Lambda_1.Lambda(output);
+    const dynamoDB = new DynamoDB_1.DynamoDB(output);
+    const neptune = new Neptune_1.Neptune(output);
+    const aurora = new AuroraServerless_1.AuroraServerless(output);
     const appsync = new Appsync_1.Appsync(output);
-    const ec2 = new ec2_1.Ec2(output);
-    const cdk = new cdk_1.Cdk(output);
-    const iam = new iam_1.Iam(output);
-    const manager = new api_manager_1.apiManager(output);
-    const cls = new class_1.BasicClass(output);
+    const ec2 = new Ec2_1.Ec2(output);
+    const cdk = new Cdk_1.Cdk(output);
+    const iam = new Iam_1.Iam(output);
+    const manager = new ApiManager_1.apiManager(output);
+    const cls = new Stack_1.BasicClass(output);
     const schema = fs
         .readFileSync(`../../../../graphql/schema.graphql`)
         .toString("utf8");
