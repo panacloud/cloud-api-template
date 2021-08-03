@@ -10,7 +10,9 @@ templating_1.Generator.generate({
 }, (output) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     ts.writeImports("aws-cdk-lib", "cdk");
-    ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack`, [`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`]);
+    ts.writeImports(`../lib/${USER_WORKING_DIRECTORY}-stack`, [
+        `${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`,
+    ]);
     ts.writeVariableDeclaration({
         name: `app`,
         typeName: "cdk.App",
