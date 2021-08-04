@@ -16,7 +16,7 @@ const lambdaHandlerForDynamodb = (output) => {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, undefined, undefined);
             ts.writeLine();
-            ts.writeLine(`this.mainHandler = ${apiName}_lambdaFn`);
+            ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
         }
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
@@ -24,7 +24,7 @@ const lambdaHandlerForDynamodb = (output) => {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, undefined, undefined);
                 ts.writeLine();
-                ts.writeLine(`this.${key}Handler = ${apiName}_lambdaFn_${key}`);
+                ts.writeLine(`this.${apiName}_lambdaFn_${key} = ${apiName}_lambdaFn_${key}`);
                 ts.writeLine();
             });
         }
