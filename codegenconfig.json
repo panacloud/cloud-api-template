@@ -23,7 +23,8 @@
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./codeGenerator/constructsInitializer/Dynamodb/index.js"
+      "templateFile": "./codeGenerator/constructsInitializer/Dynamodb/index.js",
+      "modelFile": "model.json"
     }
   ],
   "compileTypeScript": false

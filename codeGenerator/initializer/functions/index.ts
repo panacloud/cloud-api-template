@@ -38,9 +38,9 @@ export const propsHandlerForAppsyncConstruct = (
     if(lambdaStyle === LAMBDA.single){
         let apiLambda = apiName+"Lambda";
         let lambdafunc = `${apiName}_lambdaFn`;
-        return {
-            [`${lambdafunc}Arn`]:`${apiLambda}.${lambdafunc}.functionArn`
-        }
+        return `{
+          ${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn
+        }`
     }
     else if (lambdaStyle === LAMBDA.multiple) {
         let appsyncProps: any
@@ -49,7 +49,7 @@ export const propsHandlerForAppsyncConstruct = (
           let lambdafunc = `${apiName}_lambdaFn_${key}`;
           appsyncProps[`${lambdafunc}Arn`] =  `${apiLambda}.${lambdafunc}.functionArn`
         });
-        return appsyncProps
+        return `${appsyncProps}`
       }
 };
 
@@ -63,9 +63,9 @@ export const propsHandlerForDynoDbConstruct = (
 
   if (lambdaStyle === LAMBDA.single) {
     let lambdafunc = `${apiName}_lambdaFn`;
-    return {
-      [lambdafunc]: `${apiName}Lambda.${lambdafunc}`,
-    };
+    return `{
+      ${lambdafunc}: ${apiName}Lambda.${lambdafunc}
+    }`;
   }
   else if (lambdaStyle === LAMBDA.multiple) {
     let dbProps: any;
@@ -73,6 +73,6 @@ export const propsHandlerForDynoDbConstruct = (
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
       dbProps[lambdafunc] = `${apiName}Lambda.${lambdafunc}`;
     });
-    return dbProps;
+    return `${dbProps}`;
   }
 };
