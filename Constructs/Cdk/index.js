@@ -28,9 +28,6 @@ class Cdk extends core_1.CodeWriter {
     }
     initializeConstruct(constructName, propsName = "StackProps", contents, output, constructProps, properties) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        properties === null || properties === void 0 ? void 0 : properties.forEach(({ accessModifier, isReadonly, name, typeName }) => {
-            ts.writeLineIndented(`${accessModifier}${isReadonly && ` readonly`} ${name} : ${typeName}`);
-        });
         ts.writeLine();
         if (constructProps) {
             ts.writeInterfaceBlock({
@@ -48,6 +45,9 @@ class Cdk extends core_1.CodeWriter {
             export: true,
         };
         ts.writeClassBlock(classDefinition, () => {
+            properties === null || properties === void 0 ? void 0 : properties.forEach(({ accessModifier, isReadonly, name, typeName }) => {
+                ts.writeLineIndented(`${accessModifier}${isReadonly ? ` readonly` : ""}${name} : ${typeName}`);
+            });
             ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {
           super(scope, id);

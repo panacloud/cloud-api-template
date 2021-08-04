@@ -9,7 +9,7 @@ const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
 templating_1.Generator.generateFromModel({
-    outputFile: `../../../../../lib/LambdaConstructs/index.ts`,
+    outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}/index.ts`,
 }, (output, model) => {
     const { apiName, lambdaStyle, database } = model.api;
     const mutations = model.type.Mutation ? model.type.Mutation : {};
