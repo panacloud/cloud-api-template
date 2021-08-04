@@ -26,5 +26,5 @@
       "templateFile": "./codeGenerator/constructsInitializer/DynamoDB/index.js"
     }
   ],
-  "compileTypeScript": true
+  "compileTypeScript": false
 }

@@ -55,9 +55,9 @@ Generator.generateFromModel(
       ts.writeLine();
       iam.attachLambdaPolicyToRole(`${apiName}`);
       ts.writeLine();
-      appsyncDatasourceHandler(output)
+      appsyncDatasourceHandler(apiName,output)
       ts.writeLine()
-      appsyncResolverhandler(output)
+      appsyncResolverhandler(apiName,output)
     },output,ConstructProps)
 
     // cdk.initializeStack(

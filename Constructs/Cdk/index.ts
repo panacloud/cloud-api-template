@@ -31,7 +31,7 @@ export class Cdk extends CodeWriter {
     });
   }
 
-  public initializeConstruct(constructName: string,propsName:string ="StackProps",contents: any, output: TextWriter,constructProps?:consturctProps[],properties?:PropertyDefinition[]) {
+  public initializeConstruct(constructName: string, propsName:string ="StackProps", contents: any, output: TextWriter ,constructProps?:consturctProps[],properties?:PropertyDefinition[]) {
     const ts = new TypeScriptWriter(output);
     if(constructProps){
       ts.writeInterfaceBlock({
@@ -53,13 +53,17 @@ export class Cdk extends CodeWriter {
     ts.writeClassBlock(classDefinition, () => {
       ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {
-          super(scope, id, props);
+          super(scope, id);
       `);
       contents();
       ts.writeLineIndented(`}`);
     })
   }
 
+  public nodeAddDependency(sourceName: string, valueName: string) {
+    this.writeLine(`${sourceName}.node.addDependency(${valueName});`);
+  }
+  
   public tagAdd(source: string, name: string, value: string) {
     this.writeLine(`Tags.of(${source}).add("${name}", "${value}");`);
   }

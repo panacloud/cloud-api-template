@@ -2,9 +2,9 @@ import { LAMBDA } from "../../../../cloud-api-constants";
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../../Constructs/Appsync";
+import { Cdk } from "../../../../Constructs/Cdk";
 const model = require("../../../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
-const { apiName, lambdaStyle, database } = model.api;
+const { lambdaStyle } = model.api;
 const mutations = model.type.Mutation ? model.type.Mutation : {};
 const queries = model.type.Query ? model.type.Query : {};
 
@@ -13,7 +13,7 @@ const mutationsAndQueries = {
   ...queries,
 };
 
-export const appsyncDatasourceHandler = (output: TextWriter) => {
+export const appsyncDatasourceHandler = (apiName :string , output: TextWriter) => {
   const appsync = new Appsync(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
@@ -39,16 +39,25 @@ export const appsyncDatasourceHandler = (output: TextWriter) => {
   }
 };
 
-
-export const appsyncResolverhandler = (output: TextWriter) => {
+export const appsyncResolverhandler = (apiName:string,output: TextWriter) => {
     const appsync = new Appsync(output);
+    appsync.apiName=apiName
+    const cdk = new Cdk(output)
     const ts = new TypeScriptWriter(output);
     if (model?.type?.Query) {
         for (var key in model?.type?.Query) {
           if (lambdaStyle === LAMBDA.single) {
             appsync.appsyncLambdaResolver(key, "Query", `ds_${apiName}`,output);
+            ts.writeLine()
+            cdk.nodeAddDependency(`${key}_resolver`,`${apiName}_schema`)
+            cdk.nodeAddDependency(`${key}_resolver`,`ds_${apiName}`)
+            ts.writeLine()
           } else if (lambdaStyle === LAMBDA.multiple) {
             appsync.appsyncLambdaResolver(key,"Query",`ds_${apiName}_${key}`,output);
+            ts.writeLine()
+            cdk.nodeAddDependency(`${key}_resolver`,`${apiName}_schema`)
+            cdk.nodeAddDependency(`${key}_resolver`,`ds_${apiName}_${key}`)
+            ts.writeLine()
           }
         }
         ts.writeLine();
@@ -58,10 +67,18 @@ export const appsyncResolverhandler = (output: TextWriter) => {
         for (var key in model?.type?.Mutation) {
           if (lambdaStyle === LAMBDA.single) {
             appsync.appsyncLambdaResolver(key,"Mutation",`ds_${apiName}`,output);
+            ts.writeLine()
+            cdk.nodeAddDependency(`${key}_resolver`,`${apiName}_schema`)
+            cdk.nodeAddDependency(`${key}_resolver`,`ds_${apiName}`)
+            ts.writeLine()
           } else if (lambdaStyle === LAMBDA.multiple) {
             appsync.appsyncLambdaResolver(key,"Mutation",`ds_${apiName}_${key}`,output);
+            ts.writeLine()
+            cdk.nodeAddDependency(`${key}_resolver`,`${apiName}_schema`)
+            cdk.nodeAddDependency(`${key}_resolver`,`ds_${apiName}_${key}`)
+            ts.writeLine()
           }
         }
         ts.writeLine();
       }
-  };
+};

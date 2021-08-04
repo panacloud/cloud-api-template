@@ -26,7 +26,7 @@ Generator.generateFromModel(
 
 
         let constructProperties:PropertyDefinition[]=[{
-            name:"mainHandler",
+            name:`${apiName}_lambdaFn`,
             typeName:"lambda.Function",
             accessModifier:"public"
         }]
@@ -34,7 +34,7 @@ Generator.generateFromModel(
         if(lambdaStyle === LAMBDA.multiple){   
             Object.keys(mutationsAndQueries).forEach((key,index) => {
                 constructProperties[index] = {
-                    name:`${key}Handler`,
+                    name:`${apiName}_lambdaFn_${key}`,
                     typeName:"lambda.Function",
                     accessModifier:"public"        
                 }

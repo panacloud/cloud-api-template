@@ -23,13 +23,25 @@ if (database && database === DATABASE.dynamoDb) {
       const cdk = new Cdk(output);
       const dynamoDB = new DynamoDB(output);
       const lambda = new Lambda(output);
-
       cdk.importsForStack(output);
       lambda.importLambda(output);
       dynamoDB.importDynamodb(output);
       ts.writeLine();
-      const dbProps = dynamodbPropsHandler();
       
+      let props = [{
+        name: `${apiName}_lambdaFn`,
+        type: "lambda.Function",       
+      }]
+    
+      if (lambdaStyle && lambdaStyle === LAMBDA.multiple) {
+        Object.keys(mutationsAndQueries).forEach((key, index) => {
+           props[index] = {
+            name: `${apiName}_lambdaFn_${key}`,
+            type: "lambda.Function",
+          };
+        });
+      }
+
       const properties: PropertyDefinition[] = [
         {
           name: "tableName",
@@ -44,11 +56,12 @@ if (database && database === DATABASE.dynamoDb) {
         "dbProps",
         () => {
           dynamoDB.initializeDynamodb(apiName, output);
-          dynamodbAccessHandler(output);
+          ts.writeLine();
+          dynamodbAccessHandler(apiName,output);
           ts.writeLine();
         },
         output,
-        dbProps,
+        props,
         properties
       );
     }

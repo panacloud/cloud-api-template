@@ -3,7 +3,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
 import { DynamoDB } from "../../../../Constructs/DynamoDB";
 const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database } = model.api;
+const {  lambdaStyle } = model.api;
 
 const mutations = model.type.Mutation ? model.type.Mutation : {};
 const queries = model.type.Query ? model.type.Query : {};
@@ -13,9 +13,7 @@ const mutationsAndQueries = {
   ...queries,
 };
 
-
-
-export const dynamodbAccessHandler = (output:TextWriter)=>{
+export const dynamodbAccessHandler = (apiName:string,output:TextWriter)=>{
   const dynamoDB = new DynamoDB(output)
   const ts = new TypeScriptWriter(output)
   if (lambdaStyle === LAMBDA.single) {
@@ -37,29 +35,22 @@ export const dynamodbAccessHandler = (output:TextWriter)=>{
   }
 }
 
-export const dynamodbPropsHandler = () => {
+export const dynamodbPropsHandler = (apiName:string,output:TextWriter) => {
+  const ts = new TypeScriptWriter(output)
   if (lambdaStyle && lambdaStyle === LAMBDA.single) {
-    return [
-      {
-        name: `${apiName}_lambdaFn`,
-        type: "lambda.Function",
-      },
-    ];
+    const props = {
+      name: `${apiName}_lambdaFn`,
+      type: "lambda.Function",
+    }
   }
 
   if (lambdaStyle && lambdaStyle === LAMBDA.multiple) {
-    let dbProps = [
-      {
-        name: `${apiName}_lambdaFn`,
-        type: "lambda.Function",
-      },
-    ];
     Object.keys(mutationsAndQueries).forEach((key, index) => {
-      dbProps[index] = {
+      const props = {
         name: `${apiName}_lambdaFn_${key}`,
         type: "lambda.Function",
       };
+      ts.writeLine(`${props}`)
     });
-    return dbProps;
   }
 };

@@ -78,7 +78,7 @@ export class Appsync extends CodeWriter {
         typeName: "appsync.CfnDataSource",
         initializer: () => {
           ts.writeLine(`new appsync.CfnDataSource(this,'${ds_initializerName}',{
-          name: ${ds_name},
+          name: "${ds_name}",
           apiId: ${this.apiName}_appsync.attrApiId,
           type:"AWS_LAMBDA",
           lambdaConfig: {lambdaFunctionArn:${lambdaFunctionArn}},
@@ -145,7 +145,7 @@ export class Appsync extends CodeWriter {
         typeName: "appsync.CfnResolver",
         initializer: () => {
           this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
-            apiId: ${this.apiName}_appsync.attrApiId,
+            apiId: "${this.apiName}_appsync.attrApiId",
             typeName: "${typeName}",
             fieldName: "${fieldName}",
             dataSourceName: ${dataSourceName}.name
@@ -154,9 +154,6 @@ export class Appsync extends CodeWriter {
       },
       "const"
     );
-    ts.writeLine()
-    ts.writeLine(`${fieldName}_resolver.node.addDependency(${this.apiName}_schema,${this.apiName}_dataSource_${fieldName})`)
-    ts.writeLine()
     // this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
     //     apiId: ${this.apiName}_appsync.attrApiId,
     //     typeName: "${typeName}",

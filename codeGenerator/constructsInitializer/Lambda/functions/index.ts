@@ -27,7 +27,7 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
         undefined
       );
       ts.writeLine();
-      ts.writeLine(`this.mainHandler = ${apiName}_lambdaFn`);
+      ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
     }
   }
 
@@ -43,7 +43,7 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
           undefined
         );
         ts.writeLine();
-        ts.writeLine(`this.${key}Handler = ${apiName}_lambdaFn_${key}`);
+        ts.writeLine(`this.${apiName}_lambdaFn_${key} = ${apiName}_lambdaFn_${key}`);
         ts.writeLine();
       });
     }
