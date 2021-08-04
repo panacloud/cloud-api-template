@@ -6,10 +6,10 @@ import { apiManager } from "../../Constructs/ApiManager";
 import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
 import { lambdaEnvHandler, propsHandlerForAppsyncConstruct, propsHandlerForDynoDbConstruct } from "./functions";
-const model = require("../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
+const jsonObj = require("../../model.json");
+const { USER_WORKING_DIRECTORY } = jsonObj;
 const fs = require("fs");
-
+const _ = require('lodash')
 Generator.generateFromModel(
   {
     outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
@@ -22,18 +22,14 @@ Generator.generateFromModel(
     const appsync = new Appsync(output);
     const cdk = new Cdk(output)
     const { apiName, lambdaStyle, database } = model.api;
-
     cdk.importsForStack(output)
     ts.writeImports('./Appsync',[CONSTRUCTS.appsync])
-
+    ts.writeImports('./Lambda',[CONSTRUCTS.lambda])
     if (database === DATABASE.dynamoDb) {
       ts.writeImports('./Dynamodb',[CONSTRUCTS.dynamodb])
     }
 
-    ts.writeImports('./Lambda',[CONSTRUCTS.lambda])
-
-    cdk.initializeStack(`${USER_WORKING_DIRECTORY}`,()=>{
-      
+    cdk.initializeStack(`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`,()=>{
       ts.writeVariableDeclaration({
         name:`${apiName}Lambda`,
         typeName:"any",
@@ -45,18 +41,17 @@ Generator.generateFromModel(
 
 
       if(database == DATABASE.dynamoDb){
-        const dbProps = propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
-        console.log("dpProps ===>",dbProps)
+        // const dbProps = propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
         ts.writeVariableDeclaration({
           name:`${apiName}_table`,
           typeName:"any",
           initializer:()=>{
-            ts.writeLine(`new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${dbProps});`)
+            ts.writeLine(`new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)});`)
           }
         },"const")
         ts.writeLine()
       }
-
+      
       lambdaEnvHandler(output,apiName,lambdaStyle,mutationsAndQueries)
       const appsyncConstructProps = propsHandlerForAppsyncConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
       console.log("appsync props ===>",appsyncConstructProps)

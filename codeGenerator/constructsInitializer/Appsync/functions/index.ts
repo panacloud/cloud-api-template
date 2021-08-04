@@ -15,6 +15,7 @@ const mutationsAndQueries = {
 
 export const appsyncDatasourceHandler = (apiName :string , output: TextWriter) => {
   const appsync = new Appsync(output);
+  appsync.apiName = apiName
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
     appsync.appsyncLambdaDataSource(

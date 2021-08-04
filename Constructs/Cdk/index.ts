@@ -46,9 +46,11 @@ export class Cdk extends CodeWriter {
     const classDefinition: ClassDefinition = {
       name: `${_.upperFirst(_.camelCase(constructName))}`,
       extends: ["Construct"],
-      export: true,
-      properties:properties
+      export: true
     };
+    if(properties){
+      classDefinition.properties = properties
+    }
 
     ts.writeClassBlock(classDefinition, () => {
       ts.writeLineIndented(` 
