@@ -12,7 +12,7 @@ const { apiName, lambdaStyle, database } = model.api;
 
 Generator.generateFromModel(
     {
-      outputFile: `../../../../../lib/LambdaConstructs/index.ts`,
+      outputFile: `../../../../../lib/${CONSTRUCTS.lambda}/index.ts`,
     },
     (output: TextWriter,model: any) => {
         const { apiName, lambdaStyle, database } = model.api;

@@ -34,7 +34,7 @@ Generator.generateFromModel(
     }
 
     cdk.initializeStack(
-      `${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`,
+      `${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}`,
       () => {
         ts.writeLine(
           `const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}");`

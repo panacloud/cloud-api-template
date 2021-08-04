@@ -14,7 +14,7 @@ export const lambdaEnvHandler = (
   if (lambdaStyle === LAMBDA.single) {
     let lambdafunc = `${apiName}_lambdaFn`;
     ts.writeLine(
-      `${apiLambda}.${lambdafunc}.addEnvironment(TABLE_NAME,${apiName}_table.tableName)`
+      `${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`
     );
     ts.writeLine();
   }
@@ -22,7 +22,7 @@ export const lambdaEnvHandler = (
     Object.keys(mutationsAndQueries).forEach((key) => {
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
       ts.writeLine(
-        `${apiLambda}.${lambdafunc}.addEnvironment(TABLE_NAME,${apiName}_table.tableName)`
+        `${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`
       );
       ts.writeLine();
     });
