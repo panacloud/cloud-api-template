@@ -31,10 +31,11 @@ const propsHandlerForAppsyncConstruct = (output, apiName, lambdaStyle, mutations
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         let appsyncProps;
         Object.keys(mutationsAndQueries).forEach((key) => {
-            let apiLambda = apiName + "Lambda";
+            let apiLambda = `${apiName}Lambda`;
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
-            appsyncProps[`${lambdafunc}Arn`] = `${apiLambda}.${lambdafunc}.functionArn`;
+            appsyncProps[`${lambdafunc}Arn`] = `${apiLambda}.${lambdafunc}.functionArn,`;
         });
+        "{" + appsyncProps + "}";
         return `${appsyncProps}`;
     }
 };
@@ -51,9 +52,9 @@ const propsHandlerForDynoDbConstruct = (output, apiName, lambdaStyle, mutationsA
         let dbProps;
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
-            dbProps[lambdafunc] = `${apiName}Lambda.${lambdafunc}`;
+            dbProps[`${lambdafunc}`] = `${apiName}Lambda.${lambdafunc}`;
         });
-        return `${dbProps}`;
+        return `{${dbProps}}`;
     }
 };
 exports.propsHandlerForDynoDbConstruct = propsHandlerForDynoDbConstruct;
