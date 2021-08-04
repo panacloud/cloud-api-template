@@ -53,7 +53,7 @@ templating_1.Generator.generateFromModel({
             name: apiName,
             typeName: "any",
             initializer: () => {
-                ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${ts.write(appsyncConstructProps)})`);
+                ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${appsyncConstructProps})`);
             }
         }, "const");
     }, output);
