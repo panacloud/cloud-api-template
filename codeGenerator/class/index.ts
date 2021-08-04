@@ -1,17 +1,17 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { DATABASE,LAMBDA } from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
 import { Appsync } from "../../Constructs/Appsync";
-import { DynamoDB } from "../../Constructs/DynamoDB";
-import { Neptune } from "../../Constructs/Neptune";
 import { AuroraServerless } from "../../Constructs/AuroraServerless";
-import { Iam } from "../../Constructs/Iam";
-import { Ec2 } from "../../Constructs/Ec2";
 import { Cdk } from "../../Constructs/Cdk";
+import { DynamoDB } from "../../Constructs/DynamoDB";
+import { Ec2 } from "../../Constructs/Ec2";
+import { Iam } from "../../Constructs/Iam";
 import { Lambda } from "../../Constructs/Lambda";
+import { Neptune } from "../../Constructs/Neptune";
 import { BasicClass } from "../../Constructs/Stack";
-import { DATABASE, LAMBDA } from "../../cloud-api-constants";
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const fs = require("fs");
@@ -287,7 +287,7 @@ Generator.generateFromModel(
         }
 
         if (lambdaStyle === LAMBDA.single) {
-          appsync.appsyncDataSource(
+          appsync.appsyncLambdaDataSource(
             output,
             apiName,
             `${apiName}Appsync`,
@@ -295,7 +295,7 @@ Generator.generateFromModel(
           );
         } else if (lambdaStyle === LAMBDA.multiple) {
           Object.keys(mutationsAndQueries).forEach((key) => {
-            appsync.appsyncDataSource(
+            appsync.appsyncLambdaDataSource(
               output,
               apiName,
               `${apiName}Appsync`,
@@ -311,12 +311,13 @@ Generator.generateFromModel(
         if (model?.type?.Query) {
           for (var key in model?.type?.Query) {
             if (lambdaStyle === LAMBDA.single) {
-              appsync.lambdaDataSourceResolver(key, "Query", `ds_${apiName}`);
+              appsync.appsyncLambdaResolver(key, "Query", `ds_${apiName}`,output);
             } else if (lambdaStyle === LAMBDA.multiple) {
-              appsync.lambdaDataSourceResolver(
+              appsync.appsyncLambdaResolver(
                 key,
                 "Query",
-                `ds_${apiName}_${key}`
+                `ds_${apiName}_${key}`,
+                output
               );
             }
           }
@@ -326,16 +327,18 @@ Generator.generateFromModel(
         if (model?.type?.Mutation) {
           for (var key in model?.type?.Mutation) {
             if (lambdaStyle === LAMBDA.single) {
-              appsync.lambdaDataSourceResolver(
+              appsync.appsyncLambdaResolver(
                 key,
                 "Mutation",
-                `ds_${apiName}`
+                `ds_${apiName}`,
+                output
               );
             } else if (lambdaStyle === LAMBDA.multiple) {
-              appsync.lambdaDataSourceResolver(
+              appsync.appsyncLambdaResolver(
                 key,
                 "Mutation",
-                `ds_${apiName}_${key}`
+                `ds_${apiName}_${key}`,
+                output
               );
             }
           }
