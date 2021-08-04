@@ -12,7 +12,7 @@ const { database } = model.api;
 if (database && database === DATABASE.dynamoDb) {
   Generator.generateFromModel(
     {
-      outputFile: `../../../../../lib/Dynamodb/index.ts`,
+      outputFile: `../../../../../lib/${CONSTRUCTS.dynamodb}/index.ts`,
     },
     (output: TextWriter, model: any) => {
       const ts = new TypeScriptWriter(output);

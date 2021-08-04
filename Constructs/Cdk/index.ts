@@ -33,6 +33,10 @@ export class Cdk extends CodeWriter {
 
   public initializeConstruct(constructName: string, propsName:string ="StackProps", contents: any, output: TextWriter ,constructProps?:consturctProps[],properties?:PropertyDefinition[]) {
     const ts = new TypeScriptWriter(output);
+    properties?.forEach(({accessModifier,isReadonly,name,typeName})=>{
+      ts.writeLineIndented(`${accessModifier}${isReadonly && ` readonly`} ${name} : ${typeName}`)
+    })
+    ts.writeLine()
     if(constructProps){
       ts.writeInterfaceBlock({
         name:propsName
@@ -46,11 +50,8 @@ export class Cdk extends CodeWriter {
     const classDefinition: ClassDefinition = {
       name: `${_.upperFirst(_.camelCase(constructName))}`,
       extends: ["Construct"],
-      export: true
+      export: true,
     };
-    if(properties){
-      classDefinition.properties = properties
-    }
 
     ts.writeClassBlock(classDefinition, () => {
       ts.writeLineIndented(` 

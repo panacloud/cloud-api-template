@@ -5,7 +5,7 @@ import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
 import { LambdaFunction } from "../../../Constructs/Lambda/lambdaFunction";
-import { lambdaHandlerForDynamodb } from "./functions";
+import { lambdaHandlerForDynamodb, lambdaProperiesHandlerForDynoDb } from "./functions";
 const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
@@ -24,26 +24,11 @@ Generator.generateFromModel(
         cdk.importsForStack(output)
         lambda.importLambda(output)
 
-
-        let constructProperties:PropertyDefinition[]=[{
-            name:`${apiName}_lambdaFn`,
-            typeName:"lambda.Function",
-            accessModifier:"public"
-        }]
-
-        if(lambdaStyle === LAMBDA.multiple){   
-            Object.keys(mutationsAndQueries).forEach((key,index) => {
-                constructProperties[index] = {
-                    name:`${apiName}_lambdaFn_${key}`,
-                    typeName:"lambda.Function",
-                    accessModifier:"public"        
-                }
-            })
-        }
+        const lambdaProperties = lambdaProperiesHandlerForDynoDb(output)
 
         cdk.initializeConstruct(CONSTRUCTS.lambda,undefined,()=>{
             lambdaHandlerForDynamodb(output)
-        },output,undefined,constructProperties)
+        },output,undefined,lambdaProperties)
 
     }
   );

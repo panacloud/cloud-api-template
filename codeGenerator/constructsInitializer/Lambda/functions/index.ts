@@ -1,5 +1,5 @@
 import { TextWriter } from "@yellicode/core";
-import { TypeScriptWriter } from "@yellicode/typescript";
+import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
 import { Lambda } from "../../../../Constructs/Lambda";
 const model = require("../../../../model.json");
@@ -11,6 +11,35 @@ const queries = model.type.Query ? model.type.Query : {};
 const mutationsAndQueries = {
   ...mutations,
   ...queries,
+};
+
+export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
+  let properties: PropertyDefinition[] = [
+    {
+      name: `${apiName}_lambdaFn`,
+      typeName: "lambda.Function",
+      accessModifier: "public",
+    },
+  ];
+  if (lambdaStyle === LAMBDA.single) {
+    properties = [
+      {
+        name: `${apiName}_lambdaFn`,
+        typeName: "lambda.Function",
+        accessModifier: "public",
+      },
+    ];
+    return properties;
+  } else if (lambdaStyle === LAMBDA.multiple) {
+    Object.keys(mutationsAndQueries).forEach((key, index) => {
+      properties[index] = {
+        name: `${apiName}_lambdaFn_${key}`,
+        typeName: "lambda.Function",
+        accessModifier: "public",
+      };
+    });
+    return properties
+  }
 };
 
 export const lambdaHandlerForDynamodb = (output: TextWriter) => {
@@ -29,9 +58,7 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
       ts.writeLine();
       ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
     }
-  }
-
-  else if (lambdaStyle === LAMBDA.single) {
+  } else if (lambdaStyle === LAMBDA.single) {
     if (database === DATABASE.dynamoDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
@@ -43,11 +70,13 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
           undefined
         );
         ts.writeLine();
-        ts.writeLine(`this.${apiName}_lambdaFn_${key} = ${apiName}_lambdaFn_${key}`);
+        ts.writeLine(
+          `this.${apiName}_lambdaFn_${key} = ${apiName}_lambdaFn_${key}`
+        );
         ts.writeLine();
       });
     }
-  }else{
-      ts.writeLine("lambda not found")
+  } else {
+    ts.writeLine("lambda not found");
   }
 };
