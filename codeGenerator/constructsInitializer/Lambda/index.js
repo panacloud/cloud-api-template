@@ -5,7 +5,7 @@ const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Lambda_1 = require("../../../Constructs/Lambda");
 const functions_1 = require("./functions");
-const model = require("../../../../model.json");
+const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
 templating_1.Generator.generateFromModel({
