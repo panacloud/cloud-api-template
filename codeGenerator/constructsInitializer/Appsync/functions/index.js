@@ -12,6 +12,7 @@ const queries = model.type.Query ? model.type.Query : {};
 const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const appsyncDatasourceHandler = (apiName, output) => {
     const appsync = new Appsync_1.Appsync(output);
+    appsync.apiName = apiName;
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle);

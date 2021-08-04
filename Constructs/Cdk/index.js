@@ -41,9 +41,11 @@ class Cdk extends core_1.CodeWriter {
         const classDefinition = {
             name: `${_.upperFirst(_.camelCase(constructName))}`,
             extends: ["Construct"],
-            export: true,
-            properties: properties
+            export: true
         };
+        if (properties) {
+            classDefinition.properties = properties;
+        }
         ts.writeClassBlock(classDefinition, () => {
             ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {
