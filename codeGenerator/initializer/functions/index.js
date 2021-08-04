@@ -8,13 +8,13 @@ const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => 
     let apiLambda = apiName + "Lambda";
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         let lambdafunc = `${apiName}_lambdaFn`;
-        ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment(TABLE_NAME,${apiName}_table.tableName)`);
+        ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`);
         ts.writeLine();
     }
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key) => {
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
-            ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment(TABLE_NAME,${apiName}_table.tableName)`);
+            ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`);
             ts.writeLine();
         });
     }

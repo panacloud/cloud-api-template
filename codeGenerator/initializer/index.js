@@ -26,7 +26,7 @@ templating_1.Generator.generateFromModel({
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
         ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
     }
-    cdk.initializeStack(`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`, () => {
+    cdk.initializeStack(`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}`, () => {
         ts.writeLine(`const ${apiName}Lambda = new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}");`);
         // ts.writeVariableDeclaration({
         //   name:`${apiName}Lambda`,
