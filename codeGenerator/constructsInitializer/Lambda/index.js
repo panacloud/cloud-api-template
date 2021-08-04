@@ -20,14 +20,14 @@ templating_1.Generator.generateFromModel({
     cdk.importsForStack(output);
     lambda.importLambda(output);
     let constructProperties = [{
-            name: "mainHandler",
+            name: `${apiName}_lambdaFn`,
             typeName: "lambda.Function",
             accessModifier: "public"
         }];
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             constructProperties[index] = {
-                name: `${key}Handler`,
+                name: `${apiName}_lambdaFn_${key}`,
                 typeName: "lambda.Function",
                 accessModifier: "public"
             };

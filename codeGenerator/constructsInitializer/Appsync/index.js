@@ -49,9 +49,9 @@ templating_1.Generator.generateFromModel({
         ts.writeLine();
         iam.attachLambdaPolicyToRole(`${apiName}`);
         ts.writeLine();
-        functions_1.appsyncDatasourceHandler(output);
+        functions_1.appsyncDatasourceHandler(apiName, output);
         ts.writeLine();
-        functions_1.appsyncResolverhandler(output);
+        functions_1.appsyncResolverhandler(apiName, output);
     }, output, ConstructProps);
     // cdk.initializeStack(
     //   `${USER_WORKING_DIRECTORY}`,

@@ -47,11 +47,14 @@ class Cdk extends core_1.CodeWriter {
         ts.writeClassBlock(classDefinition, () => {
             ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {
-          super(scope, id, props);
+          super(scope, id);
       `);
             contents();
             ts.writeLineIndented(`}`);
         });
+    }
+    nodeAddDependency(sourceName, valueName) {
+        this.writeLine(`${sourceName}.node.addDependency(${valueName});`);
     }
     tagAdd(source, name, value) {
         this.writeLine(`Tags.of(${source}).add("${name}", "${value}");`);
