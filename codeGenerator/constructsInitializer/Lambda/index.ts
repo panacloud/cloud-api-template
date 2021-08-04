@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition } from "@yellicode/typescript";
-import { DATABASE, LAMBDA } from "../../../cloud-api-constants";
+import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
 import { LambdaFunction } from "../../../Constructs/Lambda/lambdaFunction";
@@ -41,7 +41,7 @@ Generator.generateFromModel(
             })
         }
 
-        cdk.initializeConstruct("LambdaConstruct","LambdaProps",()=>{
+        cdk.initializeConstruct(CONSTRUCTS.lambda,undefined,()=>{
             lambdaHandlerForDynamodb(output)
         },output,undefined,constructProperties)
 

@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { DATABASE, LAMBDA } from "../../../cloud-api-constants";
+import { DATABASE, LAMBDA,CONSTRUCTS } from "../../../cloud-api-constants";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Iam } from "../../../Constructs/Iam";
@@ -17,15 +17,9 @@ Generator.generateFromModel(
   },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
-    // const lambda = new Lambda(output);
-    // const dynamoDB = new DynamoDB(output);
-    // const neptune = new Neptune(output);
-    // const aurora = new AuroraServerless(output);
     const appsync = new Appsync(output);
-    // const ec2 = new Ec2(output);
     const cdk = new Cdk(output);
     const iam = new Iam(output);
-    // const cls = new BasicClass(output);
     const schema = fs.readFileSync(`../../../../graphql/schema.graphql`).toString("utf8");
     const mutations = model.type.Mutation ? model.type.Mutation : {};
     const queries = model.type.Query ? model.type.Query : {};
@@ -33,38 +27,23 @@ Generator.generateFromModel(
     const { apiName, lambdaStyle, database } = model.api;
     cdk.importsForStack(output)
     appsync.importAppsync(output);
-    // lambda.importLambda(output);
     iam.importIam(output);
-
-    // if (database === DATABASE.dynamoDb) {
-    //   dynamoDB.importDynamodb(output);
-    // } else if (database === DATABASE.neptuneDb) {
-    //   ts.writeImports("aws-cdk-lib", ["Tags"]);
-    //   neptune.importNeptune(output);
-    //   ec2.importEc2(output);
-    // } else if (database === DATABASE.auroraDb) {
-    //   ts.writeImports("aws-cdk-lib", ["Duration"]);
-    //   aurora.importRds(output);
-    //   ec2.importEc2(output);
-    // } else {
-    //   ts.writeLine();
-    // }
-
+    
     let ConstructProps =[{
-      name:"mainHandlerArn",
+      name:`${apiName}_lambdaFnArn`,
       type:"string"
     }]
 
     if(lambdaStyle && lambdaStyle === LAMBDA.multiple){
       mutationsAndQueries.forEach((key:string,index:number) => {
         ConstructProps[index] = {
-          name:`${key}HandlerArn`,
+          name:`${apiName}_lambdaFnArn_${key}Arn`,
           type:"string"
         }    
       });     
     }
 
-    cdk.initializeConstruct("AppsyncApiConstruct","AppsyncProps",()=>{
+    cdk.initializeConstruct(`${CONSTRUCTS.appsync}`,"AppsyncProps",()=>{
       ts.writeLine();
       appsync.initializeAppsyncApi(apiName, output);
       ts.writeLine();

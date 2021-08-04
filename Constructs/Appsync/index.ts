@@ -63,13 +63,13 @@ export class Appsync extends CodeWriter {
     let ds_initializerName = this.apiName + "dataSourceGraphql"
     let ds_variable = `ds_${dataSourceName}`
     let ds_name = `${dataSourceName}_dataSource`
-    let lambdaFunctionArn = `props!.mainHandlerArn`
+    let lambdaFunctionArn = `props!.${this.apiName}_lambdaFnArn`
 
     if (lambdaStyle === LAMBDA.multiple) {
       ds_initializerName = this.apiName + "dataSourceGraphql" + functionName
       ds_variable = `ds_${dataSourceName}_${functionName}`
       ds_name = `${this.apiName}_dataSource_${functionName}`
-      lambdaFunctionArn = `props!.${functionName}HandlerArn`
+      lambdaFunctionArn = `props!.${this.apiName}_lambdaFn_${functionName}Arn`
     }
     
     ts.writeVariableDeclaration(
