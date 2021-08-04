@@ -26,12 +26,15 @@
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./codeGenerator/constructs/Appsync/index.ts",
+      "templateFile": "./codeGenerator/constructsInitializer/Appsync/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./codeGenerator/constructs/Lambda/index.ts",
+      "templateFile": "./codeGenerator/constructsInitializer/Lambda/index.ts",
       "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/constructsInitializer/DynamoDB/index.ts"
     }
   ],
   "compileTypeScript": true
