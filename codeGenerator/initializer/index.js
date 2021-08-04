@@ -36,6 +36,7 @@ templating_1.Generator.generateFromModel({
         ts.writeLine();
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
             const dbProps = functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
+            console.log("dpProps ===>", dbProps);
             ts.writeVariableDeclaration({
                 name: `${apiName}_table`,
                 typeName: "any",
@@ -47,11 +48,12 @@ templating_1.Generator.generateFromModel({
         }
         functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
         const appsyncConstructProps = functions_1.propsHandlerForAppsyncConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
+        console.log("appsync props ===>", appsyncConstructProps);
         ts.writeVariableDeclaration({
             name: apiName,
             typeName: "any",
             initializer: () => {
-                ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${appsyncConstructProps})`);
+                ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${ts.write(appsyncConstructProps)})`);
             }
         }, "const");
     }, output);

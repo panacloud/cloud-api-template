@@ -17,7 +17,7 @@ templating_1.Generator.generateFromModel({
     const appsync = new Appsync_1.Appsync(output);
     const cdk = new Cdk_1.Cdk(output);
     const iam = new Iam_1.Iam(output);
-    const schema = fs.readFileSync(`../../../../graphql/schema.graphql`).toString("utf8");
+    const schema = fs.readFileSync(`../../../../../graphql/schema.graphql`).toString("utf8");
     const mutations = model.type.Mutation ? model.type.Mutation : {};
     const queries = model.type.Query ? model.type.Query : {};
     const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);

@@ -7,9 +7,8 @@ const Cdk_1 = require("../../../Constructs/Cdk");
 const DynamoDB_1 = require("../../../Constructs/DynamoDB");
 const Lambda_1 = require("../../../Constructs/Lambda");
 const functions_1 = require("./functions");
-const model = require("../../../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
-const { apiName, lambdaStyle, database } = model.api;
+const model = require("../../../model.json");
+const { database } = model.api;
 if (database && database === cloud_api_constants_1.DATABASE.dynamoDb) {
     templating_1.Generator.generateFromModel({
         outputFile: `../../../../../lib/Dynamodb/index.ts`,
