@@ -5,11 +5,9 @@ import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 import { Lambda } from "../../../Constructs/Lambda";
-import { LambdaFunction } from "../../../Constructs/Lambda/lambdaFunction";
 import { dynamodbAccessHandler, dynamodbPropsHandler } from "./functions";
-const model = require("../../../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
-const { apiName, lambdaStyle, database } = model.api;
+const model = require("../../../model.json");
+const { database } = model.api;
 
 if (database && database === DATABASE.dynamoDb) {
   Generator.generateFromModel(

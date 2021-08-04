@@ -6,7 +6,7 @@ import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
 import { LambdaFunction } from "../../../Constructs/Lambda/lambdaFunction";
 import { lambdaHandlerForDynamodb } from "./functions";
-const model = require("../../../../model.json");
+const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
 

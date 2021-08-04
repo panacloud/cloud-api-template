@@ -46,6 +46,7 @@ Generator.generateFromModel(
 
       if(database == DATABASE.dynamoDb){
         const dbProps = propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
+        console.log("dpProps ===>",dbProps)
         ts.writeVariableDeclaration({
           name:`${apiName}_table`,
           typeName:"any",
@@ -58,11 +59,13 @@ Generator.generateFromModel(
 
       lambdaEnvHandler(output,apiName,lambdaStyle,mutationsAndQueries)
       const appsyncConstructProps = propsHandlerForAppsyncConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
+      console.log("appsync props ===>",appsyncConstructProps)
+
       ts.writeVariableDeclaration({
         name:apiName,
         typeName:"any",
         initializer:()=>{
-          ts.writeLine(`new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",${appsyncConstructProps})`)
+          ts.writeLine(`new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",${ts.write(appsyncConstructProps)})`)
         }
       },"const")
       

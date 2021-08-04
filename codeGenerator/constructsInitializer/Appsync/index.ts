@@ -20,7 +20,7 @@ Generator.generateFromModel(
     const appsync = new Appsync(output);
     const cdk = new Cdk(output);
     const iam = new Iam(output);
-    const schema = fs.readFileSync(`../../../../graphql/schema.graphql`).toString("utf8");
+    const schema = fs.readFileSync(`../../../../../graphql/schema.graphql`).toString("utf8");
     const mutations = model.type.Mutation ? model.type.Mutation : {};
     const queries = model.type.Query ? model.type.Query : {};
     const mutationsAndQueries = {...mutations,...queries,};
