@@ -6,9 +6,10 @@ const cloud_api_constants_1 = require("../../cloud-api-constants");
 const Appsync_1 = require("../../Constructs/Appsync");
 const Cdk_1 = require("../../Constructs/Cdk");
 const functions_1 = require("./functions");
-const model = require("../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
+const jsonObj = require("../../model.json");
+const { USER_WORKING_DIRECTORY } = jsonObj;
 const fs = require("fs");
+const _ = require('lodash');
 templating_1.Generator.generateFromModel({
     outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
 }, (output, model) => {
@@ -21,11 +22,11 @@ templating_1.Generator.generateFromModel({
     const { apiName, lambdaStyle, database } = model.api;
     cdk.importsForStack(output);
     ts.writeImports('./Appsync', [cloud_api_constants_1.CONSTRUCTS.appsync]);
+    ts.writeImports('./Lambda', [cloud_api_constants_1.CONSTRUCTS.lambda]);
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
         ts.writeImports('./Dynamodb', [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
     }
-    ts.writeImports('./Lambda', [cloud_api_constants_1.CONSTRUCTS.lambda]);
-    cdk.initializeStack(`${USER_WORKING_DIRECTORY}`, () => {
+    cdk.initializeStack(`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}Stack`, () => {
         ts.writeVariableDeclaration({
             name: `${apiName}Lambda`,
             typeName: "any",
@@ -35,13 +36,12 @@ templating_1.Generator.generateFromModel({
         }, "const");
         ts.writeLine();
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
-            const dbProps = functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-            console.log("dpProps ===>", dbProps);
+            // const dbProps = propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
             ts.writeVariableDeclaration({
                 name: `${apiName}_table`,
                 typeName: "any",
                 initializer: () => {
-                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",${dbProps});`);
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",${functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries)});`);
                 }
             }, "const");
             ts.writeLine();
