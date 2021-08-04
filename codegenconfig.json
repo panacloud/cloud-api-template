@@ -1,19 +1,38 @@
 {
   "templates": [
     {
-      "templateFile": "./codeGenerator/class/index.js",
+      "templateFile": "./codeGenerator/initializer/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./codeGenerator/bin/index.js"
+      "templateFile": "./codeGenerator/bin/index.ts"
     },
     {
-      "templateFile": "./codeGenerator/lambda/initializeLambdaFunction.js",
+      "templateFile": "./codeGenerator/lambda/initializeLambdaFunction.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./codeGenerator/lambda/individualFunction.js"
+      "templateFile": "./codeGenerator/lambda/individualFunction.ts"
+    },
+    {
+      "templateFile": "./codeGenerator/test/dynamodb.ts"
+    },
+    {
+      "templateFile": "./codeGenerator/test/appsync.ts",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/test/lambda.ts",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/constructs/Appsync/index.ts",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/constructs/Lambda/index.ts",
+      "modelFile": "model.json"
     }
   ],
-  "compileTypeScript": false
+  "compileTypeScript": true
 }
