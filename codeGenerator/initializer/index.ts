@@ -69,6 +69,7 @@ Generator.generateFromModel(
         }
 
         lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
+        
         const appsyncConstructProps = propsHandlerForAppsyncConstruct(
           output,
           apiName,
