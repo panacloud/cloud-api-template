@@ -19,21 +19,8 @@ templating_1.Generator.generateFromModel({
     const cdk = new Cdk_1.Cdk(output);
     cdk.importsForStack(output);
     lambda.importLambda(output);
-    let constructProperties = [{
-            name: `${apiName}_lambdaFn`,
-            typeName: "lambda.Function",
-            accessModifier: "public"
-        }];
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        Object.keys(mutationsAndQueries).forEach((key, index) => {
-            constructProperties[index] = {
-                name: `${apiName}_lambdaFn_${key}`,
-                typeName: "lambda.Function",
-                accessModifier: "public"
-            };
-        });
-    }
+    const lambdaProperties = functions_1.lambdaProperiesHandlerForDynoDb(output);
     cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.lambda, undefined, () => {
         functions_1.lambdaHandlerForDynamodb(output);
-    }, output, undefined, constructProperties);
+    }, output, undefined, lambdaProperties);
 });

@@ -28,10 +28,10 @@ class DynamoDB extends core_1.CodeWriter {
     }
     grantFullAccess(lambda, tableName, lambdaStyle, functionName) {
         if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-            this.writeLine(`props.${tableName}.grantFullAccess(props.${lambda}_lambdaFn);`);
+            this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`);
         }
         else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-            this.writeLine(`${tableName}.grantFullAccess(props.${lambda}_lambdaFn_${functionName});`);
+            this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`);
         }
     }
 }
