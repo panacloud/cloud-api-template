@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DATABASE = exports.LAMBDA = void 0;
+exports.CONSTRUCTS = exports.DATABASE = exports.LAMBDA = void 0;
 var LAMBDA;
 (function (LAMBDA) {
     LAMBDA["single"] = "SINGLE";
@@ -12,3 +12,10 @@ var DATABASE;
     DATABASE["auroraDb"] = "AURORASERVERLESS";
     DATABASE["neptuneDb"] = "NEPTUNE";
 })(DATABASE = exports.DATABASE || (exports.DATABASE = {}));
+var CONSTRUCTS;
+(function (CONSTRUCTS) {
+    CONSTRUCTS["appsync"] = "AppsyncConstruct";
+    CONSTRUCTS["dynamodb"] = "DynamodbConstruct";
+    CONSTRUCTS["lambda"] = "LambdaConstruct";
+    CONSTRUCTS["neptuneDb"] = "NEPTUNE";
+})(CONSTRUCTS = exports.CONSTRUCTS || (exports.CONSTRUCTS = {}));

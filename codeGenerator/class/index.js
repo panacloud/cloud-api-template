@@ -2,17 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
+const cloud_api_constants_1 = require("../../cloud-api-constants");
 const ApiManager_1 = require("../../Constructs/ApiManager");
 const Appsync_1 = require("../../Constructs/Appsync");
-const DynamoDB_1 = require("../../Constructs/DynamoDB");
-const Neptune_1 = require("../../Constructs/Neptune");
 const AuroraServerless_1 = require("../../Constructs/AuroraServerless");
-const Iam_1 = require("../../Constructs/Iam");
-const Ec2_1 = require("../../Constructs/Ec2");
 const Cdk_1 = require("../../Constructs/Cdk");
+const DynamoDB_1 = require("../../Constructs/DynamoDB");
+const Ec2_1 = require("../../Constructs/Ec2");
+const Iam_1 = require("../../Constructs/Iam");
 const Lambda_1 = require("../../Constructs/Lambda");
+const Neptune_1 = require("../../Constructs/Neptune");
 const Stack_1 = require("../../Constructs/Stack");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const fs = require("fs");
@@ -202,11 +202,11 @@ templating_1.Generator.generateFromModel({
             }
         }
         if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-            appsync.appsyncDataSource(output, apiName, `${apiName}Appsync`, lambdaStyle);
+            appsync.appsyncLambdaDataSource(output, apiName, `${apiName}Appsync`, lambdaStyle);
         }
         else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             Object.keys(mutationsAndQueries).forEach((key) => {
-                appsync.appsyncDataSource(output, apiName, `${apiName}Appsync`, lambdaStyle, key);
+                appsync.appsyncLambdaDataSource(output, apiName, `${apiName}Appsync`, lambdaStyle, key);
                 ts.writeLine();
             });
         }
@@ -216,10 +216,10 @@ templating_1.Generator.generateFromModel({
         if ((_a = model === null || model === void 0 ? void 0 : model.type) === null || _a === void 0 ? void 0 : _a.Query) {
             for (var key in (_b = model === null || model === void 0 ? void 0 : model.type) === null || _b === void 0 ? void 0 : _b.Query) {
                 if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-                    appsync.lambdaDataSourceResolver(key, "Query", `ds_${apiName}`);
+                    appsync.appsyncLambdaResolver(key, "Query", `ds_${apiName}`, output);
                 }
                 else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-                    appsync.lambdaDataSourceResolver(key, "Query", `ds_${apiName}_${key}`);
+                    appsync.appsyncLambdaResolver(key, "Query", `ds_${apiName}_${key}`, output);
                 }
             }
             ts.writeLine();
@@ -227,10 +227,10 @@ templating_1.Generator.generateFromModel({
         if ((_c = model === null || model === void 0 ? void 0 : model.type) === null || _c === void 0 ? void 0 : _c.Mutation) {
             for (var key in (_d = model === null || model === void 0 ? void 0 : model.type) === null || _d === void 0 ? void 0 : _d.Mutation) {
                 if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-                    appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${apiName}`);
+                    appsync.appsyncLambdaResolver(key, "Mutation", `ds_${apiName}`, output);
                 }
                 else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-                    appsync.lambdaDataSourceResolver(key, "Mutation", `ds_${apiName}_${key}`);
+                    appsync.appsyncLambdaResolver(key, "Mutation", `ds_${apiName}_${key}`, output);
                 }
             }
             ts.writeLine();

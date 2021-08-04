@@ -7,3 +7,9 @@ export declare enum DATABASE {
     auroraDb = "AURORASERVERLESS",
     neptuneDb = "NEPTUNE"
 }
+export declare enum CONSTRUCTS {
+    appsync = "AppsyncConstruct",
+    dynamodb = "DynamodbConstruct",
+    lambda = "LambdaConstruct",
+    neptuneDb = "NEPTUNE"
+}
