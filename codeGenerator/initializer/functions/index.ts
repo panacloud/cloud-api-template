@@ -39,13 +39,13 @@ export const propsHandlerForAppsyncConstruct = (
   if (lambdaStyle === LAMBDA.single) {
     let apiLambda = apiName + "Lambda";
     let lambdafunc = `${apiName}_lambdaFn`;
-    ts.write(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn`)        
+    ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn`)        
   } else if (lambdaStyle === LAMBDA.multiple) {
     // let appsyncProps: { [k: string]: string } = {};
     Object.keys(mutationsAndQueries).forEach((key) => {
       let apiLambda = `${apiName}Lambda`;
-      let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
-      ts.write(`${lambdafunc} : ${apiLambda}.${lambdafunc}.functionArn,`)
+      let lambdafunc = `${apiName}_lambdaFn_${key}`;
+      ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}.functionArn,`)
     });
     //  return appsyncProps 
   }
@@ -61,13 +61,13 @@ export const propsHandlerForDynoDbConstruct = (
 
   if (lambdaStyle === LAMBDA.single) {
     let lambdafunc = `${apiName}_lambdaFn`;
-    ts.write(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`)
+    ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`)
     
   } else if (lambdaStyle === LAMBDA.multiple) {
     // var dbProps: { [k: string]: string } = {};
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
-      ts.write(`${lambdafunc} : ${apiName}Lambda.${lambdafunc},}`)
+      ts.writeLine(`${lambdafunc} : ${apiName}Lambda.${lambdafunc},`)
     });
     // return dbProps
 }

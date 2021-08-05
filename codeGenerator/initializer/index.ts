@@ -42,18 +42,16 @@ Generator.generateFromModel(
         ts.writeLine();
 
         if (database == DATABASE.dynamoDb) {
-          ts.write(
-            `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",{`
-          );
+          ts.writeLine(`const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",{`);
           propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
           ts.write('})');
         }
 
         lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
 
-        ts.write(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",`);
+        ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`);
         propsHandlerForAppsyncConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
-        ts.write('})')
+        ts.writeLine('})')
       },
       output
     );
