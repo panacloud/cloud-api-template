@@ -52,7 +52,7 @@ export class Cdk extends CodeWriter {
 
     ts.writeClassBlock(classDefinition, () => {
       properties?.forEach(({accessModifier,isReadonly,name,typeName})=>{
-        ts.writeLineIndented(`${accessModifier}${isReadonly ?`readonly `:""} ${name} : ${typeName}`)
+        ts.writeLineIndented(`${accessModifier}${isReadonly ?` readonly `:""} ${name} : ${typeName}`)
       })
       ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {

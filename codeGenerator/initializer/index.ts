@@ -39,13 +39,6 @@ Generator.generateFromModel(
         ts.writeLine(
           `const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}");`
         );
-        // ts.writeVariableDeclaration({
-        //   name:`${apiName}Lambda`,
-        //   typeName:"any",
-        //   initializer:()=>{
-        //     ts.writeLine(`new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}");`)
-        //   }
-        // },"const")
         ts.writeLine();
 
         if (database == DATABASE.dynamoDb) {
@@ -58,13 +51,6 @@ Generator.generateFromModel(
           ts.writeLine(
             `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${dbProps});`
           );
-          // ts.writeVariableDeclaration({
-          //   name:`${apiName}_table`,
-          //   typeName:"any",
-          //   initializer:()=>{
-          //     ts.writeLine(`new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${dbProps});`)
-          //   }
-          // },"const")
           ts.writeLine();
         }
 
@@ -77,20 +63,8 @@ Generator.generateFromModel(
           mutationsAndQueries
         );
 
-        ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",${appsyncConstructProps})`)
-
-        // ts.writeVariableDeclaration(
-        //   {
-        //     name: apiName,
-        //     typeName: "any",
-        //     initializer: () => {
-        //       ts.writeLine(
-        //         `new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",${appsyncConstructProps})`
-        //       );
-        //     },
-        //   },
-        //   "const"
-        // );
+        ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",
+                     ${appsyncConstructProps})`)
       },
       output
     );

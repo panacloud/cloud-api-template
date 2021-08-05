@@ -43,6 +43,8 @@ Generator.generateFromModel(
       });     
     }
 
+    console.log("appsync properties====>",ConstructProps)
+
     cdk.initializeConstruct(`${CONSTRUCTS.appsync}`,"AppsyncProps",()=>{
       ts.writeLine();
       appsync.initializeAppsyncApi(apiName, output);
