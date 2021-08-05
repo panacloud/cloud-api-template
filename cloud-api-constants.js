@@ -17,5 +17,5 @@ var CONSTRUCTS;
     CONSTRUCTS["appsync"] = "AppsyncConstruct";
     CONSTRUCTS["dynamodb"] = "DynamodbConstruct";
     CONSTRUCTS["lambda"] = "LambdaConstruct";
-    CONSTRUCTS["neptuneDb"] = "NEPTUNE";
+    CONSTRUCTS["neptuneDb"] = "VpcNeptuneConstruct";
 })(CONSTRUCTS = exports.CONSTRUCTS || (exports.CONSTRUCTS = {}));
