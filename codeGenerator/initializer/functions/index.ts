@@ -35,27 +35,21 @@ export const propsHandlerForAppsyncConstruct = (
   lambdaStyle: LAMBDA,
   mutationsAndQueries: any
 ) => {
-    if(lambdaStyle === LAMBDA.single){
-        let apiLambda = apiName+"Lambda";
-        let lambdafunc = `${apiName}_lambdaFn`;
-        return`{
+  if (lambdaStyle === LAMBDA.single) {
+    let apiLambda = apiName + "Lambda";
+    let lambdafunc = `${apiName}_lambdaFn`;
+    return `{
           ${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn
-        }`
-    }
-    else if (lambdaStyle === LAMBDA.multiple) {
-        let appsyncProps: any
-        Object.keys(mutationsAndQueries).forEach((key) => {
-          let apiLambda = `${apiName}Lambda`;
-          let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
-          appsyncProps[lambdafunc]=`${apiLambda}.${lambdafunc}.functionArn,`
-          console.log("appsync fumction ===>",appsyncProps)
-          // appsyncProps = `${{
-          //   [lambdafunc] : `${apiLambda}.${lambdafunc}.functionArn`,
-          // }}`
-        });
-        // "{" +appsyncProps+"}"
-        return `${appsyncProps}`
-      }
+        }`;
+  } else if (lambdaStyle === LAMBDA.multiple) {
+    let appsyncProps: { [k: string]: any } = {};
+    Object.keys(mutationsAndQueries).forEach((key) => {
+      let apiLambda = `${apiName}Lambda`;
+      let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
+      appsyncProps[lambdafunc] = `${apiLambda}.${lambdafunc}.functionArn,`;
+    });
+    return appsyncProps;
+  }
 };
 
 export const propsHandlerForDynoDbConstruct = (
@@ -71,12 +65,11 @@ export const propsHandlerForDynoDbConstruct = (
     return `{
       ${lambdafunc}: ${apiName}Lambda.${lambdafunc}
     }`;
-  }
-  else if (lambdaStyle === LAMBDA.multiple) {
-    let dbProps:any
+  } else if (lambdaStyle === LAMBDA.multiple) {
+    var dbProps: { [k: string]: any } = {};
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
-      dbProps[lambdafunc]=`${apiName}Lambda.${lambdafunc},`
+      dbProps[lambdafunc] = `${apiName}Lambda.${lambdafunc},`;
     });
     return dbProps;
   }
