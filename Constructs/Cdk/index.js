@@ -46,7 +46,7 @@ class Cdk extends core_1.CodeWriter {
         };
         ts.writeClassBlock(classDefinition, () => {
             properties === null || properties === void 0 ? void 0 : properties.forEach(({ accessModifier, isReadonly, name, typeName }) => {
-                ts.writeLineIndented(`${accessModifier}${isReadonly ? `readonly ` : ""} ${name} : ${typeName}`);
+                ts.writeLineIndented(`${accessModifier}${isReadonly ? ` readonly ` : ""} ${name} : ${typeName}`);
             });
             ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {
