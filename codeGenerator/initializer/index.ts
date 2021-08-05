@@ -69,7 +69,9 @@ Generator.generateFromModel(
         console.log("appsyn construct prorps ====>",appsyncConstructProps)
 
         ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",${appsyncConstructProps})`)
-        ts.writeLine(JSON.stringify(appsyncConstructProps))
+        ts.writeLine(`${appsyncConstructProps}`)
+        ts.writeLine(appsyncConstructProps?.toString())
+
       },
       output
     );
