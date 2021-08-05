@@ -38,8 +38,8 @@ templating_1.Generator.generateFromModel({
         functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
         const appsyncConstructProps = functions_1.propsHandlerForAppsyncConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
         console.log("appsyn construct prorps ====>", appsyncConstructProps);
-        ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",
-                     ${appsyncConstructProps})`);
+        ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${appsyncConstructProps})`);
+        ts.write(`${appsyncConstructProps}`);
     }, output);
     // if (database === DATABASE.dynamoDb) {
     //   dynamoDB.importDynamodb(output);
