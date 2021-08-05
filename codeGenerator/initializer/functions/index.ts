@@ -74,10 +74,11 @@ export const propsHandlerForDynoDbConstruct = (
     let dbProps:any
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
-      dbProps = `${{
+      dbProps = {
         [lambdafunc]:`${apiName}Lambda.${lambdafunc}`,
-      }}`
+      }
     });
+    "{" + dbProps + "}"
     return dbProps;
   }
 };

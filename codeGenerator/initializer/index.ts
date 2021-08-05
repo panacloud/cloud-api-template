@@ -52,7 +52,10 @@ Generator.generateFromModel(
             `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${dbProps});`
           );
           ts.writeLine();
+          console.log("db construct prorps ====>",dbProps)
         }
+
+
 
         lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
         
@@ -62,6 +65,8 @@ Generator.generateFromModel(
           lambdaStyle,
           mutationsAndQueries
         );
+
+        console.log("appsyn construct prorps ====>",appsyncConstructProps)
 
         ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",
                      ${appsyncConstructProps})`)
