@@ -41,13 +41,11 @@ export const propsHandlerForAppsyncConstruct = (
     let lambdafunc = `${apiName}_lambdaFn`;
     ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn`)        
   } else if (lambdaStyle === LAMBDA.multiple) {
-    // let appsyncProps: { [k: string]: string } = {};
     Object.keys(mutationsAndQueries).forEach((key) => {
       let apiLambda = `${apiName}Lambda`;
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
-      ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}.functionArn,`)
+      ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn,`)
     });
-    //  return appsyncProps 
   }
 };
 

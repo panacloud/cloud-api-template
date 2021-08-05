@@ -44,7 +44,7 @@ Generator.generateFromModel(
         if (database == DATABASE.dynamoDb) {
           ts.writeLine(`const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",{`);
           propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
-          ts.write('})');
+          ts.writeLine('})');
         }
 
         lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
