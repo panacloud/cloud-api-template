@@ -31,6 +31,7 @@ templating_1.Generator.generateFromModel({
         lambdaProperties = functions_1.lambdaProperiesHandlerForDynoDb(output);
     }
     if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
+        lambdaPropsWithName = "handlerProps";
         lambdaProps = functions_1.lambdaPropsHandlerForNeptunedb();
         lambdaProperties = functions_1.lambdaProperiesHandlerForNeptuneDb(output);
     }

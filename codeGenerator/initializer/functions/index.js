@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.propsHandlerForDynoDbConstruct = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaPropsHandlerNeptunedb = exports.lambdaEnvHandler = void 0;
+exports.propsHandlerForDynoDbConstruct = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaConstructPropsHandlerNeptunedb = exports.lambdaEnvHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => {
@@ -20,13 +20,13 @@ const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => 
     }
 };
 exports.lambdaEnvHandler = lambdaEnvHandler;
-const lambdaPropsHandlerNeptunedb = (output) => {
+const lambdaConstructPropsHandlerNeptunedb = (output) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     ts.writeLine(`SGRef:crudApi_neptunedb.SGRef,`);
     ts.writeLine(`VPCRef:crudApi_neptunedb.VPCRef,`);
     ts.writeLine(`neptuneReaderEndpoint:crudApi_neptunedb.neptuneReaderEndpoint`);
 };
-exports.lambdaPropsHandlerNeptunedb = lambdaPropsHandlerNeptunedb;
+exports.lambdaConstructPropsHandlerNeptunedb = lambdaConstructPropsHandlerNeptunedb;
 const propsHandlerForAppsyncConstructDynamodb = (output, apiName, lambdaStyle, mutationsAndQueries) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
@@ -48,7 +48,7 @@ const propsHandlerForAppsyncConstructNeptunedb = (output, apiName, lambdaStyle, 
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         let apiLambda = apiName + "Lambda";
         let lambdafunc = `${apiName}_lambdaFnArn`;
-        ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}`);
+        ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}`);
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key) => {

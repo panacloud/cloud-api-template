@@ -16,7 +16,7 @@ const lambdaPropsHandlerForNeptunedb = () => {
             type: "ec2.Vpc"
         }, {
             name: "SGRef",
-            type: "SecurityGroup"
+            type: "ec2.SecurityGroup"
         }, {
             name: "neptuneReaderEndpoint",
             type: "string"
