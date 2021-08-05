@@ -21,21 +21,20 @@ const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => 
 };
 exports.lambdaEnvHandler = lambdaEnvHandler;
 const propsHandlerForAppsyncConstruct = (output, apiName, lambdaStyle, mutationsAndQueries) => {
+    const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         let apiLambda = apiName + "Lambda";
         let lambdafunc = `${apiName}_lambdaFn`;
-        return `{
-          ${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn
-        }`;
+        ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn`);
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        let appsyncProps = {};
+        // let appsyncProps: { [k: string]: string } = {};
         Object.keys(mutationsAndQueries).forEach((key) => {
             let apiLambda = `${apiName}Lambda`;
             let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
-            appsyncProps[lambdafunc] = `${apiLambda}.${lambdafunc}.functionArn,`;
+            ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}.functionArn,`);
         });
-        return appsyncProps + "";
+        //  return appsyncProps 
     }
 };
 exports.propsHandlerForAppsyncConstruct = propsHandlerForAppsyncConstruct;
@@ -43,17 +42,15 @@ const propsHandlerForDynoDbConstruct = (output, apiName, lambdaStyle, mutationsA
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         let lambdafunc = `${apiName}_lambdaFn`;
-        return `{
-      ${lambdafunc}: ${apiName}Lambda.${lambdafunc}
-    }`;
+        ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`);
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        var dbProps = {};
+        // var dbProps: { [k: string]: string } = {};
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
-            dbProps[lambdafunc] = `${apiName}Lambda.${lambdafunc},`;
+            ts.writeLine(`${lambdafunc} : ${apiName}Lambda.${lambdafunc},}`);
         });
-        return dbProps + "";
+        // return dbProps
     }
 };
 exports.propsHandlerForDynoDbConstruct = propsHandlerForDynoDbConstruct;

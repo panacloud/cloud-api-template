@@ -30,17 +30,11 @@ templating_1.Generator.generateFromModel({
         ts.writeLine(`const ${apiName}Lambda = new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}");`);
         ts.writeLine();
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
-            const dbProps = functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-            console.log("db construct prorps ====>", dbProps);
-            ts.writeLine(`const ${apiName}_table = new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",${dbProps});`);
+            ts.writeLine(`const ${apiName}_table = new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",{${functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries)}});`);
             ts.writeLine();
         }
         functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
-        const appsyncConstructProps = functions_1.propsHandlerForAppsyncConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-        console.log("appsyn construct prorps ====>", appsyncConstructProps);
-        ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${appsyncConstructProps})`);
-        ts.writeLine(`${appsyncConstructProps}`);
-        // ts.writeLine(appsyncConstructProps?.toString())
+        ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",{${functions_1.propsHandlerForAppsyncConstruct(output, apiName, lambdaStyle, mutationsAndQueries)}})`);
     }, output);
     // if (database === DATABASE.dynamoDb) {
     //   dynamoDB.importDynamodb(output);
