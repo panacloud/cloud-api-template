@@ -145,7 +145,7 @@ export class Appsync extends CodeWriter {
         typeName: "appsync.CfnResolver",
         initializer: () => {
           this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
-            apiId: "${this.apiName}_appsync.attrApiId",
+            apiId: ${this.apiName}_appsync.attrApiId,
             typeName: "${typeName}",
             fieldName: "${fieldName}",
             dataSourceName: ${dataSourceName}.name
