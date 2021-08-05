@@ -70,7 +70,7 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
           `ec2.SubnetType.ISOLATED`
         );
         ts.writeLine();
-        ts.writeLine(`this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}Arn.functionArn`);
+        ts.writeLine(`this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`);
         ts.writeLine()
     })
   } else {
