@@ -1,4 +1,3 @@
-import { string } from "@oclif/command/lib/flags";
 import { TextWriter } from "@yellicode/core";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
