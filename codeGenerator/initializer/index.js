@@ -31,9 +31,9 @@ templating_1.Generator.generateFromModel({
         ts.writeLine();
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
             const dbProps = functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.writeLine(`const ${apiName}_table = new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",${dbProps[0]});`);
-            ts.writeLine();
             console.log("db construct prorps ====>", dbProps);
+            ts.writeLine(`const ${apiName}_table = new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",${dbProps});`);
+            ts.writeLine();
         }
         functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
         const appsyncConstructProps = functions_1.propsHandlerForAppsyncConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
