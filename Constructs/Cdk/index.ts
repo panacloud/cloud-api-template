@@ -38,8 +38,8 @@ export class Cdk extends CodeWriter {
       ts.writeInterfaceBlock({
         name:propsName
       },()=>{
-        constructProps?.forEach((prop)=>{
-          ts.writeLine(`${prop.name}: ${prop.type}`)
+        constructProps?.forEach(({name,type})=>{
+          ts.writeLine(`${name}: ${type}`)
         })
     })
     ts.writeLine()    

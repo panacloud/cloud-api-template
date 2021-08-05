@@ -29,7 +29,14 @@ export const lambdaEnvHandler = (
   }
 };
 
-export const propsHandlerForAppsyncConstruct = (
+export const lambdaPropsHandlerNeptunedb=(output:TextWriter)=>{
+  const ts = new TypeScriptWriter(output)
+  ts.writeLine(`SGRef:crudApi_neptunedb.SGRef,`)
+  ts.writeLine(`VPCRef:crudApi_neptunedb.VPCRef,`)
+  ts.writeLine(`neptuneReaderEndpoint:crudApi_neptunedb.neptuneReaderEndpoint`)
+}
+
+export const propsHandlerForAppsyncConstructDynamodb = (
   output: TextWriter,
   apiName: string,
   lambdaStyle: LAMBDA,
@@ -48,6 +55,27 @@ export const propsHandlerForAppsyncConstruct = (
     });
   }
 };
+
+export const propsHandlerForAppsyncConstructNeptunedb = (
+  output: TextWriter,
+  apiName: string,
+  lambdaStyle: LAMBDA,
+  mutationsAndQueries: any
+) => {
+  const ts = new TypeScriptWriter(output)
+  if (lambdaStyle === LAMBDA.single) {
+    let apiLambda = apiName + "Lambda";
+    let lambdafunc = `${apiName}_lambdaFnArn`;
+    ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}`)        
+  } else if (lambdaStyle === LAMBDA.multiple) {
+    Object.keys(mutationsAndQueries).forEach((key) => {
+      let apiLambda = `${apiName}Lambda`;
+      let lambdafunc = `${apiName}_lambdaFn_${key}`;
+      ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}Arn,`)
+    });
+  }
+};
+
 
 export const propsHandlerForDynoDbConstruct = (
   output: TextWriter,

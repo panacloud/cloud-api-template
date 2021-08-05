@@ -25,7 +25,12 @@
     {
       "templateFile": "./codeGenerator/constructsInitializer/Dynamodb/index.js",
       "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/constructsInitializer/Neptune/index.js",
+      "modelFile": "model.json"
     }
+
   ],
   "compileTypeScript": false
 }
