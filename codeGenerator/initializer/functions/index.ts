@@ -47,10 +47,9 @@ export const propsHandlerForAppsyncConstruct = (
         Object.keys(mutationsAndQueries).forEach((key) => {
           let apiLambda = `${apiName}Lambda`;
           let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
-          appsyncProps = {
+          appsyncProps = `${{
             [lambdafunc] : `${apiLambda}.${lambdafunc}.functionArn`,
-          }
-          // appsyncProps[lambdafunc] = `${apiLambda}.${lambdafunc}.functionArn,`
+          }}`
         });
         // "{" +appsyncProps+"}"
         return `${appsyncProps}`
@@ -75,10 +74,10 @@ export const propsHandlerForDynoDbConstruct = (
     let dbProps:any
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
-      dbProps = {
+      dbProps = `${{
         [lambdafunc]:`${apiName}Lambda.${lambdafunc}`,
-      }
+      }}`
     });
-    return `${dbProps}`;
+    return dbProps;
   }
 };

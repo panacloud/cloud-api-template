@@ -37,13 +37,11 @@ Generator.generateFromModel(
     if(lambdaStyle && lambdaStyle === LAMBDA.multiple){
       Object.keys(mutationsAndQueries).forEach((key:string,index:number) => {
         ConstructProps[index] = {
-          name:`${apiName}_lambdaFnArn_${key}Arn`,
+          name:`${apiName}_lambdaFn_${key}Arn`,
           type:"string"
         }    
       });     
     }
-
-    console.log("appsync properties====>",ConstructProps)
 
     cdk.initializeConstruct(`${CONSTRUCTS.appsync}`,"AppsyncProps",()=>{
       ts.writeLine();
