@@ -32,12 +32,11 @@ templating_1.Generator.generateFromModel({
     if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             ConstructProps[index] = {
-                name: `${apiName}_lambdaFnArn_${key}Arn`,
+                name: `${apiName}_lambdaFn_${key}Arn`,
                 type: "string"
             };
         });
     }
-    console.log("appsync properties====>", ConstructProps);
     cdk.initializeConstruct(`${cloud_api_constants_1.CONSTRUCTS.appsync}`, "AppsyncProps", () => {
         ts.writeLine();
         appsync.initializeAppsyncApi(apiName, output);
