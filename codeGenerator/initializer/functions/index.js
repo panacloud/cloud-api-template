@@ -29,18 +29,13 @@ const propsHandlerForAppsyncConstruct = (output, apiName, lambdaStyle, mutations
         }`;
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        let appsyncProps;
+        let appsyncProps = {};
         Object.keys(mutationsAndQueries).forEach((key) => {
             let apiLambda = `${apiName}Lambda`;
             let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
             appsyncProps[lambdafunc] = `${apiLambda}.${lambdafunc}.functionArn,`;
-            console.log("appsync fumction ===>", appsyncProps);
-            // appsyncProps = `${{
-            //   [lambdafunc] : `${apiLambda}.${lambdafunc}.functionArn`,
-            // }}`
         });
-        // "{" +appsyncProps+"}"
-        return `${appsyncProps}`;
+        return appsyncProps;
     }
 };
 exports.propsHandlerForAppsyncConstruct = propsHandlerForAppsyncConstruct;
@@ -53,7 +48,7 @@ const propsHandlerForDynoDbConstruct = (output, apiName, lambdaStyle, mutationsA
     }`;
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        let dbProps;
+        var dbProps = {};
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
             dbProps[lambdafunc] = `${apiName}Lambda.${lambdafunc},`;
