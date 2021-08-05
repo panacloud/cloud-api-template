@@ -5,8 +5,7 @@ import { CONSTRUCTS, DATABASE, LAMBDA } from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
 import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
-import { lambdaProperiesHandlerForNeptuneDb } from "../constructsInitializer/Lambda/functions";
-import {lambdaEnvHandler,propsHandlerForAppsyncConstructDynamodb,propsHandlerForDynoDbConstruct,propsHandlerForAppsyncConstructNeptunedb} from "./functions";
+import {lambdaEnvHandler,propsHandlerForAppsyncConstructDynamodb,propsHandlerForDynoDbConstruct,propsHandlerForAppsyncConstructNeptunedb, lambdaConstructPropsHandlerNeptunedb} from "./functions";
 const jsonObj = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = jsonObj;
 const fs = require("fs");
@@ -53,7 +52,7 @@ Generator.generateFromModel(
           ts.writeLine(`const ${apiName}_neptunedb = new ${CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`)
           ts.writeLine()
           ts.writeLine(`const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`);
-          lambdaProperiesHandlerForNeptuneDb(output)
+          lambdaConstructPropsHandlerNeptunedb(output)
           ts.writeLine("})");  
           ts.writeLine();  
           ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`);

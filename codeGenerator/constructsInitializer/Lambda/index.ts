@@ -35,6 +35,7 @@ Generator.generateFromModel(
           lambdaProperties = lambdaProperiesHandlerForDynoDb(output)
         }
         if(database===DATABASE.neptuneDb){
+          lambdaPropsWithName="handlerProps"
           lambdaProps = lambdaPropsHandlerForNeptunedb() 
           lambdaProperties = lambdaProperiesHandlerForNeptuneDb(output)
         }

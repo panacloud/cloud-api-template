@@ -29,7 +29,7 @@ export const lambdaEnvHandler = (
   }
 };
 
-export const lambdaPropsHandlerNeptunedb=(output:TextWriter)=>{
+export const lambdaConstructPropsHandlerNeptunedb=(output:TextWriter)=>{
   const ts = new TypeScriptWriter(output)
   ts.writeLine(`SGRef:crudApi_neptunedb.SGRef,`)
   ts.writeLine(`VPCRef:crudApi_neptunedb.VPCRef,`)
@@ -66,7 +66,7 @@ export const propsHandlerForAppsyncConstructNeptunedb = (
   if (lambdaStyle === LAMBDA.single) {
     let apiLambda = apiName + "Lambda";
     let lambdafunc = `${apiName}_lambdaFnArn`;
-    ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}`)        
+    ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}`)        
   } else if (lambdaStyle === LAMBDA.multiple) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       let apiLambda = `${apiName}Lambda`;
