@@ -70,7 +70,7 @@ Generator.generateFromModel(
 
         ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",${appsyncConstructProps})`)
         ts.writeLine(`${appsyncConstructProps}`)
-        ts.writeLine(appsyncConstructProps?.toString())
+        // ts.writeLine(appsyncConstructProps?.toString())
 
       },
       output
