@@ -48,7 +48,8 @@ export const propsHandlerForAppsyncConstruct = (
       let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
       appsyncProps[lambdafunc] = `${apiLambda}.${lambdafunc}.functionArn,`;
     });
-    return `${appsyncProps}`
+    "{"+appsyncProps+"}"
+    return appsyncProps
   }
 };
 
