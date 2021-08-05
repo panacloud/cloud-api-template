@@ -5,7 +5,11 @@ import { CONSTRUCTS, DATABASE, LAMBDA } from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
 import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
-import {lambdaEnvHandler,propsHandlerForAppsyncConstruct,propsHandlerForDynoDbConstruct,} from "./functions";
+import {
+  lambdaEnvHandler,
+  propsHandlerForAppsyncConstruct,
+  propsHandlerForDynoDbConstruct,
+} from "./functions";
 const jsonObj = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = jsonObj;
 const fs = require("fs");
@@ -38,29 +42,18 @@ Generator.generateFromModel(
         ts.writeLine();
 
         if (database == DATABASE.dynamoDb) {
-          ts.writeLine(
-            `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",{${propsHandlerForDynoDbConstruct(
-              output,
-              apiName,
-              lambdaStyle,
-              mutationsAndQueries
-            )}});`
+          ts.write(
+            `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",{`
           );
-          ts.writeLine();
+          propsHandlerForDynoDbConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
+          ts.write('})');
         }
 
         lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
 
-        ts.writeLine(
-          `const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${
-            CONSTRUCTS.appsync
-          }",{${propsHandlerForAppsyncConstruct(
-            output,
-            apiName,
-            lambdaStyle,
-            mutationsAndQueries
-          )}})`
-        );
+        ts.write(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",`);
+        propsHandlerForAppsyncConstruct(output,apiName,lambdaStyle,mutationsAndQueries)
+        ts.write('})')
       },
       output
     );
