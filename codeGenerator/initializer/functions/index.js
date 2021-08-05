@@ -35,9 +35,7 @@ const propsHandlerForAppsyncConstruct = (output, apiName, lambdaStyle, mutations
             let lambdafunc = `${apiName}_lambdaFn_${key}Arn`;
             appsyncProps[lambdafunc] = `${apiLambda}.${lambdafunc}.functionArn,`;
         });
-        return {
-            appsyncProps
-        };
+        return `${appsyncProps}`;
     }
 };
 exports.propsHandlerForAppsyncConstruct = propsHandlerForAppsyncConstruct;
@@ -55,9 +53,7 @@ const propsHandlerForDynoDbConstruct = (output, apiName, lambdaStyle, mutationsA
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
             dbProps[lambdafunc] = `${apiName}Lambda.${lambdafunc},`;
         });
-        return {
-            dbProps
-        };
+        return `${dbProps}`;
     }
 };
 exports.propsHandlerForDynoDbConstruct = propsHandlerForDynoDbConstruct;
