@@ -30,7 +30,7 @@ templating_1.Generator.generateFromModel({
             type: "string"
         }];
     if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        mutationsAndQueries.forEach((key, index) => {
+        Object.keys(mutationsAndQueries).forEach((key, index) => {
             ConstructProps[index] = {
                 name: `${apiName}_lambdaFnArn_${key}Arn`,
                 type: "string"
