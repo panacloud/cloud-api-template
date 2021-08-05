@@ -40,7 +40,7 @@ templating_1.Generator.generateFromModel({
         console.log("appsyn construct prorps ====>", appsyncConstructProps);
         ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${appsyncConstructProps})`);
         ts.writeLine(`${appsyncConstructProps}`);
-        ts.writeLine(appsyncConstructProps === null || appsyncConstructProps === void 0 ? void 0 : appsyncConstructProps.toString());
+        // ts.writeLine(appsyncConstructProps?.toString())
     }, output);
     // if (database === DATABASE.dynamoDb) {
     //   dynamoDB.importDynamodb(output);
