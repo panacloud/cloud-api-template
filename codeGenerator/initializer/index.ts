@@ -49,7 +49,7 @@ Generator.generateFromModel(
             mutationsAndQueries
           );
           ts.writeLine(
-            `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${dbProps});`
+            `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",${dbProps[0]});`
           );
           ts.writeLine();
           console.log("db construct prorps ====>",dbProps)
