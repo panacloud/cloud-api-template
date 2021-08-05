@@ -32,7 +32,7 @@ templating_1.Generator.generateFromModel({
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
             ts.writeLine(`const ${apiName}_table = new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",{`);
             functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.write('})');
+            ts.writeLine('})');
         }
         functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
         ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",{`);

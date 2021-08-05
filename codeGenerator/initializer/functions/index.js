@@ -28,13 +28,11 @@ const propsHandlerForAppsyncConstruct = (output, apiName, lambdaStyle, mutations
         ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn`);
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        // let appsyncProps: { [k: string]: string } = {};
         Object.keys(mutationsAndQueries).forEach((key) => {
             let apiLambda = `${apiName}Lambda`;
             let lambdafunc = `${apiName}_lambdaFn_${key}`;
-            ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}.functionArn,`);
+            ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn,`);
         });
-        //  return appsyncProps 
     }
 };
 exports.propsHandlerForAppsyncConstruct = propsHandlerForAppsyncConstruct;
