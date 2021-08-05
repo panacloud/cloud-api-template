@@ -3,9 +3,10 @@ import { Generator } from "@yellicode/templating";
 import { PropertyDefinition } from "@yellicode/typescript";
 import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Ec2 } from "../../../Constructs/Ec2";
 import { Lambda } from "../../../Constructs/Lambda";
 import { LambdaFunction } from "../../../Constructs/Lambda/lambdaFunction";
-import { lambdaHandlerForDynamodb, lambdaProperiesHandlerForDynoDb } from "./functions";
+import { lambdaHandlerForDynamodb, lambdaHandlerForNeptunedb, lambdaProperiesHandlerForDynoDb, lambdaProperiesHandlerForNeptuneDb, lambdaPropsHandlerForNeptunedb } from "./functions";
 const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
@@ -20,15 +21,31 @@ Generator.generateFromModel(
         const queries = model.type.Query ? model.type.Query : {};    
         const mutationsAndQueries = {...mutations,...queries,};
         const lambda = new Lambda(output);
+        let lambdaPropsWithName : string | undefined
+        let lambdaProps : {name : string,type:string}[] | undefined
+        let lambdaProperties:PropertyDefinition[] | undefined
         const cdk = new Cdk(output);
+        const ec2 = new Ec2(output);
         cdk.importsForStack(output)
+        ec2.importEc2(output)
         lambda.importLambda(output)
-
-        const lambdaProperties = lambdaProperiesHandlerForDynoDb(output)
-
-        cdk.initializeConstruct(CONSTRUCTS.lambda,undefined,()=>{
+        if(database===DATABASE.dynamoDb){
+          lambdaProps = undefined
+          lambdaPropsWithName = undefined
+          lambdaProperties = lambdaProperiesHandlerForDynoDb(output)
+        }
+        if(database===DATABASE.neptuneDb){
+          lambdaProps = lambdaPropsHandlerForNeptunedb() 
+          lambdaProperties = lambdaProperiesHandlerForNeptuneDb(output)
+        }
+        cdk.initializeConstruct(CONSTRUCTS.lambda,lambdaPropsWithName,()=>{
+          if(database===DATABASE.dynamoDb){
             lambdaHandlerForDynamodb(output)
-        },output,undefined,lambdaProperties)
+          }
+          if(database===DATABASE.neptuneDb){
+            lambdaHandlerForNeptunedb(output,lambdaStyle,database)
+          }
+        },output,lambdaProps,lambdaProperties)
 
     }
   );
