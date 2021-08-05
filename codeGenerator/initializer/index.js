@@ -39,7 +39,7 @@ templating_1.Generator.generateFromModel({
         const appsyncConstructProps = functions_1.propsHandlerForAppsyncConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
         console.log("appsyn construct prorps ====>", appsyncConstructProps);
         ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",${appsyncConstructProps})`);
-        ts.write(`${appsyncConstructProps}`);
+        ts.writeLine(JSON.stringify(appsyncConstructProps));
     }, output);
     // if (database === DATABASE.dynamoDb) {
     //   dynamoDB.importDynamodb(output);
