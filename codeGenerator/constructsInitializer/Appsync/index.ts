@@ -35,7 +35,7 @@ Generator.generateFromModel(
     }]
 
     if(lambdaStyle && lambdaStyle === LAMBDA.multiple){
-      mutationsAndQueries.forEach((key:string,index:number) => {
+      Object.keys(mutationsAndQueries).forEach((key:string,index:number) => {
         ConstructProps[index] = {
           name:`${apiName}_lambdaFnArn_${key}Arn`,
           type:"string"
