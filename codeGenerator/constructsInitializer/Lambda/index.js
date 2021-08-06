@@ -41,7 +41,7 @@ templating_1.Generator.generateFromModel({
     if (database === cloud_api_constants_1.DATABASE.auroraDb) {
         lambdaPropsWithName = "handlerProps";
         lambdaProps = functions_1.lambdaPropsHandlerForAuroradb();
-        lambdaProperties = functions_1.lambdaProperiesHandlerForNeptuneDb(output);
+        lambdaProperties = functions_1.lambdaProperiesHandlerForAuroraDb(output);
     }
     cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.lambda, lambdaPropsWithName, () => {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
