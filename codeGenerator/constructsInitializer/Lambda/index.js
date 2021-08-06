@@ -4,6 +4,7 @@ const templating_1 = require("@yellicode/templating");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Ec2_1 = require("../../../Constructs/Ec2");
+const Iam_1 = require("../../../Constructs/Iam");
 const Lambda_1 = require("../../../Constructs/Lambda");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
@@ -21,10 +22,12 @@ templating_1.Generator.generateFromModel({
     let lambdaProps;
     let lambdaProperties;
     const cdk = new Cdk_1.Cdk(output);
+    const iam = new Iam_1.Iam(output);
     const ec2 = new Ec2_1.Ec2(output);
     cdk.importsForStack(output);
     ec2.importEc2(output);
     lambda.importLambda(output);
+    iam.importIam(output);
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
         lambdaProps = undefined;
         lambdaPropsWithName = undefined;
@@ -48,7 +51,7 @@ templating_1.Generator.generateFromModel({
             functions_1.lambdaHandlerForNeptunedb(output, lambdaStyle, database);
         }
         if (database === cloud_api_constants_1.DATABASE.auroraDb) {
-            functions_1.lambdaHandlerForNeptunedb(output, lambdaStyle, database);
+            functions_1.lambdaHandlerForAuroradb(output, lambdaStyle, database);
         }
     }, output, lambdaProps, lambdaProperties);
 });
