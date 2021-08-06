@@ -74,7 +74,7 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
           output,
           lambdaStyle,
           key,
-          `props!.VPCRef`,
+          `props!.vpcRef`,
           undefined,
           [
             {
