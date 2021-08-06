@@ -21,6 +21,7 @@ Generator.generateFromModel({  outputFile: `../../../../../lib/${CONSTRUCTS.auro
         const iam = new Iam(output);
         const auroradbProperties:PropertyDefinition[] = auroradbPropertiesHandler()
         cdk.importsForStack(output)
+        iam.importIam(output)
         ts.writeImports("aws-cdk-lib", ["Duration"]);
         aurora.importRds(output);
         ec2.importEc2(output);

@@ -4,8 +4,9 @@ import { PropertyDefinition } from "@yellicode/typescript";
 import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Ec2 } from "../../../Constructs/Ec2";
+import { Iam } from "../../../Constructs/Iam";
 import { Lambda } from "../../../Constructs/Lambda";
-import { lambdaHandlerForDynamodb, lambdaHandlerForNeptunedb, lambdaProperiesHandlerForDynoDb, lambdaProperiesHandlerForNeptuneDb, lambdaPropsHandlerForAuroradb, lambdaPropsHandlerForNeptunedb } from "./functions";
+import { lambdaHandlerForAuroradb, lambdaHandlerForDynamodb, lambdaHandlerForNeptunedb, lambdaProperiesHandlerForDynoDb, lambdaProperiesHandlerForNeptuneDb, lambdaPropsHandlerForAuroradb, lambdaPropsHandlerForNeptunedb } from "./functions";
 const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
@@ -24,10 +25,12 @@ Generator.generateFromModel(
         let lambdaProps : {name : string,type:string}[] | undefined
         let lambdaProperties:PropertyDefinition[] | undefined
         const cdk = new Cdk(output);
+        const iam = new Iam(output)
         const ec2 = new Ec2(output);
         cdk.importsForStack(output)
         ec2.importEc2(output)
         lambda.importLambda(output)
+        iam.importIam(output)
         if(database===DATABASE.dynamoDb){
           lambdaProps = undefined
           lambdaPropsWithName = undefined
@@ -51,7 +54,7 @@ Generator.generateFromModel(
             lambdaHandlerForNeptunedb(output,lambdaStyle,database)
           }
           if(database===DATABASE.auroraDb){
-            lambdaHandlerForNeptunedb(output,lambdaStyle,database)
+            lambdaHandlerForAuroradb(output,lambdaStyle,database)
           }
         },output,lambdaProps,lambdaProperties)
 

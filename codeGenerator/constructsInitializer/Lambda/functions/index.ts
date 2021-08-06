@@ -67,7 +67,7 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
       ts.writeLine()
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
-    if (database === DATABASE.neptuneDb) {
+    if (database === DATABASE.auroraDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
           apiName,
