@@ -57,7 +57,6 @@ Generator.generateFromModel(
             lambdaHandlerForAuroradb(output,lambdaStyle,database)
           }
         },output,lambdaProps,lambdaProperties)
-
     }
   );
 
