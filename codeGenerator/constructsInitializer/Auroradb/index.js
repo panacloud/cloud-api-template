@@ -20,6 +20,7 @@ if (database && database === cloud_api_constants_1.DATABASE.auroraDb) {
         const iam = new Iam_1.Iam(output);
         const auroradbProperties = function_1.auroradbPropertiesHandler();
         cdk.importsForStack(output);
+        iam.importIam(output);
         ts.writeImports("aws-cdk-lib", ["Duration"]);
         aurora.importRds(output);
         ec2.importEc2(output);

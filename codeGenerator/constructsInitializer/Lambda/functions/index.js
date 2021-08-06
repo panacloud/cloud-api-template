@@ -54,7 +54,7 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
         }
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
+        if (database === cloud_api_constants_1.DATABASE.auroraDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.vpcRef`, undefined, [
                     {
