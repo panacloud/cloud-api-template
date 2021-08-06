@@ -27,6 +27,75 @@ export const lambdaPropsHandlerForNeptunedb=()=>{
   }]
 }
 
+export const lambdaPropsHandlerForAuroradb=()=>{
+  let props : { name: string,type:string}[]
+  return props = [{
+    name :"VPCRef",
+    type:"ec2.Vpc"
+  },{
+    name :"secretRef",
+    type:"string"
+  },{
+    name :"serviceRole",
+    type:"iam.Role"
+  }]
+}
+
+export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,dataBase:DATABASE) => {
+  const lambda = new Lambda(output);
+  const ts = new TypeScriptWriter(output);
+  if (lambdaStyle === LAMBDA.single) {
+    if (database === DATABASE.auroraDb) {
+      lambda.initializeLambda(
+        apiName,
+        output,
+        lambdaStyle,
+        undefined,
+        `props!.vpcRef`,
+        undefined,
+        [
+          {
+            name: "INSTANCE_CREDENTIALS",
+            value: `props!.secretRef`,
+          },
+        ],
+        undefined,
+        `props!.serviceRole`
+      );
+      ts.writeLine();
+      ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+      ts.writeLine()
+    }
+  } else if (lambdaStyle === LAMBDA.multiple) {
+    if (database === DATABASE.neptuneDb) {
+      Object.keys(mutationsAndQueries).forEach((key) => {
+        lambda.initializeLambda(
+          apiName,
+          output,
+          lambdaStyle,
+          key,
+          `props!.vpcRef`,
+          undefined,
+          [
+            {
+              name: "INSTANCE_CREDENTIALS",
+              value: `props!.secretRef`,
+            },
+          ],
+          undefined,
+          `props!.serviceRole`
+          );
+        ts.writeLine();
+        ts.writeLine(`this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`);
+        ts.writeLine()
+    })
+  } else {
+    ts.writeLine();
+  }
+};
+}
+
+
 export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,dataBase:DATABASE) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);

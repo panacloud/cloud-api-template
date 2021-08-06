@@ -5,8 +5,7 @@ import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Ec2 } from "../../../Constructs/Ec2";
 import { Lambda } from "../../../Constructs/Lambda";
-import { LambdaFunction } from "../../../Constructs/Lambda/lambdaFunction";
-import { lambdaHandlerForDynamodb, lambdaHandlerForNeptunedb, lambdaProperiesHandlerForDynoDb, lambdaProperiesHandlerForNeptuneDb, lambdaPropsHandlerForNeptunedb } from "./functions";
+import { lambdaHandlerForDynamodb, lambdaHandlerForNeptunedb, lambdaProperiesHandlerForDynoDb, lambdaProperiesHandlerForNeptuneDb, lambdaPropsHandlerForAuroradb, lambdaPropsHandlerForNeptunedb } from "./functions";
 const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiName, lambdaStyle, database } = model.api;
@@ -39,11 +38,19 @@ Generator.generateFromModel(
           lambdaProps = lambdaPropsHandlerForNeptunedb() 
           lambdaProperties = lambdaProperiesHandlerForNeptuneDb(output)
         }
+        if(database===DATABASE.auroraDb){
+          lambdaPropsWithName="handlerProps"
+          lambdaProps = lambdaPropsHandlerForAuroradb() 
+          lambdaProperties = lambdaProperiesHandlerForNeptuneDb(output)
+        }
         cdk.initializeConstruct(CONSTRUCTS.lambda,lambdaPropsWithName,()=>{
           if(database===DATABASE.dynamoDb){
             lambdaHandlerForDynamodb(output)
           }
           if(database===DATABASE.neptuneDb){
+            lambdaHandlerForNeptunedb(output,lambdaStyle,database)
+          }
+          if(database===DATABASE.auroraDb){
             lambdaHandlerForNeptunedb(output,lambdaStyle,database)
           }
         },output,lambdaProps,lambdaProperties)

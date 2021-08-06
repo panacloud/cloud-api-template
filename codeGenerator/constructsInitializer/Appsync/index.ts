@@ -13,7 +13,7 @@ const fs = require("fs");
 
 Generator.generateFromModel(
   {
-    outputFile: `../../../../../lib/AppsyncConstruct/index.ts`,
+    outputFile: `../../../../../lib/${CONSTRUCTS.appsync}/index.ts`,
   },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
