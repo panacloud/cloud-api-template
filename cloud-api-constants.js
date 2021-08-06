@@ -18,4 +18,5 @@ var CONSTRUCTS;
     CONSTRUCTS["dynamodb"] = "DynamodbConstruct";
     CONSTRUCTS["lambda"] = "LambdaConstruct";
     CONSTRUCTS["neptuneDb"] = "VpcNeptuneConstruct";
+    CONSTRUCTS["auroradb"] = "AuroraDBConstruct";
 })(CONSTRUCTS = exports.CONSTRUCTS || (exports.CONSTRUCTS = {}));

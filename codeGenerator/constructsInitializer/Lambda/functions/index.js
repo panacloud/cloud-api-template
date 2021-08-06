@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lambdaHandlerForDynamodb = exports.lambdaProperiesHandlerForDynoDb = exports.lambdaProperiesHandlerForNeptuneDb = exports.lambdaHandlerForNeptunedb = exports.lambdaPropsHandlerForNeptunedb = void 0;
+exports.lambdaHandlerForDynamodb = exports.lambdaProperiesHandlerForDynoDb = exports.lambdaProperiesHandlerForNeptuneDb = exports.lambdaHandlerForNeptunedb = exports.lambdaHandlerForAuroradb = exports.lambdaPropsHandlerForAuroradb = exports.lambdaPropsHandlerForNeptunedb = void 0;
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../../cloud-api-constants");
 const Lambda_1 = require("../../../../Constructs/Lambda");
@@ -23,6 +23,57 @@ const lambdaPropsHandlerForNeptunedb = () => {
         }];
 };
 exports.lambdaPropsHandlerForNeptunedb = lambdaPropsHandlerForNeptunedb;
+const lambdaPropsHandlerForAuroradb = () => {
+    let props;
+    return props = [{
+            name: "VPCRef",
+            type: "ec2.Vpc"
+        }, {
+            name: "secretRef",
+            type: "string"
+        }, {
+            name: "serviceRole",
+            type: "iam.Role"
+        }];
+};
+exports.lambdaPropsHandlerForAuroradb = lambdaPropsHandlerForAuroradb;
+const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
+    const lambda = new Lambda_1.Lambda(output);
+    const ts = new typescript_1.TypeScriptWriter(output);
+    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        if (database === cloud_api_constants_1.DATABASE.auroraDb) {
+            lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `props!.vpcRef`, undefined, [
+                {
+                    name: "INSTANCE_CREDENTIALS",
+                    value: `props!.secretRef`,
+                },
+            ], undefined, `props!.serviceRole`);
+            ts.writeLine();
+            ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+            ts.writeLine();
+        }
+    }
+    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
+            Object.keys(mutationsAndQueries).forEach((key) => {
+                lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.vpcRef`, undefined, [
+                    {
+                        name: "INSTANCE_CREDENTIALS",
+                        value: `props!.secretRef`,
+                    },
+                ], undefined, `props!.serviceRole`);
+                ts.writeLine();
+                ts.writeLine(`this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`);
+                ts.writeLine();
+            });
+        }
+        else {
+            ts.writeLine();
+        }
+    }
+    ;
+};
+exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
 const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);

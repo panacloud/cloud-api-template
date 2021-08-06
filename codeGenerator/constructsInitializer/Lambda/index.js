@@ -35,11 +35,19 @@ templating_1.Generator.generateFromModel({
         lambdaProps = functions_1.lambdaPropsHandlerForNeptunedb();
         lambdaProperties = functions_1.lambdaProperiesHandlerForNeptuneDb(output);
     }
+    if (database === cloud_api_constants_1.DATABASE.auroraDb) {
+        lambdaPropsWithName = "handlerProps";
+        lambdaProps = functions_1.lambdaPropsHandlerForAuroradb();
+        lambdaProperties = functions_1.lambdaProperiesHandlerForNeptuneDb(output);
+    }
     cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.lambda, lambdaPropsWithName, () => {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
             functions_1.lambdaHandlerForDynamodb(output);
         }
         if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
+            functions_1.lambdaHandlerForNeptunedb(output, lambdaStyle, database);
+        }
+        if (database === cloud_api_constants_1.DATABASE.auroraDb) {
             functions_1.lambdaHandlerForNeptunedb(output, lambdaStyle, database);
         }
     }, output, lambdaProps, lambdaProperties);

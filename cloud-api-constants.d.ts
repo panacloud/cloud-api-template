@@ -11,5 +11,6 @@ export declare enum CONSTRUCTS {
     appsync = "AppsyncConstruct",
     dynamodb = "DynamodbConstruct",
     lambda = "LambdaConstruct",
-    neptuneDb = "VpcNeptuneConstruct"
+    neptuneDb = "VpcNeptuneConstruct",
+    auroradb = "AuroraDBConstruct"
 }

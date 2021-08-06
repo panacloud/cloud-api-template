@@ -11,7 +11,7 @@ const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const fs = require("fs");
 templating_1.Generator.generateFromModel({
-    outputFile: `../../../../../lib/AppsyncConstruct/index.ts`,
+    outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}/index.ts`,
 }, (output, model) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     const appsync = new Appsync_1.Appsync(output);

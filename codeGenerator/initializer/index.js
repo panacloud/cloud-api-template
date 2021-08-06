@@ -29,6 +29,9 @@ templating_1.Generator.generateFromModel({
     if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
         ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
     }
+    if (database === cloud_api_constants_1.DATABASE.auroraDb) {
+        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
+    }
     ts.writeLine();
     cdk.initializeStack(`${_.upperFirst(_.camelCase(USER_WORKING_DIRECTORY))}`, () => {
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
@@ -46,7 +49,19 @@ templating_1.Generator.generateFromModel({
             ts.writeLine(`const ${apiName}_neptunedb = new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`);
             ts.writeLine();
             ts.writeLine(`const ${apiName}Lambda = new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}",{`);
-            functions_1.lambdaConstructPropsHandlerNeptunedb(output);
+            functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
+            ts.writeLine("})");
+            ts.writeLine();
+            ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",{`);
+            functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
+            ts.writeLine("})");
+            ts.writeLine();
+        }
+        if (database == cloud_api_constants_1.DATABASE.auroraDb) {
+            ts.writeLine(`const ${apiName}_auroradb = new ${cloud_api_constants_1.CONSTRUCTS.auroradb}(this,"${cloud_api_constants_1.CONSTRUCTS.auroradb}");`);
+            ts.writeLine();
+            ts.writeLine(`const ${apiName}Lambda = new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}",{`);
+            functions_1.lambdaConstructPropsHandlerAuroradb(output, apiName);
             ts.writeLine("})");
             ts.writeLine();
             ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",{`);
