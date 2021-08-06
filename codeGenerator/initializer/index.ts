@@ -5,7 +5,7 @@ import { CONSTRUCTS, DATABASE, LAMBDA } from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
 import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
-import {lambdaEnvHandler,propsHandlerForAppsyncConstructDynamodb,propsHandlerForDynoDbConstruct,propsHandlerForAppsyncConstructNeptunedb, lambdaConstructPropsHandlerNeptunedb} from "./functions";
+import {lambdaEnvHandler,propsHandlerForAppsyncConstructDynamodb,propsHandlerForDynoDbConstruct,propsHandlerForAppsyncConstructNeptunedb, lambdaConstructPropsHandlerNeptunedb, lambdaConstructPropsHandlerAuroradb} from "./functions";
 const jsonObj = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = jsonObj;
 const fs = require("fs");
@@ -31,6 +31,9 @@ Generator.generateFromModel(
     if (database === DATABASE.neptuneDb) {
       ts.writeImports(`./${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);
     }
+    if (database === DATABASE.auroraDb) {
+      ts.writeImports(`./${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
+    }
 
     ts.writeLine()
     cdk.initializeStack(
@@ -52,7 +55,19 @@ Generator.generateFromModel(
           ts.writeLine(`const ${apiName}_neptunedb = new ${CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`)
           ts.writeLine()
           ts.writeLine(`const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`);
-          lambdaConstructPropsHandlerNeptunedb(output)
+          lambdaConstructPropsHandlerNeptunedb(output,apiName)
+          ts.writeLine("})");  
+          ts.writeLine();  
+          ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`);
+          propsHandlerForAppsyncConstructNeptunedb(output,apiName,lambdaStyle,mutationsAndQueries);
+          ts.writeLine("})");  
+          ts.writeLine();  
+        }
+        if (database == DATABASE.auroraDb) {
+          ts.writeLine(`const ${apiName}_auroradb = new ${CONSTRUCTS.auroradb}(this,"${CONSTRUCTS.auroradb}");`)
+          ts.writeLine()
+          ts.writeLine(`const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`);
+          lambdaConstructPropsHandlerAuroradb(output,apiName)
           ts.writeLine("})");  
           ts.writeLine();  
           ts.writeLine(`const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`);

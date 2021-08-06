@@ -29,7 +29,12 @@
     {
       "templateFile": "./codeGenerator/constructsInitializer/Neptune/index.js",
       "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./codeGenerator/constructsInitializer/Auroradb/index.js",
+      "modelFile": "model.json"
     }
+
 
   ],
   "compileTypeScript": false

@@ -29,11 +29,18 @@ export const lambdaEnvHandler = (
   }
 };
 
-export const lambdaConstructPropsHandlerNeptunedb=(output:TextWriter)=>{
+export const lambdaConstructPropsHandlerNeptunedb=(output:TextWriter,apiName:string)=>{
   const ts = new TypeScriptWriter(output)
-  ts.writeLine(`SGRef:crudApi_neptunedb.SGRef,`)
-  ts.writeLine(`VPCRef:crudApi_neptunedb.VPCRef,`)
-  ts.writeLine(`neptuneReaderEndpoint:crudApi_neptunedb.neptuneReaderEndpoint`)
+  ts.writeLine(`SGRef:${apiName}_neptunedb.SGRef,`)
+  ts.writeLine(`VPCRef:${apiName}_neptunedb.VPCRef,`)
+  ts.writeLine(`neptuneReaderEndpoint:${apiName}_neptunedb.neptuneReaderEndpoint`)
+}
+
+export const lambdaConstructPropsHandlerAuroradb=(output:TextWriter,apiName:string)=>{
+  const ts = new TypeScriptWriter(output)
+  ts.writeLine(`secretRef:${apiName}_auroradb.secretRef,`)
+  ts.writeLine(`vpcRef:${apiName}_auroradb.vpcRef,`)
+  ts.writeLine(`serviceRole: ${apiName}_auroradb.serviceRole`)
 }
 
 export const propsHandlerForAppsyncConstructDynamodb = (

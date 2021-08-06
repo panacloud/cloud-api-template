@@ -14,4 +14,5 @@ export enum CONSTRUCTS {
   dynamodb = "DynamodbConstruct",
   lambda = "LambdaConstruct",
   neptuneDb = "VpcNeptuneConstruct",
+  auroradb = "AuroraDBConstruct"
 }
