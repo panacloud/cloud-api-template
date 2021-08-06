@@ -39,7 +39,7 @@ export const lambdaConstructPropsHandlerNeptunedb=(output:TextWriter,apiName:str
 export const lambdaConstructPropsHandlerAuroradb=(output:TextWriter,apiName:string)=>{
   const ts = new TypeScriptWriter(output)
   ts.writeLine(`secretRef:${apiName}_auroradb.secretRef,`)
-  ts.writeLine(`VPCRef:${apiName}_auroradb.vpcRef,`)
+  ts.writeLine(`vpcRef:${apiName}_auroradb.vpcRef,`)
   ts.writeLine(`serviceRole: ${apiName}_auroradb.serviceRole`)
 }
 

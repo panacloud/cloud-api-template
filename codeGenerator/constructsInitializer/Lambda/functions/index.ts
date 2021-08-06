@@ -30,7 +30,7 @@ export const lambdaPropsHandlerForNeptunedb=()=>{
 export const lambdaPropsHandlerForAuroradb=()=>{
   let props : { name: string,type:string}[]
   return props = [{
-    name :"VPCRef",
+    name :"vpcRef",
     type:"ec2.Vpc"
   },{
     name :"secretRef",
@@ -74,7 +74,7 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
           output,
           lambdaStyle,
           key,
-          `props!.vpcRef`,
+          `props!.VPCRef`,
           undefined,
           [
             {
@@ -147,6 +147,39 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
   }
 };
 }
+
+export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
+  
+  let properties: PropertyDefinition[] = [
+    {
+      name: `${apiName}_lambdaFnArn`,
+      typeName: "string",
+      accessModifier: "public",
+    },
+  ];
+  if (lambdaStyle === LAMBDA.single && database === DATABASE.auroraDb) {
+    properties = [
+      {
+        name: `${apiName}_lambdaFnArn`,
+        typeName: "string",
+        accessModifier: "public",
+        isReadonly:true
+      },
+    ];
+    return properties;
+  } else if (lambdaStyle === LAMBDA.multiple && database === DATABASE.auroraDb) {
+    Object.keys(mutationsAndQueries).forEach((key, index) => {
+      properties[index] = {
+        name: `${apiName}_lambdaFn_${key}Arn`,
+        typeName: "string",
+        accessModifier: "public",
+        isReadonly:true
+      };
+    });
+    return properties
+  }
+};
+
 
 export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
   
