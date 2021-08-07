@@ -13,80 +13,44 @@ export class Lambda extends CodeWriter {
     ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
   }
 
-  public initializeLambda(
-    apiName: string,
-    output: TextWriter,
-    lambdaStyle: string,
-    functionName?: string,
-    vpcName?: string,
-    securityGroupsName?: string,
-    environments?: Environment[],
-    vpcSubnets?: string,
-    roleName?: string
-  ) {
+  public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
+
+    let lambdaVariable:string = `${apiName}_lambdaFn`
+    let funcName :string = `${apiName}Lambda`
+    let handlerName:string = "main.handler"    
     const ts = new TypeScriptWriter(output);
-
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
-    let securityGroups = securityGroupsName
-      ? `securityGroups: [${securityGroupsName}],`
-      : "";
-    let env = environments
-      ? `environment: {
-      ${environments.map((v) => `${v.name}: ${v.value}`)},
-      },`
-      : "";
-    let vpcSubnet = vpcSubnets
-      ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
-      : "";
+    let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],`: "";
+    let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},` : "";
+    let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
     let role = roleName ? `role: ${roleName},` : "";
+     
+     if (lambdaStyle === LAMBDA.multiple) {
+       lambdaVariable = `${apiName}_lambdaFn_${functionName}`
+       funcName  = `${apiName}Lambda${functionName}`
+       handlerName = `${functionName}.handler`
+     }
 
-    if (lambdaStyle === LAMBDA.single) {
-      ts.writeVariableDeclaration(
-        {
-          name: `${apiName}_lambdaFn`,
-          typeName: "lambda.Function",
-          initializer: () => {
-            ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
-          functionName: "${apiName}Lambda",
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: "main.handler",
-          code: lambda.Code.fromAsset("lambda-fns"),
-          ${role}
-         ${vpc}
-          ${securityGroups}
-          ${env}
-          ${vpcSubnet}
-             })`);
-          },
-        },
-        "const"
-      );
-    } else if (lambdaStyle === LAMBDA.multiple) {
-      ts.writeVariableDeclaration(
-        {
-          name: `${apiName}_lambdaFn_${functionName}`,
-          typeName: "lambda.Function",
-          initializer: () => {
-            ts.writeLine(`new lambda.Function(this, "${apiName}Lambda${functionName}", {
-          functionName: "${apiName}Lambda${functionName}",
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: "${functionName}.handler",
-          code: lambda.Code.fromAsset("lambda-fns"),
-          ${role}
-         ${vpc}
-          ${securityGroups}
-          ${env}
-          ${vpcSubnet}
+     ts.writeVariableDeclaration(
+      {
+        name: lambdaVariable,
+        typeName: "lambda.Function",
+        initializer: () => {
+          ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
+        functionName: "${funcName}",
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: "${handlerName}",
+        code: lambda.Code.fromAsset("lambda-fns"),
+        ${role}
+       ${vpc}
+        ${securityGroups}
+        ${env}
+        ${vpcSubnet}
         })`);
-          },
         },
-        "const"
-      );
-    }
-  }
-
-  public nodeAddDependency(sourceName: string, valueName: string) {
-    this.writeLine(`${sourceName}.node.addDependency(${valueName});`);
+      },
+      "const"
+    );
   }
 
   public addEnvironment(

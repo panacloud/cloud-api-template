@@ -36,10 +36,10 @@ export class DynamoDB extends CodeWriter {
     functionName?: string
   ) {
     if (lambdaStyle === LAMBDA.single) {
-      this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
+      this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`);
     } else if (lambdaStyle === LAMBDA.multiple) {
       this.writeLine(
-        `${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`
+        `${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`
       );
     }
   }
