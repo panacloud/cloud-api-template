@@ -31,7 +31,7 @@
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/constructsInitializer/Auroradb/index.js",
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js",
       "modelFile": "model.json"
     }
   ],
