@@ -9,7 +9,6 @@ interface Props {
 
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
-  // public ds: string = "ds_";
 
   public importAppsync(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
@@ -88,53 +87,6 @@ export class Appsync extends CodeWriter {
       },
       "const"
     );
-
-    // if (lambdaStyle === LAMBDA.single) {
-    //   ds_initializerName = this.apiName + "dataSourceGraphql"
-    //   ds_variable = `ds_${dataSourceName}`
-    //   ds_name = `${dataSourceName}_dataSource`
-    //   lambdaFunctionArn = `${this.apiName}_lambdaFn`
-    // }
-    
-    // if (lambdaStyle === LAMBDA.single) {
-    //   ts.writeVariableDeclaration(
-    //     {
-    //       name: `ds_${dataSourceName}`,
-    //       typeName: "appsync.CfnDataSource",
-    //       initializer: () => {
-    //         ts.writeLine(`new appsync.CfnDataSource(this,'${
-    //           this.apiName + "dataSourceGraphql"
-    //         }',{
-    //         name: '${dataSourceName}_dataSource',
-    //         apiId: ${this.apiName}_appsync.attrApiId,
-    //         type:"AWS_LAMBDA",
-    //         lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn.functionArn},
-    //         serviceRoleArn:${serviceRole}_serviceRole.roleArn
-    //        })`);
-    //       },
-    //     },
-    //     "const"
-    //   );
-    // } else if (lambdaStyle === LAMBDA.multiple) {
-    //   ts.writeVariableDeclaration(
-    //     {
-    //       name: `ds_${dataSourceName}_${functionName}`,
-    //       typeName: "appsync.CfnDataSource",
-    //       initializer: () => {
-    //         ts.writeLine(`new appsync.CfnDataSource(this,'${
-    //           this.apiName + "dataSourceGraphql" + functionName
-    //         }',{
-    //         name: '${this.apiName}_dataSource_${functionName}',
-    //         apiId: ${this.apiName}_appsync.attrApiId,
-    //         type:"AWS_LAMBDA",
-    //         lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn_${functionName}.functionArn},
-    //         serviceRoleArn:${serviceRole}_serviceRole.roleArn
-    //        })`);
-    //       },
-    //     },
-    //     "const"
-    //   );
-    // }
   }
 
   public appsyncLambdaResolver(fieldName: string,typeName: string,dataSourceName: string,output:TextWriter) {
@@ -154,12 +106,6 @@ export class Appsync extends CodeWriter {
       },
       "const"
     );
-    // this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
-    //     apiId: ${this.apiName}_appsync.attrApiId,
-    //     typeName: "${typeName}",
-    //     fieldName: "${fieldName}",
-    //     dataSourceName: ${dataSourceName}.name
-    // })`);
   }
 
   public appsyncApiTest() {
@@ -237,11 +183,4 @@ export class Appsync extends CodeWriter {
         })
     );`);
   }
-
-  // public lambdaDataSourceResolverMutation(value: string) {
-  //   this.writeLineIndented(` lambdaDs.createResolver({
-  //     typeName: "Mutation",
-  //     fieldName: "${value}",
-  //   });`);
-  // }
 }
