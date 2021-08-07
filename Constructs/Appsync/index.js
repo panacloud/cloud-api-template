@@ -8,14 +8,7 @@ class Appsync extends core_1.CodeWriter {
     constructor() {
         super(...arguments);
         this.apiName = "appsync_api";
-        // public lambdaDataSourceResolverMutation(value: string) {
-        //   this.writeLineIndented(` lambdaDs.createResolver({
-        //     typeName: "Mutation",
-        //     fieldName: "${value}",
-        //   });`);
-        // }
     }
-    // public ds: string = "ds_";
     importAppsync(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
@@ -78,51 +71,6 @@ class Appsync extends core_1.CodeWriter {
          })`);
             },
         }, "const");
-        // if (lambdaStyle === LAMBDA.single) {
-        //   ds_initializerName = this.apiName + "dataSourceGraphql"
-        //   ds_variable = `ds_${dataSourceName}`
-        //   ds_name = `${dataSourceName}_dataSource`
-        //   lambdaFunctionArn = `${this.apiName}_lambdaFn`
-        // }
-        // if (lambdaStyle === LAMBDA.single) {
-        //   ts.writeVariableDeclaration(
-        //     {
-        //       name: `ds_${dataSourceName}`,
-        //       typeName: "appsync.CfnDataSource",
-        //       initializer: () => {
-        //         ts.writeLine(`new appsync.CfnDataSource(this,'${
-        //           this.apiName + "dataSourceGraphql"
-        //         }',{
-        //         name: '${dataSourceName}_dataSource',
-        //         apiId: ${this.apiName}_appsync.attrApiId,
-        //         type:"AWS_LAMBDA",
-        //         lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn.functionArn},
-        //         serviceRoleArn:${serviceRole}_serviceRole.roleArn
-        //        })`);
-        //       },
-        //     },
-        //     "const"
-        //   );
-        // } else if (lambdaStyle === LAMBDA.multiple) {
-        //   ts.writeVariableDeclaration(
-        //     {
-        //       name: `ds_${dataSourceName}_${functionName}`,
-        //       typeName: "appsync.CfnDataSource",
-        //       initializer: () => {
-        //         ts.writeLine(`new appsync.CfnDataSource(this,'${
-        //           this.apiName + "dataSourceGraphql" + functionName
-        //         }',{
-        //         name: '${this.apiName}_dataSource_${functionName}',
-        //         apiId: ${this.apiName}_appsync.attrApiId,
-        //         type:"AWS_LAMBDA",
-        //         lambdaConfig: {lambdaFunctionArn:${this.apiName}_lambdaFn_${functionName}.functionArn},
-        //         serviceRoleArn:${serviceRole}_serviceRole.roleArn
-        //        })`);
-        //       },
-        //     },
-        //     "const"
-        //   );
-        // }
     }
     appsyncLambdaResolver(fieldName, typeName, dataSourceName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -138,12 +86,6 @@ class Appsync extends core_1.CodeWriter {
         })`);
             },
         }, "const");
-        // this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
-        //     apiId: ${this.apiName}_appsync.attrApiId,
-        //     typeName: "${typeName}",
-        //     fieldName: "${fieldName}",
-        //     dataSourceName: ${dataSourceName}.name
-        // })`);
     }
     appsyncApiTest() {
         this.writeLine(`expect(actual).to(

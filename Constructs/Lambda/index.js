@@ -10,61 +10,37 @@ class Lambda extends core_1.CodeWriter {
         ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
     }
     initializeLambda(apiName, output, lambdaStyle, functionName, vpcName, securityGroupsName, environments, vpcSubnets, roleName) {
+        let lambdaVariable = `${apiName}_lambdaFn`;
+        let funcName = `${apiName}Lambda`;
+        let handlerName = "main.handler";
         const ts = new typescript_1.TypeScriptWriter(output);
         let vpc = vpcName ? `vpc: ${vpcName},` : "";
-        let securityGroups = securityGroupsName
-            ? `securityGroups: [${securityGroupsName}],`
-            : "";
-        let env = environments
-            ? `environment: {
-      ${environments.map((v) => `${v.name}: ${v.value}`)},
-      },`
-            : "";
-        let vpcSubnet = vpcSubnets
-            ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
-            : "";
+        let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
+        let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},` : "";
+        let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
         let role = roleName ? `role: ${roleName},` : "";
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-            ts.writeVariableDeclaration({
-                name: `${apiName}_lambdaFn`,
-                typeName: "lambda.Function",
-                initializer: () => {
-                    ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
-          functionName: "${apiName}Lambda",
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: "main.handler",
-          code: lambda.Code.fromAsset("lambda-fns"),
-          ${role}
-         ${vpc}
-          ${securityGroups}
-          ${env}
-          ${vpcSubnet}
-             })`);
-                },
-            }, "const");
+        if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+            lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
+            funcName = `${apiName}Lambda${functionName}`;
+            handlerName = `${functionName}.handler`;
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-            ts.writeVariableDeclaration({
-                name: `${apiName}_lambdaFn_${functionName}`,
-                typeName: "lambda.Function",
-                initializer: () => {
-                    ts.writeLine(`new lambda.Function(this, "${apiName}Lambda${functionName}", {
-          functionName: "${apiName}Lambda${functionName}",
-          runtime: lambda.Runtime.NODEJS_12_X,
-          handler: "${functionName}.handler",
-          code: lambda.Code.fromAsset("lambda-fns"),
-          ${role}
-         ${vpc}
-          ${securityGroups}
-          ${env}
-          ${vpcSubnet}
+        ts.writeVariableDeclaration({
+            name: lambdaVariable,
+            typeName: "lambda.Function",
+            initializer: () => {
+                ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
+        functionName: "${funcName}",
+        runtime: lambda.Runtime.NODEJS_12_X,
+        handler: "${handlerName}",
+        code: lambda.Code.fromAsset("lambda-fns"),
+        ${role}
+       ${vpc}
+        ${securityGroups}
+        ${env}
+        ${vpcSubnet}
         })`);
-                },
-            }, "const");
-        }
-    }
-    nodeAddDependency(sourceName, valueName) {
-        this.writeLine(`${sourceName}.node.addDependency(${valueName});`);
+            },
+        }, "const");
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {
         if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
