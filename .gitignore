@@ -2,3 +2,4 @@ node_modules/
 /model.json
 *.d.ts
 cloud-api-constants.js
+schema.graphql
