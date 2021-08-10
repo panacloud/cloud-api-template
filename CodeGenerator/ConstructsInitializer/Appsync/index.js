@@ -17,7 +17,7 @@ templating_1.Generator.generateFromModel({
     const appsync = new Appsync_1.Appsync(output);
     const cdk = new Cdk_1.Cdk(output);
     const iam = new Iam_1.Iam(output);
-    const schema = fs.readFileSync(`../../../../../graphql/schema.graphql`).toString("utf8");
+    const schema = fs.readFileSync(`../../../schema.graphql`).toString("utf8");
     const mutations = model.type.Mutation ? model.type.Mutation : {};
     const queries = model.type.Query ? model.type.Query : {};
     const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
@@ -25,15 +25,17 @@ templating_1.Generator.generateFromModel({
     cdk.importsForStack(output);
     appsync.importAppsync(output);
     iam.importIam(output);
-    let ConstructProps = [{
+    let ConstructProps = [
+        {
             name: `${apiName}_lambdaFnArn`,
-            type: "string"
-        }];
+            type: "string",
+        },
+    ];
     if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             ConstructProps[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
-                type: "string"
+                type: "string",
             };
         });
     }
