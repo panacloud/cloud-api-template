@@ -37,14 +37,16 @@ if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
                 console.error(err);
             }
             else {
-                Object.keys(api.paths).forEach((path, i) => {
-                    console.log("PathName => ", path);
-                    Object.keys(api.paths[path]).forEach((methodName) => {
-                        console.log("Lambda file name => ", api.paths.path.methodName.operationId);
-                        api.paths.path.methodName.parameters.forEach((param) => {
-                            console.log("InputParam => ", param.name);
+                Object.keys(api.paths).forEach((path) => {
+                    for (var methodName in api.paths[`${path}`]) {
+                        let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`];
+                        templating_1.Generator.generate({
+                            outputFile: `../../../../lambda-fns/${lambdaFunctionFile}.ts`,
+                        }, (writer) => {
+                            const lambda = new lambdaFunction_1.LambdaFunction(writer);
+                            lambda.helloWorldFunction(lambdaFunctionFile);
                         });
-                    });
+                    }
                 });
             }
         });
