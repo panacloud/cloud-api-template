@@ -14,9 +14,13 @@ if (database && database === cloud_api_constants_1.DATABASE.dynamoDb) {
         outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.dynamodb}/index.ts`,
     }, (output, model) => {
         const ts = new typescript_1.TypeScriptWriter(output);
-        const { apiName, lambdaStyle, database } = model.api;
-        const mutations = model.type.Mutation ? model.type.Mutation : {};
-        const queries = model.type.Query ? model.type.Query : {};
+        const { apiName, lambdaStyle, apiType } = model.api;
+        let mutations = {};
+        let queries = {};
+        if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+            mutations = model.type.Mutation ? model.type.Mutation : {};
+            queries = model.type.Query ? model.type.Query : {};
+        }
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
         const cdk = new Cdk_1.Cdk(output);
         const dynamoDB = new DynamoDB_1.DynamoDB(output);
@@ -25,10 +29,12 @@ if (database && database === cloud_api_constants_1.DATABASE.dynamoDb) {
         lambda.importLambda(output);
         dynamoDB.importDynamodb(output);
         ts.writeLine();
-        let props = [{
+        let props = [
+            {
                 name: `${apiName}_lambdaFn`,
                 type: "lambda.Function",
-            }];
+            },
+        ];
         if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             Object.keys(mutationsAndQueries).forEach((key, index) => {
                 props[index] = {
