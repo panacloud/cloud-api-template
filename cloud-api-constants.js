@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CONSTRUCTS = exports.DATABASE = exports.LAMBDA = void 0;
+exports.CONSTRUCTS = exports.APITYPE = exports.DATABASE = exports.LAMBDA = void 0;
 var LAMBDA;
 (function (LAMBDA) {
     LAMBDA["single"] = "SINGLE";
@@ -12,6 +12,11 @@ var DATABASE;
     DATABASE["auroraDb"] = "AURORASERVERLESS";
     DATABASE["neptuneDb"] = "NEPTUNE";
 })(DATABASE = exports.DATABASE || (exports.DATABASE = {}));
+var APITYPE;
+(function (APITYPE) {
+    APITYPE["graphql"] = "GRAPHQL API";
+    APITYPE["rest"] = "REST API";
+})(APITYPE = exports.APITYPE || (exports.APITYPE = {}));
 var CONSTRUCTS;
 (function (CONSTRUCTS) {
     CONSTRUCTS["appsync"] = "AppsyncConstruct";
@@ -19,4 +24,5 @@ var CONSTRUCTS;
     CONSTRUCTS["lambda"] = "LambdaConstruct";
     CONSTRUCTS["neptuneDb"] = "VpcNeptuneConstruct";
     CONSTRUCTS["auroradb"] = "AuroraDbConstruct";
+    CONSTRUCTS["apigateway"] = "ApiGatewayConstruct";
 })(CONSTRUCTS = exports.CONSTRUCTS || (exports.CONSTRUCTS = {}));
