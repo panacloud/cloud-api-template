@@ -64,6 +64,8 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
       );
       ts.writeLine();
       ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+      if (apiType === APITYPE.rest)
+        ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
       ts.writeLine()
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
@@ -118,6 +120,8 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
       );
       ts.writeLine();
       ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+      if (apiType === APITYPE.rest)
+        ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
       ts.writeLine()
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
