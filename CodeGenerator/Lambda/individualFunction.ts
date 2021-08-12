@@ -4,7 +4,7 @@ import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
 import { APITYPE, LAMBDA } from "../../cloud-api-constants";
 const SwaggerParser = require('@apidevtools/swagger-parser');
 const jsonObj = require(`../../model.json`);
-const openApi = require("../../schema.json")
+// const openApi = require("../../schema.json")s
 const { lambdaStyle, apiType } = jsonObj.api;
 
 if (lambdaStyle === LAMBDA.single) {
@@ -38,7 +38,7 @@ if (lambdaStyle === LAMBDA.single) {
     }
   }
   else {
-    SwaggerParser.validate(openApi, (err: any, api: any) => {
+    SwaggerParser.validate(jsonObj.openApiDef, (err: any, api: any) => {
       if (err) {
         console.error(err);
       }
