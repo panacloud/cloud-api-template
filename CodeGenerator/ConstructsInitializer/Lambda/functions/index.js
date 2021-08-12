@@ -54,6 +54,8 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
             ], undefined, `props!.serviceRole`);
             ts.writeLine();
             ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+            if (apiType === cloud_api_constants_1.APITYPE.rest)
+                ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
             ts.writeLine();
         }
     }
@@ -91,6 +93,8 @@ const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
             ], `ec2.SubnetType.ISOLATED`);
             ts.writeLine();
             ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+            if (apiType === cloud_api_constants_1.APITYPE.rest)
+                ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
             ts.writeLine();
         }
     }
