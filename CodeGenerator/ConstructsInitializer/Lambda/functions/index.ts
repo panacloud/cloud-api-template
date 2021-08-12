@@ -6,42 +6,54 @@ const model = require("../../../../model.json");
 const { apiName, lambdaStyle, database, apiType } = model.api;
 
 let mutations = {};
-let queries = {}
+let queries = {};
 if (apiType === APITYPE.graphql) {
   mutations = model.type.Mutation ? model.type.Mutation : {};
   queries = model.type.Query ? model.type.Query : {};
 }
 const mutationsAndQueries = { ...mutations, ...queries };
 
-export const lambdaPropsHandlerForNeptunedb=()=>{
-  let props : { name: string,type:string}[]
-  return props = [{
-    name :"VPCRef",
-    type:"ec2.Vpc"
-  },{
-    name :"SGRef",
-    type:"ec2.SecurityGroup"
-  },{
-    name :"neptuneReaderEndpoint",
-    type:"string"
-  }]
-}
+export const lambdaPropsHandlerForNeptunedb = () => {
+  let props: { name: string; type: string }[];
+  return (props = [
+    {
+      name: "VPCRef",
+      type: "ec2.Vpc",
+    },
+    {
+      name: "SGRef",
+      type: "ec2.SecurityGroup",
+    },
+    {
+      name: "neptuneReaderEndpoint",
+      type: "string",
+    },
+  ]);
+};
 
-export const lambdaPropsHandlerForAuroradb=()=>{
-  let props : { name: string,type:string}[]
-  return props = [{
-    name :"vpcRef",
-    type:"ec2.Vpc"
-  },{
-    name :"secretRef",
-    type:"string"
-  },{
-    name :"serviceRole",
-    type:"iam.Role"
-  }]
-}
+export const lambdaPropsHandlerForAuroradb = () => {
+  let props: { name: string; type: string }[];
+  return (props = [
+    {
+      name: "vpcRef",
+      type: "ec2.Vpc",
+    },
+    {
+      name: "secretRef",
+      type: "string",
+    },
+    {
+      name: "serviceRole",
+      type: "iam.Role",
+    },
+  ]);
+};
 
-export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,dataBase:DATABASE) => {
+export const lambdaHandlerForAuroradb = (
+  output: TextWriter,
+  lambdaStyle: LAMBDA,
+  dataBase: DATABASE
+) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
@@ -63,10 +75,12 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
         `props!.serviceRole`
       );
       ts.writeLine();
-      ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+      ts.writeLine(
+        `this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`
+      );
       if (apiType === APITYPE.rest)
         ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
-      ts.writeLine()
+      ts.writeLine();
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
     if (database === DATABASE.auroraDb) {
@@ -86,19 +100,24 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
           ],
           undefined,
           `props!.serviceRole`
-          );
+        );
         ts.writeLine();
-        ts.writeLine(`this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`);
-        ts.writeLine()
-    })
-  } else {
-    ts.writeLine();
+        ts.writeLine(
+          `this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`
+        );
+        ts.writeLine();
+      });
+    } else {
+      ts.writeLine();
+    }
   }
 };
-}
 
-
-export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,dataBase:DATABASE) => {
+export const lambdaHandlerForNeptunedb = (
+  output: TextWriter,
+  lambdaStyle: LAMBDA,
+  dataBase: DATABASE
+) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
@@ -119,10 +138,12 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
         `ec2.SubnetType.ISOLATED`
       );
       ts.writeLine();
-      ts.writeLine(`this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`);
+      ts.writeLine(
+        `this.${apiName}_lambdaFnArn = ${apiName}_lambdaFn.functionArn`
+      );
       if (apiType === APITYPE.rest)
         ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
-      ts.writeLine()
+      ts.writeLine();
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
     if (database === DATABASE.neptuneDb) {
@@ -134,7 +155,7 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
           key,
           `props!.VPCRef`,
           `props!.SGRef`,
-            [
+          [
             {
               name: "NEPTUNE_ENDPOINT",
               value: `props!.neptuneReaderEndpoint`,
@@ -143,21 +164,27 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
           `ec2.SubnetType.ISOLATED`
         );
         ts.writeLine();
-        ts.writeLine(`this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`);
-        ts.writeLine()
-    })
-  } else {
-    ts.writeLine();
+        ts.writeLine(
+          `this.${apiName}_lambdaFn_${key}Arn = ${apiName}_lambdaFn_${key}.functionArn`
+        );
+        ts.writeLine();
+      });
+    } else {
+      ts.writeLine();
+    }
   }
 };
-}
 
 export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
-  
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFnArn`,
       typeName: "string",
+      accessModifier: "public",
+    },
+    {
+      name: `${apiName}_lambdaFn`,
+      typeName: "lambda.Function",
       accessModifier: "public",
     },
   ];
@@ -167,30 +194,41 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
         name: `${apiName}_lambdaFnArn`,
         typeName: "string",
         accessModifier: "public",
-        isReadonly:true
+        isReadonly: true,
+      },
+      {
+        name: `${apiName}_lambdaFn`,
+        typeName: "lambda.Function",
+        accessModifier: "public",
       },
     ];
     return properties;
-  } else if (lambdaStyle === LAMBDA.multiple && database === DATABASE.auroraDb) {
+  } else if (
+    lambdaStyle === LAMBDA.multiple &&
+    database === DATABASE.auroraDb
+  ) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
         name: `${apiName}_lambdaFn_${key}Arn`,
         typeName: "string",
         accessModifier: "public",
-        isReadonly:true
+        isReadonly: true,
       };
     });
-    return properties
+    return properties;
   }
 };
 
-
 export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
-  
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFnArn`,
       typeName: "string",
+      accessModifier: "public",
+    },
+    {
+      name: `${apiName}_lambdaFn`,
+      typeName: "lambda.Function",
       accessModifier: "public",
     },
   ];
@@ -200,20 +238,28 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
         name: `${apiName}_lambdaFnArn`,
         typeName: "string",
         accessModifier: "public",
-        isReadonly:true
+        isReadonly: true,
+      },
+      {
+        name: `${apiName}_lambdaFn`,
+        typeName: "lambda.Function",
+        accessModifier: "public",
       },
     ];
     return properties;
-  } else if (lambdaStyle === LAMBDA.multiple && database === DATABASE.neptuneDb) {
+  } else if (
+    lambdaStyle === LAMBDA.multiple &&
+    database === DATABASE.neptuneDb
+  ) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
         name: `${apiName}_lambdaFn_${key}Arn`,
         typeName: "string",
         accessModifier: "public",
-        isReadonly:true
+        isReadonly: true,
       };
     });
-    return properties
+    return properties;
   }
 };
 
@@ -242,7 +288,7 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
         accessModifier: "public",
       };
     });
-    return properties
+    return properties;
   }
 };
 
