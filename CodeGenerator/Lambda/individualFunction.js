@@ -6,7 +6,7 @@ const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const SwaggerParser = require('@apidevtools/swagger-parser');
 const jsonObj = require(`../../model.json`);
-const openApi = require("../../schema.json");
+// const openApi = require("../../schema.json")s
 const { lambdaStyle, apiType } = jsonObj.api;
 if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
     if (apiType === cloud_api_constants_1.APITYPE.graphql) {
@@ -32,7 +32,7 @@ if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         }
     }
     else {
-        SwaggerParser.validate(openApi, (err, api) => {
+        SwaggerParser.validate(jsonObj.openApiDef, (err, api) => {
             if (err) {
                 console.error(err);
             }
