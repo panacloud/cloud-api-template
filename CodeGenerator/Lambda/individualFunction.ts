@@ -43,14 +43,19 @@ if (lambdaStyle === LAMBDA.single) {
         console.error(err);
       }
       else {
-        Object.keys(api.paths).forEach((path, i) => {
-          console.log("PathName => ", path);
-          Object.keys(api.paths[path]).forEach((methodName) => {
-            console.log("Lambda file name => ", api.paths.path.methodName.operationId);
-            api.paths.path.methodName.parameters.forEach((param: any) => {
-              console.log("InputParam => ", param.name);
-            })
-          })
+        Object.keys(api.paths).forEach((path) => {
+          for (var methodName in api.paths[`${path}`]) {
+            let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`]
+            Generator.generate(
+              {
+                outputFile: `../../../../lambda-fns/${lambdaFunctionFile}.ts`,
+              },
+              (writer: TextWriter) => {
+                const lambda = new LambdaFunction(writer);
+                lambda.helloWorldFunction(lambdaFunctionFile);
+              }
+            );
+          }
         })
       }
     })
