@@ -2,7 +2,7 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
 import { APITYPE, LAMBDA } from "../../cloud-api-constants";
-import * as SwaggerParser from '@apidevtools/swagger-parser';
+const SwaggerParser = require('@apidevtools/swagger-parser');
 const jsonObj = require(`../../model.json`);
 const { lambdaStyle, apiType } = jsonObj.api;
 
@@ -37,14 +37,14 @@ if (lambdaStyle === LAMBDA.single) {
     }
   }
   else {
-    SwaggerParser.validate(JSON.parse(jsonObj.openApiDef), (err, api) => {
+    SwaggerParser.validate(JSON.parse(jsonObj.openApiDef), (err: any, api: any) => {
       if (err) {
         console.error(err);
       }
       else {
         Object.keys(api.paths).forEach((path, i) => {
           console.log("PathName => ", path);
-          Object.keys(api.paths.path).forEach((methodName) => {
+          Object.keys(api.paths[path]).forEach((methodName) => {
             console.log("Lambda file name => ", api.paths.path.methodName.operationId);
             api.paths.path.methodName.parameters.forEach((param: any) => {
               console.log("InputParam => ", param.name);
