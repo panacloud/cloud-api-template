@@ -83,6 +83,15 @@ export const propsHandlerForAppsyncConstructNeptunedb = (
   }
 };
 
+export const propsHandlerForApiGatewayConstruct = (
+  output: TextWriter,
+  apiName: string
+) => {
+  const ts = new TypeScriptWriter(output);
+  let lambdafunc = `${apiName}_lambdaFn`;
+  ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`)
+}
+
 
 export const propsHandlerForDynoDbConstruct = (
   output: TextWriter,
@@ -104,4 +113,6 @@ export const propsHandlerForDynoDbConstruct = (
     });
     // return dbProps
 }
+
+
 }
