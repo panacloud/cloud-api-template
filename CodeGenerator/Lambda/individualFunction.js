@@ -5,8 +5,8 @@ const templating_1 = require("@yellicode/templating");
 const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const jsonObj = require(`../../model.json`);
-const { lambdaStyle } = jsonObj.api;
-if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+const { lambdaStyle, apiType } = jsonObj.api;
+if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && apiType === cloud_api_constants_1.APITYPE.graphql) {
     if ((_a = jsonObj === null || jsonObj === void 0 ? void 0 : jsonObj.type) === null || _a === void 0 ? void 0 : _a.Query) {
         Object.keys(jsonObj.type.Query).forEach((key) => {
             templating_1.Generator.generate({

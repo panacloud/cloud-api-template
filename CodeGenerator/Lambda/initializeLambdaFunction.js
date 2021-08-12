@@ -5,8 +5,8 @@ const typescript_1 = require("@yellicode/typescript");
 const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const model = require("../../model.json");
-const { lambdaStyle } = model.api;
-if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+const { lambdaStyle, apiType } = model.api;
+if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && apiType === cloud_api_constants_1.APITYPE.graphql) {
     templating_1.Generator.generateFromModel({ outputFile: `../../../../lambda-fns/main.ts` }, (output, model) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const lambda = new lambdaFunction_1.LambdaFunction(output);
@@ -40,7 +40,7 @@ if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         });
     });
 }
-else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && apiType === cloud_api_constants_1.APITYPE.graphql) {
     if (model.type.Mutation) {
         Object.keys(model.type.Mutation).forEach((key) => {
             templating_1.Generator.generate({ outputFile: `../../../../lambda-fns/${key}.ts` }, (writer) => {

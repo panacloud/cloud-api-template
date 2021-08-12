@@ -24,7 +24,12 @@ templating_1.Generator.generateFromModel({
     const { apiName, lambdaStyle, database, apiType } = model.api;
     cdk.importsForStack(output);
     manager.importApiManager(output);
-    ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+    if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+    }
+    else {
+        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.apigateway}`, [cloud_api_constants_1.CONSTRUCTS.apigateway]);
+    }
     ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
         ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
