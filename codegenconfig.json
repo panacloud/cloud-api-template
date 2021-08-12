@@ -33,6 +33,10 @@
     {
       "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js",
       "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/ConstructsInitializer/ApiGateway/index.js",
+      "modelFile": "model.json"
     }
   ],
   "compileTypeScript": false
