@@ -1,11 +1,11 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
-import { LAMBDA } from "../../cloud-api-constants";
+import { APITYPE, LAMBDA } from "../../cloud-api-constants";
 const jsonObj = require(`../../model.json`);
-const { lambdaStyle } = jsonObj.api;
+const { lambdaStyle, apiType } = jsonObj.api;
 
-if (lambdaStyle === LAMBDA.single) {
+if (lambdaStyle === LAMBDA.single && apiType === APITYPE.graphql) {
   if (jsonObj?.type?.Query) {
     Object.keys(jsonObj.type.Query).forEach((key) => {
       Generator.generate(

@@ -38,7 +38,12 @@ Generator.generateFromModel(
     const { apiName, lambdaStyle, database, apiType } = model.api;
     cdk.importsForStack(output);
     manager.importApiManager(output);
-    ts.writeImports(`./${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
+    if (apiType === APITYPE.graphql) {
+      ts.writeImports(`./${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
+    }
+    else {
+      ts.writeImports(`./${CONSTRUCTS.apigateway}`, [CONSTRUCTS.apigateway]);
+    }
     ts.writeImports(`./${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
     if (database === DATABASE.dynamoDb) {
       ts.writeImports(`./${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
