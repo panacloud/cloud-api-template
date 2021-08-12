@@ -30,7 +30,7 @@ class LambdaFunction extends core_1.CodeWriter {
             }
         }
         else {
-            /* rest api  CURRENTLY WORKING*/
+            /* rest api */
             ts.writeLine(`exports.handler = async (event: any) => {`);
             ts.writeLine(`try {`);
             ts.writeLine();
@@ -41,6 +41,7 @@ class LambdaFunction extends core_1.CodeWriter {
             ts.writeLine();
             ts.writeLine(`}`);
             ts.writeLine("catch(err) {");
+            ts.writeLine(`}`);
             ts.writeLine(`}`);
         }
     }
