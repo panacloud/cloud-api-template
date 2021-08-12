@@ -4,6 +4,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { APITYPE, CONSTRUCTS } from "../../../cloud-api-constants";
 import { ApiGateway } from "../../../Constructs/ApiGateway";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Lambda } from "../../../Constructs/Lambda";
 const model = require("../../../model.json");
 
 Generator.generateFromModel(
@@ -15,8 +16,10 @@ Generator.generateFromModel(
     if (apiType === APITYPE.rest) {
       const ts = new TypeScriptWriter(output);
       const cdk = new Cdk(output);
+      const lambda = new Lambda(output)
       const apigw = new ApiGateway(output);
       cdk.importsForStack(output);
+      lambda.importLambda(output);
       apigw.importApiGateway(output);
 
       const props = [

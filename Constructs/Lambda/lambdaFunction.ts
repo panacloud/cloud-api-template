@@ -31,7 +31,7 @@ export class LambdaFunction extends CodeWriter {
     }
   }
   else {
-    /* rest api  CURRENTLY WORKING*/
+    /* rest api */
     ts.writeLine(`exports.handler = async (event: any) => {`);
       ts.writeLine(`try {`);
       ts.writeLine();
@@ -42,6 +42,7 @@ export class LambdaFunction extends CodeWriter {
       ts.writeLine();
       ts.writeLine(`}`);
       ts.writeLine("catch(err) {")
+      ts.writeLine(`}`);
       ts.writeLine(`}`);
   }
   }
