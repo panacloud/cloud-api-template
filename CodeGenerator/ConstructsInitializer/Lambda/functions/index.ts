@@ -1,17 +1,17 @@
 import { TextWriter } from "@yellicode/core";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
+import { APITYPE, DATABASE, LAMBDA } from "../../../../cloud-api-constants";
 import { Lambda } from "../../../../Constructs/Lambda";
 const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database } = model.api;
+const { apiName, lambdaStyle, database, apiType } = model.api;
 
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-
-const mutationsAndQueries = {
-  ...mutations,
-  ...queries,
-};
+let mutations = {};
+let queries = {}
+if (apiType === APITYPE.graphql) {
+  mutations = model.type.Mutation ? model.type.Mutation : {};
+  queries = model.type.Query ? model.type.Query : {};
+}
+const mutationsAndQueries = { ...mutations, ...queries };
 
 export const lambdaPropsHandlerForNeptunedb=()=>{
   let props : { name: string,type:string}[]

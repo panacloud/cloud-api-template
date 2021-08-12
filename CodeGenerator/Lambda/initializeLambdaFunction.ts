@@ -44,27 +44,27 @@ if (lambdaStyle === LAMBDA.single && apiType === APITYPE.graphql) {
     }
   );
 } else if (lambdaStyle === LAMBDA.multiple && apiType === APITYPE.graphql) {
-  if (model.type.Mutation) {
-    Object.keys(model.type.Mutation).forEach((key) => {
-      Generator.generate(
-        { outputFile: `../../../../lambda-fns/${key}.ts` },
-        (writer: TextWriter) => {
-          const lambda = new LambdaFunction(writer);
-          lambda.initializeLambdaFunction(writer, lambdaStyle);
-        }
-      );
-    });
-  }
+    if (model.type.Mutation) {
+      Object.keys(model.type.Mutation).forEach((key) => {
+        Generator.generate(
+          { outputFile: `../../../../lambda-fns/${key}.ts` },
+          (writer: TextWriter) => {
+            const lambda = new LambdaFunction(writer);
+            lambda.initializeLambdaFunction(writer, lambdaStyle);
+          }
+        );
+      });
+    }
 
-  if (model.type.Query) {
-    Object.keys(model.type.Query).forEach((key) => {
-      Generator.generate(
-        { outputFile: `../../../../lambda-fns/${key}.ts` },
-        (writer: TextWriter) => {
-          const lambda = new LambdaFunction(writer);
-          lambda.initializeLambdaFunction(writer, lambdaStyle);
-        }
-      );
-    });
-  }
+    if (model.type.Query) {
+      Object.keys(model.type.Query).forEach((key) => {
+        Generator.generate(
+          { outputFile: `../../../../lambda-fns/${key}.ts` },
+          (writer: TextWriter) => {
+            const lambda = new LambdaFunction(writer);
+            lambda.initializeLambdaFunction(writer, lambdaStyle);
+          }
+        );
+      });
+    }
 }

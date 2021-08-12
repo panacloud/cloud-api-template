@@ -29,13 +29,19 @@ Generator.generateFromModel(
   },
   (output: TextWriter, model: any) => {
     const ts = new TypeScriptWriter(output);
-    const mutations = model.type.Mutation ? model.type.Mutation : {};
-    const queries = model.type.Query ? model.type.Query : {};
+    const { apiName, lambdaStyle, database, apiType } = model.api;
+
+    let mutations = {};
+    let queries = {}
+    if (apiType === APITYPE.graphql) {
+      mutations = model.type.Mutation ? model.type.Mutation : {};
+      queries = model.type.Query ? model.type.Query : {};
+    }
+
     const mutationsAndQueries = { ...mutations, ...queries };
-    const appsync = new Appsync(output);
+    // const appsync = new Appsync(output);
     const cdk = new Cdk(output);
     const manager = new apiManager(output);
-    const { apiName, lambdaStyle, database, apiType } = model.api;
     cdk.importsForStack(output);
     manager.importApiManager(output);
     if (apiType === APITYPE.graphql) {
