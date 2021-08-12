@@ -5,9 +5,13 @@ const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../../cloud-api-constants");
 const Lambda_1 = require("../../../../Constructs/Lambda");
 const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database } = model.api;
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
+const { apiName, lambdaStyle, database, apiType } = model.api;
+let mutations = {};
+let queries = {};
+if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+    mutations = model.type.Mutation ? model.type.Mutation : {};
+    queries = model.type.Query ? model.type.Query : {};
+}
 const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const lambdaPropsHandlerForNeptunedb = () => {
     let props;

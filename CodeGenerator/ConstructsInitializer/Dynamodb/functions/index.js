@@ -5,9 +5,13 @@ const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../../cloud-api-constants");
 const DynamoDB_1 = require("../../../../Constructs/DynamoDB");
 const model = require("../../../../model.json");
-const { lambdaStyle } = model.api;
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
+const { lambdaStyle, apiType } = model.api;
+let mutations = {};
+let queries = {};
+if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+    mutations = model.type.Mutation ? model.type.Mutation : {};
+    queries = model.type.Query ? model.type.Query : {};
+}
 const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const dynamodbAccessHandler = (apiName, output) => {
     const dynamoDB = new DynamoDB_1.DynamoDB(output);

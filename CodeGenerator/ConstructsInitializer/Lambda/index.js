@@ -13,10 +13,10 @@ const { apiName, lambdaStyle, database } = model.api;
 templating_1.Generator.generateFromModel({
     outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}/index.ts`,
 }, (output, model) => {
-    const { apiName, lambdaStyle, database } = model.api;
-    const mutations = model.type.Mutation ? model.type.Mutation : {};
-    const queries = model.type.Query ? model.type.Query : {};
-    const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
+    // const { apiName, lambdaStyle, database } = model.api;
+    // const mutations = model.type.Mutation ? model.type.Mutation : {};
+    // const queries = model.type.Query ? model.type.Query : {};    
+    // const mutationsAndQueries = {...mutations,...queries,};
     const lambda = new Lambda_1.Lambda(output);
     let lambdaPropsWithName;
     let lambdaProps;

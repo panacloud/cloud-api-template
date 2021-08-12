@@ -4,7 +4,6 @@ const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const ApiManager_1 = require("../../Constructs/ApiManager");
-const Appsync_1 = require("../../Constructs/Appsync");
 const Cdk_1 = require("../../Constructs/Cdk");
 const functions_1 = require("./functions");
 const jsonObj = require("../../model.json");
@@ -15,13 +14,17 @@ templating_1.Generator.generateFromModel({
     outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
 }, (output, model) => {
     const ts = new typescript_1.TypeScriptWriter(output);
-    const mutations = model.type.Mutation ? model.type.Mutation : {};
-    const queries = model.type.Query ? model.type.Query : {};
+    const { apiName, lambdaStyle, database, apiType } = model.api;
+    let mutations = {};
+    let queries = {};
+    if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+        mutations = model.type.Mutation ? model.type.Mutation : {};
+        queries = model.type.Query ? model.type.Query : {};
+    }
     const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-    const appsync = new Appsync_1.Appsync(output);
+    // const appsync = new Appsync(output);
     const cdk = new Cdk_1.Cdk(output);
     const manager = new ApiManager_1.apiManager(output);
-    const { apiName, lambdaStyle, database, apiType } = model.api;
     cdk.importsForStack(output);
     manager.importApiManager(output);
     if (apiType === cloud_api_constants_1.APITYPE.graphql) {
