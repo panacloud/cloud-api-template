@@ -15,30 +15,38 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
 const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const lambdaPropsHandlerForNeptunedb = () => {
     let props;
-    return props = [{
+    return (props = [
+        {
             name: "VPCRef",
-            type: "ec2.Vpc"
-        }, {
+            type: "ec2.Vpc",
+        },
+        {
             name: "SGRef",
-            type: "ec2.SecurityGroup"
-        }, {
+            type: "ec2.SecurityGroup",
+        },
+        {
             name: "neptuneReaderEndpoint",
-            type: "string"
-        }];
+            type: "string",
+        },
+    ]);
 };
 exports.lambdaPropsHandlerForNeptunedb = lambdaPropsHandlerForNeptunedb;
 const lambdaPropsHandlerForAuroradb = () => {
     let props;
-    return props = [{
+    return (props = [
+        {
             name: "vpcRef",
-            type: "ec2.Vpc"
-        }, {
+            type: "ec2.Vpc",
+        },
+        {
             name: "secretRef",
-            type: "string"
-        }, {
+            type: "string",
+        },
+        {
             name: "serviceRole",
-            type: "iam.Role"
-        }];
+            type: "iam.Role",
+        },
+    ]);
 };
 exports.lambdaPropsHandlerForAuroradb = lambdaPropsHandlerForAuroradb;
 const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
@@ -77,7 +85,6 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
             ts.writeLine();
         }
     }
-    ;
 };
 exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
 const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
@@ -116,7 +123,6 @@ const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
             ts.writeLine();
         }
     }
-    ;
 };
 exports.lambdaHandlerForNeptunedb = lambdaHandlerForNeptunedb;
 const lambdaProperiesHandlerForAuroraDb = (output) => {
@@ -126,6 +132,11 @@ const lambdaProperiesHandlerForAuroraDb = (output) => {
             typeName: "string",
             accessModifier: "public",
         },
+        {
+            name: `${apiName}_lambdaFn`,
+            typeName: "lambda.Function",
+            accessModifier: "public",
+        },
     ];
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && database === cloud_api_constants_1.DATABASE.auroraDb) {
         properties = [
@@ -133,18 +144,24 @@ const lambdaProperiesHandlerForAuroraDb = (output) => {
                 name: `${apiName}_lambdaFnArn`,
                 typeName: "string",
                 accessModifier: "public",
-                isReadonly: true
+                isReadonly: true,
+            },
+            {
+                name: `${apiName}_lambdaFn`,
+                typeName: "lambda.Function",
+                accessModifier: "public",
             },
         ];
         return properties;
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && database === cloud_api_constants_1.DATABASE.auroraDb) {
+    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple &&
+        database === cloud_api_constants_1.DATABASE.auroraDb) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
                 typeName: "string",
                 accessModifier: "public",
-                isReadonly: true
+                isReadonly: true,
             };
         });
         return properties;
@@ -158,6 +175,11 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
             typeName: "string",
             accessModifier: "public",
         },
+        {
+            name: `${apiName}_lambdaFn`,
+            typeName: "lambda.Function",
+            accessModifier: "public",
+        },
     ];
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         properties = [
@@ -165,18 +187,24 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
                 name: `${apiName}_lambdaFnArn`,
                 typeName: "string",
                 accessModifier: "public",
-                isReadonly: true
+                isReadonly: true,
+            },
+            {
+                name: `${apiName}_lambdaFn`,
+                typeName: "lambda.Function",
+                accessModifier: "public",
             },
         ];
         return properties;
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && database === cloud_api_constants_1.DATABASE.neptuneDb) {
+    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple &&
+        database === cloud_api_constants_1.DATABASE.neptuneDb) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
                 typeName: "string",
                 accessModifier: "public",
-                isReadonly: true
+                isReadonly: true,
             };
         });
         return properties;
