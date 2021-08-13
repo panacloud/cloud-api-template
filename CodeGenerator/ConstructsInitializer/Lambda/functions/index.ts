@@ -230,7 +230,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
       name: `${apiName}_lambdaFn`,
       typeName: "lambda.Function",
       accessModifier: "public",
-    },
+    }
   ];
   if (lambdaStyle === LAMBDA.single && database === DATABASE.neptuneDb) {
     properties = [

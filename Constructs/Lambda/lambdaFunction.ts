@@ -42,6 +42,7 @@ export class LambdaFunction extends CodeWriter {
       ts.writeLine();
       ts.writeLine(`}`);
       ts.writeLine("catch(err) {")
+      ts.writeLine("return err;")
       ts.writeLine(`}`);
       ts.writeLine(`}`);
   }
