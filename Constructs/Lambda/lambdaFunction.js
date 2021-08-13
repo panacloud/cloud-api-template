@@ -41,6 +41,7 @@ class LambdaFunction extends core_1.CodeWriter {
             ts.writeLine();
             ts.writeLine(`}`);
             ts.writeLine("catch(err) {");
+            ts.writeLine("return err;");
             ts.writeLine(`}`);
             ts.writeLine(`}`);
         }

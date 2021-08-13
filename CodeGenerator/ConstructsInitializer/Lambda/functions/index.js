@@ -179,7 +179,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
             name: `${apiName}_lambdaFn`,
             typeName: "lambda.Function",
             accessModifier: "public",
-        },
+        }
     ];
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         properties = [
