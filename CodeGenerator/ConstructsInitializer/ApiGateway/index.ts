@@ -6,17 +6,17 @@ import { ApiGateway } from "../../../Constructs/ApiGateway";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
 const model = require("../../../model.json");
+const { apiName, apiType } = model.api;
 
-Generator.generateFromModel(
-  {
-    outputFile: `../../../../../lib/${CONSTRUCTS.apigateway}/index.ts`,
-  },
-  (output: TextWriter, model: any) => {
-    const { apiName, apiType } = model.api;
-    if (apiType === APITYPE.rest) {
+if (apiType === APITYPE.rest) {
+  Generator.generateFromModel(
+    {
+      outputFile: `../../../../../lib/${CONSTRUCTS.apigateway}/index.ts`,
+    },
+    (output: TextWriter, model: any) => {
       const ts = new TypeScriptWriter(output);
       const cdk = new Cdk(output);
-      const lambda = new Lambda(output)
+      const lambda = new Lambda(output);
       const apigw = new ApiGateway(output);
       cdk.importsForStack(output);
       lambda.importLambda(output);
@@ -40,5 +40,5 @@ Generator.generateFromModel(
         props
       );
     }
-  }
-);
+  );
+}
