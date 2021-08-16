@@ -5,13 +5,13 @@ export enum APITYPE {
 
 export enum LAMBDA {
   single = "Single",
-  multi = "Multiple",
+  multiple = "Multiple",
 }
 
 export enum DATABASE {
-  dynamo = "DynamoDB (NoSQL)",
-  neptune = "Neptune (Graph)",
-  aurora = "Aurora Serverless (Relational)",
+  dynamoDb = "DynamoDB (NoSQL)",
+  neptuneDb = "Neptune (Graph)",
+  auroraDb = "Aurora Serverless (Relational)",
   document = "DocumentDB (NoSQL MongoDB)",
 }
 
