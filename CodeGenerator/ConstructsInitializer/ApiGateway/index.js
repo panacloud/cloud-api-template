@@ -7,11 +7,11 @@ const ApiGateway_1 = require("../../../Constructs/ApiGateway");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Lambda_1 = require("../../../Constructs/Lambda");
 const model = require("../../../model.json");
-templating_1.Generator.generateFromModel({
-    outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.apigateway}/index.ts`,
-}, (output, model) => {
-    const { apiName, apiType } = model.api;
-    if (apiType === cloud_api_constants_1.APITYPE.rest) {
+const { apiName, apiType } = model.api;
+if (apiType === cloud_api_constants_1.APITYPE.rest) {
+    templating_1.Generator.generateFromModel({
+        outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.apigateway}/index.ts`,
+    }, (output, model) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const cdk = new Cdk_1.Cdk(output);
         const lambda = new Lambda_1.Lambda(output);
@@ -29,5 +29,5 @@ templating_1.Generator.generateFromModel({
             apigw.initializeApiGateway(apiName, output);
             ts.writeLine();
         }, output, props);
-    }
-});
+    });
+}
