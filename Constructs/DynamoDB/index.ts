@@ -21,7 +21,7 @@ export class DynamoDB extends CodeWriter {
           partitionKey:{
             name: "id",
             type: dynamodb.AttributeType.STRING,
-          },
+          }
         });`);
         },
       },
@@ -36,10 +36,26 @@ export class DynamoDB extends CodeWriter {
     functionName?: string
   ) {
     if (lambdaStyle === LAMBDA.single) {
-      this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`);
+      this.writeLine(`${tableName}.grantFullAccess(${lambda}_lambdaFn);`);
     } else if (lambdaStyle === LAMBDA.multiple) {
       this.writeLine(
-        `${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`
+        `${tableName}.grantFullAccess(${lambda}_lambdaFn_${functionName});`
+      );
+    }
+  }
+
+  public dbConstructLambdaAccess(
+    apiName: string,
+    dbConstructName:string,
+    lambdaConstructName:string,
+    lambdaStyle: string,
+    functionName?: string
+  ) {
+    if (lambdaStyle === LAMBDA.single) {
+      this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
+    } else if (lambdaStyle === LAMBDA.multiple) {
+      this.writeLine(
+        `${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn_${functionName});`
       );
     }
   }
