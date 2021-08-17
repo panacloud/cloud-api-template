@@ -18,11 +18,13 @@ if (model?.api?.lambdaStyle) {
       const testClass = new Cdk(output);
       const iam = new Iam(output);
       const lambda = new Lambda(output);
+      const cdk = new Cdk(output)
       const { apiName, lambdaStyle, database } = model.api;
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
       testClass.ImportsForTest(output,USER_WORKING_DIRECTORY);
+      cdk.importForDynamodbConstruct(output)
       ts.writeLine();
       testClass.initializeTest(
         "Lambda Attach With Dynamodb Constructs Test",
