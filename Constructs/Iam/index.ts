@@ -180,10 +180,28 @@ export class Iam extends CodeWriter {
     );`)    
   }
 
+  public lambdaIdentifier(){
+    this.writeLine(`const lambda_func = Lambda_consturct[0].node.children.filter(
+      (elem) => elem instanceof cdk.aws_lambda.Function
+    );`)
+  }
+
   public appsyncConsturctIdentifier(){
     this.writeLine(`const Appsync_consturct = stack.node.children.filter(
       (elem) => elem instanceof AppsyncConstruct
     );`)    
+  }
+
+  public appsyncApiIdentifier(){
+    this.writeLine(`const appsync_api = Appsync_consturct[0].node.children.filter(
+      (elem) => elem instanceof cdk.aws_appsync.CfnGraphQLApi
+    );`)
+  }
+
+  public appsyncRoleIdentifier(){
+    this.writeLine(`const role = Appsync_consturct[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_iam.Role;
+    });`)
   }
 
   public DynodbTableIdentifier() {

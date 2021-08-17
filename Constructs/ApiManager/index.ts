@@ -12,7 +12,7 @@ export class apiManager extends CodeWriter {
     ts.writeVariableDeclaration(
       {
         name: "apiManager",
-        typeName: "any",
+        typeName: "PanacloudManager",
         initializer: () => {
           ts.writeLine(`new PanacloudManager(this, "${name}APIManager")`);
         },
