@@ -83,7 +83,7 @@ export class Lambda extends CodeWriter {
         Runtime: "nodejs12.x",
         Environment: {
           Variables: {
-            TABLE_NAME: {
+            TableName: {
               Ref: stack.getLogicalId(
                 db_table[0].node.defaultChild as cdk.CfnElement
               ),
