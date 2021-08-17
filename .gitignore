@@ -1,4 +1,4 @@
 node_modules/
-/functions/**/*.d.ts
-/codeGenerator/**/*.d.ts
 /model.json
+*.d.ts
+schema.graphql

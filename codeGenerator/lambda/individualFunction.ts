@@ -1,16 +1,16 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
-import { LambdaFunction } from "../../functions/lambda/lambdaFunction";
+import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
+import { LAMBDA } from "../../cloud-api-constants";
 const jsonObj = require(`../../model.json`);
-const { USER_WORKING_DIRECTORY } = jsonObj;
-const {  lambdaStyle } = jsonObj.api;
+const { lambdaStyle } = jsonObj.api;
 
-if (lambdaStyle === "single") {
+if (lambdaStyle === LAMBDA.single) {
   if (jsonObj?.type?.Query) {
     Object.keys(jsonObj.type.Query).forEach((key) => {
       Generator.generate(
         {
-          outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/${key}.ts`,
+          outputFile: `../../../../lambda-fns/${key}.ts`,
         },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
@@ -24,7 +24,7 @@ if (lambdaStyle === "single") {
     Object.keys(jsonObj.type.Mutation).forEach((key) => {
       Generator.generate(
         {
-          outputFile: `../../../${USER_WORKING_DIRECTORY}/lambda-fns/${key}.ts`,
+          outputFile: `../../../../lambda-fns/${key}.ts`,
         },
         (writer: TextWriter) => {
           const lambda = new LambdaFunction(writer);
