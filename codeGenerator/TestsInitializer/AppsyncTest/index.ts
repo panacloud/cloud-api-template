@@ -20,26 +20,35 @@ if (API_TYPE === "GRAPHQL") {
       const ts = new TypeScriptWriter(output);
       const iam = new Iam(output);
       const appsync = new Appsync(output);
+      const cdk = new Cdk(output)
       const testClass = new Cdk(output);
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
-      testClass.ImportsForTest(output,USER_WORKING_DIRECTORY);
+      testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
+      cdk.importForAppsyncConstruct(output)
+      cdk.importForLambdaConstruct(output)
       testClass.initializeTest(
         "Appsync Api Constructs Test",
         () => {
           appsync.apiName = apiName;
+          iam.appsyncConsturctIdentifier();
+          ts.writeLine();
+          iam.appsyncApiIdentifier();
+          ts.writeLine();
           appsync.appsyncApiTest();
           ts.writeLine();
           appsync.appsyncApiKeyTest();
           ts.writeLine();
-          iam.appsyncServiceRoleTest();
+          iam.appsyncRoleIdentifier();
           ts.writeLine();
-          iam.roleIdentifierFromStack();
+          iam.appsyncServiceRoleTest();
           ts.writeLine();
           iam.appsyncRolePolicyTest();
           ts.writeLine();
-          iam.lambdaIdentifierFromStack();
+          iam.lambdaConsturctIdentifier();
+          ts.writeLine();
+          iam.lambdaIdentifier();
           ts.writeLine();
 
           if (lambdaStyle === LAMBDA.single) {
