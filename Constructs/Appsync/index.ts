@@ -140,7 +140,6 @@ export class Appsync extends CodeWriter {
   `);
   }
 
-
   public appsyncDatasourceTest(dataSourceName:string,lambdaFuncIndex:number) {
     this.writeLine();
     this.writeLine(`expect(actual).to(

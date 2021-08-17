@@ -72,7 +72,6 @@ export class Lambda extends CodeWriter {
     }
   }
 
-  
   public initializeTestForLambdaWithDynamoDB(
     funcName: string,
     handlerName: string
