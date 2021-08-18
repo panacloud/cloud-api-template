@@ -1,39 +1,51 @@
 {
   "templates": [
     {
-      "templateFile": "./CodeGenerator/StackInitializer/index.js",
+      "templateFile": "./CodeGenerator/StackInitializer/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/bin/index.js"
+      "templateFile": "./CodeGenerator/bin/index.ts"  
     },
     {
-      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.js",
+      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/Lambda/individualFunction.js"
+      "templateFile": "./CodeGenerator/Lambda/individualFunction.ts"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Appsync/index.js",
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Appsync/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.js",
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Dynamodb/index.js",
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Dynamodb/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Neptune/index.js",
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Neptune/index.ts",
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js",
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.ts",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.ts",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.ts",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.ts",
       "modelFile": "model.json"
     }
   ],
-  "compileTypeScript": false
+  "compileTypeScript": true
 }
