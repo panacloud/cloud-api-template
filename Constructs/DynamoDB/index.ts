@@ -21,7 +21,7 @@ export class DynamoDB extends CodeWriter {
           partitionKey:{
             name: "id",
             type: dynamodb.AttributeType.STRING,
-          },
+          }
         });`);
         },
       },
@@ -43,4 +43,43 @@ export class DynamoDB extends CodeWriter {
       );
     }
   }
+
+  public dbConstructLambdaAccess(
+    apiName: string,
+    dbConstructName:string,
+    lambdaConstructName:string,
+    lambdaStyle: string,
+    functionName?: string
+  ) {
+    if (lambdaStyle === LAMBDA.single) {
+      this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
+    } else if (lambdaStyle === LAMBDA.multiple) {
+      this.writeLine(
+        `${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn_${functionName});`
+      );
+    }
+  }
+
+  public initializeTestForDynamodb(TableName: string) {
+    this.writeLine(`expect(actual).to(
+      countResourcesLike("AWS::DynamoDB::Table",1, {
+        KeySchema: [
+          {
+            AttributeName: "id",
+            KeyType: "HASH",
+          },
+        ],
+        AttributeDefinitions: [
+          {
+            AttributeName: "id",
+            AttributeType: "S",
+          },
+        ],
+        BillingMode: "PAY_PER_REQUEST",
+        TableName: "${TableName}",
+      })
+    );
+  `);
+  }
+
 }
