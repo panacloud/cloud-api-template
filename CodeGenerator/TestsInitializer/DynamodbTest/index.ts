@@ -2,7 +2,7 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { Cdk } from "../../../Constructs/Cdk";
-import { DynamoDB } from "../../../Constructs/dynamoDB";
+import { DynamoDB } from "../../../Constructs/DynamoDB";
 import { DATABASE } from "../../../cloud-api-constants";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;

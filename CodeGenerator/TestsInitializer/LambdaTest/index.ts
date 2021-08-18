@@ -1,9 +1,9 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { Iam } from "../../../Constructs/iam";
+import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
-import { Lambda } from "../../../Constructs/lambda";
+import { Lambda } from "../../../Constructs/Lambda";
 import { LAMBDA } from "../../../cloud-api-constants";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;

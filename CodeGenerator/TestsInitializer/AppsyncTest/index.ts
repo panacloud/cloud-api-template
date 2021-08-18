@@ -2,7 +2,7 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../Constructs/Appsync";
-import { Iam } from "../../../Constructs/iam";
+import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
 import { LAMBDA } from "../../../cloud-api-constants";
 const jsonObj = require(`../../../model.json`);
