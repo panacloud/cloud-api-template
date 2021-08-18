@@ -5,7 +5,7 @@
       "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/bin/index.ts"
+      "templateFile": "./CodeGenerator/bin/index.ts"  
     },
     {
       "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.ts",
