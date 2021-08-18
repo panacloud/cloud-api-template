@@ -4,8 +4,8 @@ const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 const ApiManager_1 = require("../../Constructs/ApiManager");
-const Appsync_1 = require("../../Constructs/Appsync");
 const Cdk_1 = require("../../Constructs/Cdk");
+const DynamoDB_1 = require("../../Constructs/DynamoDB");
 const functions_1 = require("./functions");
 const jsonObj = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = jsonObj;
@@ -18,16 +18,18 @@ templating_1.Generator.generateFromModel({
     const mutations = model.type.Mutation ? model.type.Mutation : {};
     const queries = model.type.Query ? model.type.Query : {};
     const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-    const appsync = new Appsync_1.Appsync(output);
     const cdk = new Cdk_1.Cdk(output);
+    const dynamodb = new DynamoDB_1.DynamoDB(output);
     const manager = new ApiManager_1.apiManager(output);
     const { apiName, lambdaStyle, database } = model.api;
     cdk.importsForStack(output);
     manager.importApiManager(output);
-    ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
-    ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
+    cdk.importForAppsyncConstruct(output);
+    if (lambdaStyle) {
+        cdk.importForLambdaConstruct(output);
+    }
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
-        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
+        cdk.importForDynamodbConstruct(output);
     }
     if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
         ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
@@ -40,15 +42,35 @@ templating_1.Generator.generateFromModel({
         manager.apiManagerInitializer(output, USER_WORKING_DIRECTORY);
         ts.writeLine();
         if (database == cloud_api_constants_1.DATABASE.dynamoDb) {
-            ts.writeLine(`const ${apiName}Lambda = new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}");`);
+            ts.writeVariableDeclaration({
+                name: `${apiName}_table`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.dynamodb,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}")`);
+                }
+            }, "const");
             ts.writeLine();
-            ts.writeLine(`const ${apiName}_table = new ${cloud_api_constants_1.CONSTRUCTS.dynamodb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.dynamodb}",{`);
-            functions_1.propsHandlerForDynoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.writeLine("})");
-            functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.writeLine(`const ${apiName} = new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",{`);
-            functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.writeLine("})");
+            ts.writeVariableDeclaration({
+                name: `${apiName}Lambda`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.lambda,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}",{`);
+                    functions_1.lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
+                    ts.writeLine("})");
+                }
+            }, "const");
+            ts.writeLine();
+            functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, mutationsAndQueries);
+            ts.writeLine();
+            ts.writeVariableDeclaration({
+                name: `${apiName}`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.appsync,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.appsync}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.appsync}",{`);
+                    functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    ts.writeLine("})");
+                }
+            }, "const");
         }
         if (database == cloud_api_constants_1.DATABASE.neptuneDb) {
             ts.writeLine(`const ${apiName}_neptunedb = new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`);

@@ -11,5 +11,11 @@ export declare class Iam extends CodeWriter {
     roleIdentifierFromStack(): void;
     lambdaIdentifierFromStack(): void;
     roleIdentifierFromLambda(): void;
-    DynodbIdentifierFromStack(): void;
+    dynamodbConsturctIdentifier(): void;
+    lambdaConsturctIdentifier(): void;
+    lambdaIdentifier(): void;
+    appsyncConsturctIdentifier(): void;
+    appsyncApiIdentifier(): void;
+    appsyncRoleIdentifier(): void;
+    DynodbTableIdentifier(): void;
 }

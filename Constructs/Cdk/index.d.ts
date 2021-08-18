@@ -6,9 +6,14 @@ interface consturctProps {
 }
 export declare class Cdk extends CodeWriter {
     importsForStack(output: TextWriter): void;
+    importForAppsyncConstruct(output: TextWriter): void;
+    importForDynamodbConstruct(output: TextWriter): void;
+    importForLambdaConstruct(output: TextWriter): void;
     initializeStack(name: string, contents: any, output: TextWriter): void;
     initializeConstruct(constructName: string, propsName: string | undefined, contents: any, output: TextWriter, constructProps?: consturctProps[], properties?: PropertyDefinition[]): void;
     nodeAddDependency(sourceName: string, valueName: string): void;
     tagAdd(source: string, name: string, value: string): void;
+    initializeTest(description: string, contents: any, output: TextWriter, workingDir: string): void;
+    ImportsForTest(output: TextWriter, workingDir: string): void;
 }
 export {};
