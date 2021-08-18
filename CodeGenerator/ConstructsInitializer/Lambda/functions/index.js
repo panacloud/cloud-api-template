@@ -184,13 +184,6 @@ const lambdaProperiesHandlerForDynoDb = (output) => {
         },
     ];
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        properties = [
-            {
-                name: `${apiName}_lambdaFn`,
-                typeName: "lambda.Function",
-                accessModifier: "public",
-            },
-        ];
         return properties;
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
@@ -210,7 +203,7 @@ const lambdaHandlerForDynamodb = (output) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
-            lambda.initializeLambda(apiName, output, lambdaStyle, undefined, undefined, undefined);
+            lambda.initializeLambda(apiName, output, lambdaStyle, undefined, undefined, undefined, [{ name: "TableName", value: "props!.tableName" }]);
             ts.writeLine();
             ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
         }
@@ -218,7 +211,7 @@ const lambdaHandlerForDynamodb = (output) => {
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
-                lambda.initializeLambda(apiName, output, lambdaStyle, key, undefined, undefined);
+                lambda.initializeLambda(apiName, output, lambdaStyle, key, undefined, undefined, [{ name: "TableName", value: "props!.tableName" }]);
                 ts.writeLine();
                 ts.writeLine(`this.${apiName}_lambdaFn_${key} = ${apiName}_lambdaFn_${key}`);
                 ts.writeLine();

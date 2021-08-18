@@ -1,25 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.propsHandlerForDynoDbConstruct = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaConstructPropsHandlerAuroradb = exports.lambdaConstructPropsHandlerNeptunedb = exports.lambdaEnvHandler = void 0;
+exports.propsHandlerForDynoDbConstruct = exports.LambdaAccessHandler = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaConstructPropsHandlerAuroradb = exports.lambdaConstructPropsHandlerNeptunedb = exports.lambdaPropsHandlerDynamodb = void 0;
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
-const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => {
+const DynamoDB_1 = require("../../../Constructs/DynamoDB");
+const lambdaPropsHandlerDynamodb = (output, dbConstructName) => {
     const ts = new typescript_1.TypeScriptWriter(output);
-    let apiLambda = apiName + "Lambda";
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        let lambdafunc = `${apiName}_lambdaFn`;
-        ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`);
-        ts.writeLine();
-    }
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        Object.keys(mutationsAndQueries).forEach((key) => {
-            let lambdafunc = `${apiName}_lambdaFn_${key}`;
-            ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`);
-            ts.writeLine();
-        });
-    }
+    ts.writeLine(`tableName:${dbConstructName}.table.tableName`);
+    ts.writeLine();
 };
-exports.lambdaEnvHandler = lambdaEnvHandler;
+exports.lambdaPropsHandlerDynamodb = lambdaPropsHandlerDynamodb;
 const lambdaConstructPropsHandlerNeptunedb = (output, apiName) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     ts.writeLine(`SGRef:${apiName}_neptunedb.SGRef,`);
@@ -66,6 +56,18 @@ const propsHandlerForAppsyncConstructNeptunedb = (output, apiName, lambdaStyle, 
     }
 };
 exports.propsHandlerForAppsyncConstructNeptunedb = propsHandlerForAppsyncConstructNeptunedb;
+const LambdaAccessHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => {
+    const dynamodb = new DynamoDB_1.DynamoDB(output);
+    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        dynamodb.dbConstructLambdaAccess(apiName, `${apiName}_table`, `${apiName}Lambda`, lambdaStyle);
+    }
+    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        Object.keys(mutationsAndQueries).forEach((key) => {
+            dynamodb.dbConstructLambdaAccess(apiName, `${apiName}_table`, `${apiName}Lambda`, lambdaStyle, key);
+        });
+    }
+};
+exports.LambdaAccessHandler = LambdaAccessHandler;
 const propsHandlerForDynoDbConstruct = (output, apiName, lambdaStyle, mutationsAndQueries) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {

@@ -50,5 +50,23 @@ class Lambda extends core_1.CodeWriter {
             this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
         }
     }
+    initializeTestForLambdaWithDynamoDB(funcName, handlerName) {
+        this.writeLine(`expect(actual).to(
+      haveResource("AWS::Lambda::Function", {
+        FunctionName: "${funcName}",
+        Handler: "${handlerName}.handler",
+        Runtime: "nodejs12.x",
+        Environment: {
+          Variables: {
+            TableName: {
+              Ref: stack.getLogicalId(
+                db_table[0].node.defaultChild as cdk.CfnElement
+              ),
+            },
+          },
+        },
+      })
+    );`);
+    }
 }
 exports.Lambda = Lambda;

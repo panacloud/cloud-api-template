@@ -3,12 +3,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cdk = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
+const cloud_api_constants_1 = require("../../cloud-api-constants");
 const _ = require("lodash");
 class Cdk extends core_1.CodeWriter {
     importsForStack(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
         ts.writeImports("constructs", ["Construct"]);
+    }
+    importForAppsyncConstruct(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+    }
+    importForDynamodbConstruct(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
+    }
+    importForLambdaConstruct(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
     }
     initializeStack(name, contents, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -61,6 +74,27 @@ class Cdk extends core_1.CodeWriter {
     }
     tagAdd(source, name, value) {
         this.writeLine(`Tags.of(${source}).add("${name}", "${value}");`);
+    }
+    initializeTest(description, contents, output, workingDir) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeLineIndented(`test("${description}", () => {`);
+        ts.writeLine(`const app = new cdk.App()`);
+        ts.writeLine(`const stack = new ${workingDir}.${_.upperFirst(_.camelCase(workingDir))}Stack(app, "MyTestStack");`);
+        ts.writeLine(`const actual = app.synth().getStackArtifact(stack.artifactId).template;`);
+        ts.writeLine();
+        contents();
+        ts.writeLineIndented(`})`);
+    }
+    ImportsForTest(output, workingDir) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports("aws-cdk-lib", "cdk");
+        ts.writeImports("@aws-cdk/assert", [
+            "countResources",
+            "haveResource",
+            "expect",
+            "countResourcesLike",
+        ]);
+        ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
     }
 }
 exports.Cdk = Cdk;
