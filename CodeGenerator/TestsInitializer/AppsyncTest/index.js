@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const Appsync_1 = require("../../../Constructs/Appsync");
-const iam_1 = require("../../../Constructs/iam");
+const Iam_1 = require("../../../Constructs/Iam");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const jsonObj = require(`../../../model.json`);
@@ -15,7 +15,7 @@ if (API_TYPE === "GRAPHQL") {
     }, (output, model) => {
         const { apiName, lambdaStyle, database } = model.api;
         const ts = new typescript_1.TypeScriptWriter(output);
-        const iam = new iam_1.Iam(output);
+        const iam = new Iam_1.Iam(output);
         const appsync = new Appsync_1.Appsync(output);
         const cdk = new Cdk_1.Cdk(output);
         const testClass = new Cdk_1.Cdk(output);

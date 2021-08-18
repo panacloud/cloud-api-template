@@ -3,9 +3,9 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const iam_1 = require("../../../Constructs/iam");
+const Iam_1 = require("../../../Constructs/Iam");
 const Cdk_1 = require("../../../Constructs/Cdk");
-const lambda_1 = require("../../../Constructs/lambda");
+const Lambda_1 = require("../../../Constructs/Lambda");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
@@ -15,8 +15,8 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
     }, (output, model) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const testClass = new Cdk_1.Cdk(output);
-        const iam = new iam_1.Iam(output);
-        const lambda = new lambda_1.Lambda(output);
+        const iam = new Iam_1.Iam(output);
+        const lambda = new Lambda_1.Lambda(output);
         const cdk = new Cdk_1.Cdk(output);
         const { apiName, lambdaStyle, database } = model.api;
         const mutations = model.type.Mutation ? model.type.Mutation : {};
