@@ -222,14 +222,7 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
     },
   ];
   if (lambdaStyle === LAMBDA.single) {
-    properties = [
-      {
-        name: `${apiName}_lambdaFn`,
-        typeName: "lambda.Function",
-        accessModifier: "public",
-      },
-    ];
-    return properties;
+      return properties;
   } else if (lambdaStyle === LAMBDA.multiple) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
@@ -253,7 +246,8 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
         lambdaStyle,
         undefined,
         undefined,
-        undefined
+        undefined,
+        [{name:"TableName",value:"props!.tableName"}]
       );
       ts.writeLine();
       ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
@@ -267,7 +261,8 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
           lambdaStyle,
           key,
           undefined,
-          undefined
+          undefined,
+          [{name:"TableName",value:"props!.tableName"}]
         );
         ts.writeLine();
         ts.writeLine(
