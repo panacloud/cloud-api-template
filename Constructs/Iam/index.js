@@ -4,10 +4,6 @@ exports.Iam = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 class Iam extends core_1.CodeWriter {
-    importIam(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_iam as iam"]);
-    }
     serviceRoleForLambda(apiName, output, managedPolicies) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const policies = managedPolicies

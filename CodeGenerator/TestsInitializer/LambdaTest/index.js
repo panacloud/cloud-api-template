@@ -7,25 +7,26 @@ const Iam_1 = require("../../../Constructs/Iam");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Lambda_1 = require("../../../Constructs/Lambda");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _a === void 0 ? void 0 : _a.lambdaStyle) {
-    templating_1.Generator.generateFromModel({
+    templating_1.Generator.generate({
         outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-lambda.test.ts`,
-    }, (output, model) => {
+    }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
-        const testClass = new Cdk_1.Cdk(output);
+        const cdk = new Cdk_1.Cdk(output);
         const iam = new Iam_1.Iam(output);
         const lambda = new Lambda_1.Lambda(output);
-        const cdk = new Cdk_1.Cdk(output);
-        const { apiName, lambdaStyle, database } = model.api;
+        const imp = new ConstructsImports_1.Imports(output);
+        const { apiName, lambdaStyle } = model.api;
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-        testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
-        cdk.importForDynamodbConstruct(output);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+        imp.importForDynamodbConstruct(output);
         ts.writeLine();
-        testClass.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {
+        cdk.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {
             ts.writeLine();
             iam.dynamodbConsturctIdentifier();
             ts.writeLine();

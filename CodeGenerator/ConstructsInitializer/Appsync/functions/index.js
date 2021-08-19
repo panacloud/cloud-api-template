@@ -6,11 +6,7 @@ const typescript_1 = require("@yellicode/typescript");
 const Appsync_1 = require("../../../../Constructs/Appsync");
 const Cdk_1 = require("../../../../Constructs/Cdk");
 const model = require("../../../../model.json");
-const { lambdaStyle } = model.api;
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-const appsyncDatasourceHandler = (apiName, output) => {
+const appsyncDatasourceHandler = (apiName, output, lambdaStyle, mutationsAndQueries) => {
     const appsync = new Appsync_1.Appsync(output);
     appsync.apiName = apiName;
     const ts = new typescript_1.TypeScriptWriter(output);
@@ -28,7 +24,7 @@ const appsyncDatasourceHandler = (apiName, output) => {
     }
 };
 exports.appsyncDatasourceHandler = appsyncDatasourceHandler;
-const appsyncResolverhandler = (apiName, output) => {
+const appsyncResolverhandler = (apiName, output, lambdaStyle) => {
     var _a, _b, _c, _d;
     const appsync = new Appsync_1.Appsync(output);
     appsync.apiName = apiName;

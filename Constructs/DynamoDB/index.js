@@ -5,10 +5,6 @@ const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 class DynamoDB extends core_1.CodeWriter {
-    importDynamodb(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_dynamodb as dynamodb"]);
-    }
     initializeDynamodb(apiName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({

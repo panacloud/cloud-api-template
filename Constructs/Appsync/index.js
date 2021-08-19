@@ -9,10 +9,6 @@ class Appsync extends core_1.CodeWriter {
         super(...arguments);
         this.apiName = "appsync_api";
     }
-    importAppsync(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
-    }
     initializeAppsyncApi(name, output, authenticationType) {
         this.apiName = name;
         const ts = new typescript_1.TypeScriptWriter(output);
