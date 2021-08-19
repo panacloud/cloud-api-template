@@ -8,6 +8,7 @@ const model = require("../../../../model.json");
 
 export const appsyncDatasourceHandler = (apiName :string , output: TextWriter,lambdaStyle:string,mutationsAndQueries:any) => {
   const appsync = new Appsync(output);
+  console.log("line number 21 appsyncDatasourceHandler===>",lambdaStyle)
   appsync.apiName = apiName
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
@@ -18,6 +19,7 @@ export const appsyncDatasourceHandler = (apiName :string , output: TextWriter,la
       lambdaStyle
     );
   } else if (lambdaStyle === LAMBDA.multiple) {
+    console.log("line number 21 under condition appsyncDatasourceHandler===>",lambdaStyle)
     Object.keys(mutationsAndQueries).forEach((key) => {
       appsync.appsyncLambdaDataSource(
         output,
