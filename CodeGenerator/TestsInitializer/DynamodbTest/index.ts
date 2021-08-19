@@ -4,6 +4,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 import { DATABASE } from "../../../cloud-api-constants";
+import { Imports } from "../../../Constructs/ConstructsImports";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
@@ -16,7 +17,8 @@ if (model?.api?.database === DATABASE.dynamoDb) {
       const ts = new TypeScriptWriter(output);
       const testClass = new Cdk(output);
       const dynodb = new DynamoDB(output);
-      testClass.ImportsForTest(output,USER_WORKING_DIRECTORY);
+      const imp = new Imports(output)
+      imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
       ts.writeLine();
       testClass.initializeTest(
         "Dynamodb Constructs Test",

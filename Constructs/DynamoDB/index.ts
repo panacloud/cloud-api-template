@@ -3,10 +3,6 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { LAMBDA } from "../../cloud-api-constants";
 
 export class DynamoDB extends CodeWriter {
-  public importDynamodb(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_dynamodb as dynamodb"]);
-  }
 
   public initializeDynamodb(apiName: string, output: TextWriter) {
     const ts = new TypeScriptWriter(output);

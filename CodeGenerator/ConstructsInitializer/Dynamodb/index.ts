@@ -3,22 +3,23 @@ import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 const model = require("../../../model.json");
-const { database } = model.api;
+const { database,apiName } = model.api;
 
 if (database && database === DATABASE.dynamoDb) {
-  Generator.generateFromModel(
+  Generator.generate(
     {
       outputFile: `../../../../../lib/${CONSTRUCTS.dynamodb}/index.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
-      const {apiName} = model.api;
       const cdk = new Cdk(output);
+      const imp = new Imports(output)
       const dynamoDB = new DynamoDB(output);
-      cdk.importsForStack(output);
-      dynamoDB.importDynamodb(output);
+      imp.importsForStack(output);
+      imp.importDynamodb(output);
       ts.writeLine();
       
       const properties: PropertyDefinition[] = [

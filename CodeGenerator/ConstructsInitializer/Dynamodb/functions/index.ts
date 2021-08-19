@@ -2,18 +2,8 @@ import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
 import { DynamoDB } from "../../../../Constructs/DynamoDB";
-const model = require("../../../../model.json");
-const {  lambdaStyle } = model.api;
 
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-
-const mutationsAndQueries = {
-  ...mutations,
-  ...queries,
-};
-
-export const dynamodbAccessHandler = (apiName:string,output:TextWriter)=>{
+export const dynamodbAccessHandler = (apiName:string,output:TextWriter,lambdaStyle:LAMBDA,mutationsAndQueries:any)=>{
   const dynamoDB = new DynamoDB(output)
   const ts = new TypeScriptWriter(output)
   if (lambdaStyle === LAMBDA.single) {
@@ -35,7 +25,7 @@ export const dynamodbAccessHandler = (apiName:string,output:TextWriter)=>{
   }
 }
 
-export const dynamodbPropsHandler = (apiName:string,output:TextWriter) => {
+export const dynamodbPropsHandler = (apiName:string,output:TextWriter,lambdaStyle:LAMBDA,mutationsAndQueries:any) => {
   const ts = new TypeScriptWriter(output)
   if (lambdaStyle && lambdaStyle === LAMBDA.single) {
     const props = {
