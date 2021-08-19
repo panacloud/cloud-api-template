@@ -15,7 +15,6 @@ const appsyncDatasourceHandler = (apiName, output, lambdaStyle, mutationsAndQuer
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key) => {
-            console.log("line 22  appsyncDatasourceHandler===> ", key);
             appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle, key);
             ts.writeLine();
         });
