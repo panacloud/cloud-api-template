@@ -5,28 +5,29 @@ import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
 import { LAMBDA } from "../../../cloud-api-constants";
+import { Imports } from "../../../Constructs/ConstructsImports";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
 if (model?.api?.lambdaStyle) {
-  Generator.generateFromModel(
+  Generator.generate(
     {
       outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
-      const testClass = new Cdk(output);
+      const cdk = new Cdk(output);
       const iam = new Iam(output);
       const lambda = new Lambda(output);
-      const cdk = new Cdk(output)
-      const { apiName, lambdaStyle, database } = model.api;
+      const imp = new Imports(output)
+      const { apiName, lambdaStyle } = model.api;
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
-      testClass.ImportsForTest(output,USER_WORKING_DIRECTORY);
-      cdk.importForDynamodbConstruct(output)
+      imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
+      imp.importForDynamodbConstruct(output)
       ts.writeLine();
-      testClass.initializeTest(
+      cdk.initializeTest(
         "Lambda Attach With Dynamodb Constructs Test",
         () => {
           ts.writeLine();

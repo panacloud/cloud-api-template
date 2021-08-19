@@ -2,16 +2,6 @@ import { TextWriter } from "@yellicode/core";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
 import { Lambda } from "../../../../Constructs/Lambda";
-const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database } = model.api;
-
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-
-const mutationsAndQueries = {
-  ...mutations,
-  ...queries,
-};
 
 export const lambdaPropsHandlerForNeptunedb=()=>{
   let props : { name: string,type:string}[]
@@ -41,11 +31,11 @@ export const lambdaPropsHandlerForAuroradb=()=>{
   }]
 }
 
-export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,dataBase:DATABASE) => {
+export const lambdaHandlerForAuroradb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
-    if (database === DATABASE.auroraDb) {
+    if (dataBase === DATABASE.auroraDb) {
       lambda.initializeLambda(
         apiName,
         output,
@@ -67,7 +57,7 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
       ts.writeLine()
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
-    if (database === DATABASE.auroraDb) {
+    if (dataBase === DATABASE.auroraDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
           apiName,
@@ -96,11 +86,11 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,lambdaStyle:LAMBDA,d
 }
 
 
-export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,dataBase:DATABASE) => {
+export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
-    if (database === DATABASE.neptuneDb) {
+    if (dataBase === DATABASE.neptuneDb) {
       lambda.initializeLambda(
         apiName,
         output,
@@ -121,7 +111,7 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
       ts.writeLine()
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
-    if (database === DATABASE.neptuneDb) {
+    if (dataBase === DATABASE.neptuneDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
           apiName,
@@ -148,7 +138,7 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,lambdaStyle:LAMBDA,
 };
 }
 
-export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
+export const lambdaProperiesHandlerForAuroraDb = (apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
   
   let properties: PropertyDefinition[] = [
     {
@@ -157,7 +147,7 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
       accessModifier: "public",
     },
   ];
-  if (lambdaStyle === LAMBDA.single && database === DATABASE.auroraDb) {
+  if (lambdaStyle === LAMBDA.single && dataBase === DATABASE.auroraDb) {
     properties = [
       {
         name: `${apiName}_lambdaFnArn`,
@@ -167,7 +157,7 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
       },
     ];
     return properties;
-  } else if (lambdaStyle === LAMBDA.multiple && database === DATABASE.auroraDb) {
+  } else if (lambdaStyle === LAMBDA.multiple && dataBase === DATABASE.auroraDb) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
         name: `${apiName}_lambdaFn_${key}Arn`,
@@ -181,7 +171,7 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
 };
 
 
-export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
+export const lambdaProperiesHandlerForNeptuneDb = (apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
   
   let properties: PropertyDefinition[] = [
     {
@@ -190,7 +180,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
       accessModifier: "public",
     },
   ];
-  if (lambdaStyle === LAMBDA.single && database === DATABASE.neptuneDb) {
+  if (lambdaStyle === LAMBDA.single && dataBase === DATABASE.neptuneDb) {
     properties = [
       {
         name: `${apiName}_lambdaFnArn`,
@@ -200,7 +190,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
       },
     ];
     return properties;
-  } else if (lambdaStyle === LAMBDA.multiple && database === DATABASE.neptuneDb) {
+  } else if (lambdaStyle === LAMBDA.multiple && dataBase === DATABASE.neptuneDb) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
         name: `${apiName}_lambdaFn_${key}Arn`,
@@ -213,7 +203,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
   }
 };
 
-export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
+export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:LAMBDA,apiName:string,mutationsAndQueries:any) => {
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFn`,
@@ -235,11 +225,11 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
   }
 };
 
-export const lambdaHandlerForDynamodb = (output: TextWriter) => {
+export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
-    if (database === DATABASE.dynamoDb) {
+    if (dataBase === DATABASE.dynamoDb) {
       lambda.initializeLambda(
         apiName,
         output,
@@ -253,7 +243,7 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
       ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
-    if (database === DATABASE.dynamoDb) {
+    if (dataBase === DATABASE.dynamoDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
           apiName,

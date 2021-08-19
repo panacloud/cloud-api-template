@@ -8,10 +8,6 @@ interface Environment {
 }
 
 export class Lambda extends CodeWriter {
-  public importLambda(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
-  }
 
   public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
 
