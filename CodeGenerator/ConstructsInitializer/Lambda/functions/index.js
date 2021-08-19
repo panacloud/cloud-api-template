@@ -4,11 +4,6 @@ exports.lambdaHandlerForDynamodb = exports.lambdaProperiesHandlerForDynoDb = exp
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../../cloud-api-constants");
 const Lambda_1 = require("../../../../Constructs/Lambda");
-const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database } = model.api;
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const lambdaPropsHandlerForNeptunedb = () => {
     let props;
     return props = [{
@@ -37,11 +32,11 @@ const lambdaPropsHandlerForAuroradb = () => {
         }];
 };
 exports.lambdaPropsHandlerForAuroradb = lambdaPropsHandlerForAuroradb;
-const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
+const lambdaHandlerForAuroradb = (output, apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        if (database === cloud_api_constants_1.DATABASE.auroraDb) {
+        if (dataBase === cloud_api_constants_1.DATABASE.auroraDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `props!.vpcRef`, undefined, [
                 {
                     name: "INSTANCE_CREDENTIALS",
@@ -54,7 +49,7 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
         }
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        if (database === cloud_api_constants_1.DATABASE.auroraDb) {
+        if (dataBase === cloud_api_constants_1.DATABASE.auroraDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.vpcRef`, undefined, [
                     {
@@ -74,11 +69,11 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
     ;
 };
 exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
-const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
+const lambdaHandlerForNeptunedb = (output, apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
+        if (dataBase === cloud_api_constants_1.DATABASE.neptuneDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `props!.VPCRef`, `props!.SGRef`, [
                 {
                     name: "NEPTUNE_ENDPOINT",
@@ -91,7 +86,7 @@ const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
         }
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
+        if (dataBase === cloud_api_constants_1.DATABASE.neptuneDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.VPCRef`, `props!.SGRef`, [
                     {
@@ -111,7 +106,7 @@ const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
     ;
 };
 exports.lambdaHandlerForNeptunedb = lambdaHandlerForNeptunedb;
-const lambdaProperiesHandlerForAuroraDb = (output) => {
+const lambdaProperiesHandlerForAuroraDb = (apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
     let properties = [
         {
             name: `${apiName}_lambdaFnArn`,
@@ -119,7 +114,7 @@ const lambdaProperiesHandlerForAuroraDb = (output) => {
             accessModifier: "public",
         },
     ];
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && database === cloud_api_constants_1.DATABASE.auroraDb) {
+    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && dataBase === cloud_api_constants_1.DATABASE.auroraDb) {
         properties = [
             {
                 name: `${apiName}_lambdaFnArn`,
@@ -130,7 +125,7 @@ const lambdaProperiesHandlerForAuroraDb = (output) => {
         ];
         return properties;
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && database === cloud_api_constants_1.DATABASE.auroraDb) {
+    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && dataBase === cloud_api_constants_1.DATABASE.auroraDb) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
@@ -143,7 +138,7 @@ const lambdaProperiesHandlerForAuroraDb = (output) => {
     }
 };
 exports.lambdaProperiesHandlerForAuroraDb = lambdaProperiesHandlerForAuroraDb;
-const lambdaProperiesHandlerForNeptuneDb = (output) => {
+const lambdaProperiesHandlerForNeptuneDb = (apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
     let properties = [
         {
             name: `${apiName}_lambdaFnArn`,
@@ -151,7 +146,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
             accessModifier: "public",
         },
     ];
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && database === cloud_api_constants_1.DATABASE.neptuneDb) {
+    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && dataBase === cloud_api_constants_1.DATABASE.neptuneDb) {
         properties = [
             {
                 name: `${apiName}_lambdaFnArn`,
@@ -162,7 +157,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
         ];
         return properties;
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && database === cloud_api_constants_1.DATABASE.neptuneDb) {
+    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && dataBase === cloud_api_constants_1.DATABASE.neptuneDb) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
@@ -175,7 +170,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
     }
 };
 exports.lambdaProperiesHandlerForNeptuneDb = lambdaProperiesHandlerForNeptuneDb;
-const lambdaProperiesHandlerForDynoDb = (output) => {
+const lambdaProperiesHandlerForDynoDb = (lambdaStyle, apiName, mutationsAndQueries) => {
     let properties = [
         {
             name: `${apiName}_lambdaFn`,
@@ -198,18 +193,18 @@ const lambdaProperiesHandlerForDynoDb = (output) => {
     }
 };
 exports.lambdaProperiesHandlerForDynoDb = lambdaProperiesHandlerForDynoDb;
-const lambdaHandlerForDynamodb = (output) => {
+const lambdaHandlerForDynamodb = (output, apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
+        if (dataBase === cloud_api_constants_1.DATABASE.dynamoDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, undefined, undefined, [{ name: "TableName", value: "props!.tableName" }]);
             ts.writeLine();
             ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
         }
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
+        if (dataBase === cloud_api_constants_1.DATABASE.dynamoDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, undefined, undefined, [{ name: "TableName", value: "props!.tableName" }]);
                 ts.writeLine();

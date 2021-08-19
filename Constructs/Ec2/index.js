@@ -4,10 +4,6 @@ exports.Ec2 = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 class Ec2 extends core_1.CodeWriter {
-    importEc2(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_ec2 as ec2"]);
-    }
     initializeVpc(apiName, output, subnetConfig) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const config = subnetConfig

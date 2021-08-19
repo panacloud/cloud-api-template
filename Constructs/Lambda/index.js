@@ -5,10 +5,6 @@ const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../cloud-api-constants");
 class Lambda extends core_1.CodeWriter {
-    importLambda(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
-    }
     initializeLambda(apiName, output, lambdaStyle, functionName, vpcName, securityGroupsName, environments, vpcSubnets, roleName) {
         let lambdaVariable = `${apiName}_lambdaFn`;
         let funcName = `${apiName}Lambda`;
