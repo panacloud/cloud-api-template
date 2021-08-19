@@ -1,30 +1,31 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
+import { CONSTRUCTS, DATABASE } from "../../../cloud-api-constants";
 import { AuroraServerless } from "../../../Constructs/AuroraServerless";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { Ec2 } from "../../../Constructs/Ec2";
 import { Iam } from "../../../Constructs/Iam";
 import { auroradbPropertiesHandler, auroradbPropertiesInitializer } from "./function";
 const model = require("../../../model.json");
-const {database} = model.api;
+const {database,apiName} = model?.api;
 
 if(database && database === DATABASE.auroraDb){
-Generator.generateFromModel({  outputFile: `../../../../../lib/${CONSTRUCTS.auroradb}/index.ts`,},
-    (output: TextWriter,model: any) => {
+Generator.generate({  outputFile: `../../../../../lib/${CONSTRUCTS.auroradb}/index.ts`,},
+    (output: TextWriter) => {
         const ts = new TypeScriptWriter(output)
-        const { apiName, lambdaStyle, database } = model.api;
         const cdk = new Cdk(output);
         const ec2 = new Ec2(output);
         const aurora = new AuroraServerless(output);
         const iam = new Iam(output);
+        const imp = new Imports(output)
         const auroradbProperties:PropertyDefinition[] = auroradbPropertiesHandler()
-        cdk.importsForStack(output)
-        iam.importIam(output)
+        imp.importsForStack(output)
+        imp.importIam(output)
         ts.writeImports("aws-cdk-lib", ["Duration"]);
-        aurora.importRds(output);
-        ec2.importEc2(output);
+        imp.importRds(output);
+        imp.importEc2(output);
         ts.writeLine()
       
         cdk.initializeConstruct(CONSTRUCTS.auroradb,undefined,()=>{

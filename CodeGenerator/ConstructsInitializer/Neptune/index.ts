@@ -3,27 +3,25 @@ import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { Ec2 } from "../../../Constructs/Ec2";
-import { Iam } from "../../../Constructs/Iam";
 import { Neptune } from "../../../Constructs/Neptune";
 import { neptunePropertiesInitializer } from "./functions";
 const model = require("../../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
-const { apiName, lambdaStyle, database } = model.api;
+const {database ,apiName} = model.api;
 
 if(database && database === DATABASE.neptuneDb){
-Generator.generateFromModel({  outputFile: `../../../../../lib/${CONSTRUCTS.neptuneDb}/index.ts`,},
-    (output: TextWriter,model: any) => {
+Generator.generate({  outputFile: `../../../../../lib/${CONSTRUCTS.neptuneDb}/index.ts`,},
+    (output: TextWriter) => {
         const ts = new TypeScriptWriter(output)
-        const { apiName, lambdaStyle, database } = model.api;
         const cdk = new Cdk(output);
         const ec2 = new Ec2(output);
         const neptune = new Neptune(output);
-        const iam = new Iam(output);
-        cdk.importsForStack(output)
-        ts.writeImports("aws-cdk-lib", ["Tags"]);
-        neptune.importNeptune(output);
-        ec2.importEc2(output);
+        const imp = new Imports(output)
+        imp.importsForStack(output)
+        imp.importsForTags(output)
+        imp.importNeptune(output);
+        imp.importEc2(output);
         ts.writeLine()
         const propertiesForNeptuneDbConstruct : PropertyDefinition[]=[{
             name:"VPCRef",
