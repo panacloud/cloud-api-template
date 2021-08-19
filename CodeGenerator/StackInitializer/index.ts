@@ -1,11 +1,15 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS, DATABASE, LAMBDA } from "../../cloud-api-constants";
+import {
+  APITYPE,
+  CONSTRUCTS,
+  DATABASE,
+  LAMBDA,
+} from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
-import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
-import { DynamoDB } from "../../Constructs/DynamoDB";
+import { Imports } from "../../Constructs/ConstructsImports";
 import {
   propsHandlerForAppsyncConstructDynamodb,
   propsHandlerForAppsyncConstructNeptunedb,
@@ -16,7 +20,6 @@ import {
 } from "./functions";
 const jsonObj = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = jsonObj;
-const fs = require("fs");
 const _ = require("lodash");
 Generator.generateFromModel(
   {
@@ -28,23 +31,25 @@ Generator.generateFromModel(
     const queries = model.type.Query ? model.type.Query : {};
     const mutationsAndQueries = { ...mutations, ...queries };
     const cdk = new Cdk(output);
-    const dynamodb = new DynamoDB(output);
+    const imp = new Imports(output);
     const manager = new apiManager(output);
-    const { apiName, lambdaStyle, database } = model.api;
-    cdk.importsForStack(output);
-    manager.importApiManager(output);
-    cdk.importForAppsyncConstruct(output)
-    if(lambdaStyle){
-      cdk.importForLambdaConstruct(output)
+    const { apiName, lambdaStyle, database, apiType } = model.api;
+    imp.importsForStack(output);
+    imp.importApiManager(output);
+    if (apiType === APITYPE.graphql) {
+      imp.importForAppsyncConstruct(output);
+    }
+    if (lambdaStyle) {
+      imp.importForLambdaConstruct(output);
     }
     if (database === DATABASE.dynamoDb) {
-      cdk.importForDynamodbConstruct(output)
+      imp.importForDynamodbConstruct(output);
     }
     if (database === DATABASE.neptuneDb) {
-      ts.writeImports(`./${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);
+      imp.importForNeptuneConstruct(output);
     }
     if (database === DATABASE.auroraDb) {
-      ts.writeImports(`./${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
+      imp.importForAuroraDbConstruct(output);
     }
     ts.writeLine();
 
@@ -59,35 +64,60 @@ Generator.generateFromModel(
               name: `${apiName}_table`,
               typeName: CONSTRUCTS.dynamodb,
               initializer: () => {
-                ts.writeLine(`new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}")`);
-            }},
+                ts.writeLine(
+                  `new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}")`
+                );
+              },
+            },
             "const"
           );
           ts.writeLine();
-          ts.writeVariableDeclaration(
-            {
-              name: `${apiName}Lambda`,
-              typeName: CONSTRUCTS.lambda,
-              initializer: () => {
-                ts.writeLine(`new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`);
-                lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
-                ts.writeLine("})");
-            }},
-            "const"
-          );
-          ts.writeLine();
-          LambdaAccessHandler(output,apiName,lambdaStyle,mutationsAndQueries);
-          ts.writeLine();
-          ts.writeVariableDeclaration({
-              name: `${apiName}`,
-              typeName: CONSTRUCTS.appsync,
-              initializer: () => {
-                ts.writeLine(`new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`);
-                propsHandlerForAppsyncConstructDynamodb(output,apiName,lambdaStyle,mutationsAndQueries);
-                ts.writeLine("})");
-              }},
-            "const"
-          );
+
+          if (lambdaStyle) {
+            ts.writeVariableDeclaration(
+              {
+                name: `${apiName}Lambda`,
+                typeName: CONSTRUCTS.lambda,
+                initializer: () => {
+                  ts.writeLine(
+                    `new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`
+                  );
+                  lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
+                  ts.writeLine("})");
+                },
+              },
+              "const"
+            );
+            ts.writeLine();
+            LambdaAccessHandler(
+              output,
+              apiName,
+              lambdaStyle,
+              mutationsAndQueries
+            );
+            ts.writeLine();
+          }
+          if (apiType === APITYPE.graphql) {
+            ts.writeVariableDeclaration(
+              {
+                name: `${apiName}`,
+                typeName: CONSTRUCTS.appsync,
+                initializer: () => {
+                  ts.writeLine(
+                    `new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`
+                  );
+                  propsHandlerForAppsyncConstructDynamodb(
+                    output,
+                    apiName,
+                    lambdaStyle,
+                    mutationsAndQueries
+                  );
+                  ts.writeLine("})");
+                },
+              },
+              "const"
+            );
+          }
         }
         if (database == DATABASE.neptuneDb) {
           ts.writeLine(

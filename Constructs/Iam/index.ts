@@ -2,10 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Iam extends CodeWriter {
-  public importIam(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_iam as iam"]);
-  }
 
   public serviceRoleForLambda(
     apiName: string,
