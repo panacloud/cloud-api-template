@@ -3,17 +3,11 @@ import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../../Constructs/Appsync";
 import { Cdk } from "../../../../Constructs/Cdk";
+import { Lambda } from "../../../../Constructs/Lambda";
 const model = require("../../../../model.json");
-const { lambdaStyle } = model.api;
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
 
-const mutationsAndQueries = {
-  ...mutations,
-  ...queries,
-};
 
-export const appsyncDatasourceHandler = (apiName :string , output: TextWriter) => {
+export const appsyncDatasourceHandler = (apiName :string , output: TextWriter,lambdaStyle:LAMBDA,mutationsAndQueries:any) => {
   const appsync = new Appsync(output);
   appsync.apiName = apiName
   const ts = new TypeScriptWriter(output);
@@ -40,7 +34,7 @@ export const appsyncDatasourceHandler = (apiName :string , output: TextWriter) =
   }
 };
 
-export const appsyncResolverhandler = (apiName:string,output: TextWriter) => {
+export const appsyncResolverhandler = (apiName:string,output: TextWriter,lambdaStyle:LAMBDA) => {
     const appsync = new Appsync(output);
     appsync.apiName=apiName
     const cdk = new Cdk(output)

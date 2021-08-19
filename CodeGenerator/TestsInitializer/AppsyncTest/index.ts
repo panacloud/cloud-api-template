@@ -4,30 +4,29 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
-import { LAMBDA } from "../../../cloud-api-constants";
-const jsonObj = require(`../../../model.json`);
-const { USER_WORKING_DIRECTORY } = jsonObj;
+import { LAMBDA , APITYPE} from "../../../cloud-api-constants";
+import { Imports } from "../../../Constructs/ConstructsImports";
+const model = require(`../../../model.json`);
+const { USER_WORKING_DIRECTORY } = model;
 
-const API_TYPE = "GRAPHQL";
-
-if (API_TYPE === "GRAPHQL") {
-  Generator.generateFromModel(
+if (model?.api?.apiType === APITYPE.graphql) {
+  Generator.generate(
     {
       outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const { apiName, lambdaStyle, database } = model.api;
       const ts = new TypeScriptWriter(output);
       const iam = new Iam(output);
       const appsync = new Appsync(output);
-      const cdk = new Cdk(output)
+      const imp = new Imports(output)
       const testClass = new Cdk(output);
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
-      testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
-      cdk.importForAppsyncConstruct(output)
-      cdk.importForLambdaConstruct(output)
+      imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+      imp.importForAppsyncConstruct(output)
+      imp.importForLambdaConstruct(output)
       testClass.initializeTest(
         "Appsync Api Constructs Test",
         () => {

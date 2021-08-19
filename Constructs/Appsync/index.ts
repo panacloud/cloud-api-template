@@ -10,11 +10,6 @@ interface Props {
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
 
-  public importAppsync(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
-  }
-
   public initializeAppsyncApi(name: string,output: TextWriter,authenticationType?: string) {
     this.apiName = name;
     const ts = new TypeScriptWriter(output);
