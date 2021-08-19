@@ -70,6 +70,7 @@ const lambdaHandlerForAuroradb = (output, apiName, lambdaStyle, dataBase, mutati
 };
 exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
 const lambdaHandlerForNeptunedb = (output, apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
+    console.log("console from line 90 lambdaHandlerForNeptunedb ===>", lambdaStyle);
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
