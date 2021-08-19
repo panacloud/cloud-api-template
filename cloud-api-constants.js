@@ -8,8 +8,8 @@ var APITYPE;
 })(APITYPE = exports.APITYPE || (exports.APITYPE = {}));
 var LAMBDA;
 (function (LAMBDA) {
-    LAMBDA["single"] = "Single";
-    LAMBDA["multiple"] = "Multiple";
+    LAMBDA["single"] = "SINGLE";
+    LAMBDA["multiple"] = "MULTIPLE";
 })(LAMBDA = exports.LAMBDA || (exports.LAMBDA = {}));
 var DATABASE;
 (function (DATABASE) {
