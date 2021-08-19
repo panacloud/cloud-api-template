@@ -9,28 +9,6 @@ interface consturctProps {
 }
 export class Cdk extends CodeWriter {
 
-  public importsForStack(output: TextWriter){
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
-    ts.writeImports("constructs", ["Construct"]);
-  }
-  public importForAppsyncConstruct(output:TextWriter){
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports( `../lib/${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
-  }
-
-  
-  public importForDynamodbConstruct(output:TextWriter){
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports( `../lib/${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
-  }
-
-  
-  public importForLambdaConstruct(output:TextWriter){
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports( `../lib/${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
-  }
-
   public initializeStack(name: string, contents: any, output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     const classDefinition: ClassDefinition = {
@@ -104,15 +82,4 @@ export class Cdk extends CodeWriter {
     ts.writeLineIndented(`})`);
   }
 
-  public ImportsForTest(output: TextWriter,workingDir:string) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", "cdk");
-    ts.writeImports("@aws-cdk/assert", [
-      "countResources",
-      "haveResource",
-      "expect",
-      "countResourcesLike",
-    ]);
-    ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
-  }
 }
