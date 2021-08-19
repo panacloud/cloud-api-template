@@ -56,7 +56,8 @@ export const lambdaHandlerForAuroradb = (
 ) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
-  if (lambdaStyle === LAMBDA.single) {
+
+  if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.single) || (apiType === APITYPE.rest)) {
     if (database === DATABASE.auroraDb) {
       lambda.initializeLambda(
         apiName,
@@ -82,7 +83,7 @@ export const lambdaHandlerForAuroradb = (
         ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
       ts.writeLine();
     }
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.multiple)) {
     if (database === DATABASE.auroraDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
