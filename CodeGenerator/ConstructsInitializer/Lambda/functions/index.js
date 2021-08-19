@@ -52,7 +52,7 @@ exports.lambdaPropsHandlerForAuroradb = lambdaPropsHandlerForAuroradb;
 const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.single) || (apiType === cloud_api_constants_1.APITYPE.rest)) {
         if (database === cloud_api_constants_1.DATABASE.auroraDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `props!.vpcRef`, undefined, [
                 {
@@ -67,7 +67,7 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
             ts.writeLine();
         }
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    else if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple)) {
         if (database === cloud_api_constants_1.DATABASE.auroraDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.vpcRef`, undefined, [
