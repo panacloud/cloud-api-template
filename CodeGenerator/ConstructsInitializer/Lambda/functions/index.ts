@@ -31,7 +31,7 @@ export const lambdaPropsHandlerForAuroradb=()=>{
   }]
 }
 
-export const lambdaHandlerForAuroradb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
+export const lambdaHandlerForAuroradb = (output: TextWriter,apiName:string,lambdaStyle:string,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
@@ -86,8 +86,7 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,apiName:string,lambd
 }
 
 
-export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
-  console.log("console from line 90 lambdaHandlerForNeptunedb ===>",lambdaStyle)
+export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lambdaStyle:string,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
@@ -139,7 +138,7 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lamb
 };
 }
 
-export const lambdaProperiesHandlerForAuroraDb = (apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
+export const lambdaProperiesHandlerForAuroraDb = (apiName:string,lambdaStyle:string,dataBase:DATABASE,mutationsAndQueries:any) => {
   
   let properties: PropertyDefinition[] = [
     {
@@ -172,7 +171,7 @@ export const lambdaProperiesHandlerForAuroraDb = (apiName:string,lambdaStyle:LAM
 };
 
 
-export const lambdaProperiesHandlerForNeptuneDb = (apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
+export const lambdaProperiesHandlerForNeptuneDb = (apiName:string,lambdaStyle:string,dataBase:DATABASE,mutationsAndQueries:any) => {
   
   let properties: PropertyDefinition[] = [
     {
@@ -204,7 +203,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (apiName:string,lambdaStyle:LA
   }
 };
 
-export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:LAMBDA,apiName:string,mutationsAndQueries:any) => {
+export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:string,apiName:string,mutationsAndQueries:any) => {
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFn`,
@@ -226,7 +225,7 @@ export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:LAMBDA,apiName:strin
   }
 };
 
-export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
+export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,lambdaStyle:string,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {

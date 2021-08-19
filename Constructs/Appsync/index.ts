@@ -52,7 +52,7 @@ export class Appsync extends CodeWriter {
       })`);
   }
 
-  public appsyncLambdaDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle: LAMBDA,functionName?: string) {
+  public appsyncLambdaDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle:string,functionName?:string) {
     const ts = new TypeScriptWriter(output);
     let ds_initializerName = this.apiName + "dataSourceGraphql"
     let ds_variable = `ds_${dataSourceName}`
