@@ -121,7 +121,7 @@ export const lambdaHandlerForNeptunedb = (
 ) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
-  if (lambdaStyle === LAMBDA.single) {
+  if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.single) || (apiType === APITYPE.rest)) {
     if (database === DATABASE.neptuneDb) {
       lambda.initializeLambda(
         apiName,
@@ -146,7 +146,7 @@ export const lambdaHandlerForNeptunedb = (
         ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
       ts.writeLine();
     }
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.multiple)) {
     if (database === DATABASE.neptuneDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
@@ -233,7 +233,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
       accessModifier: "public",
     }
   ];
-  if (lambdaStyle === LAMBDA.single && database === DATABASE.neptuneDb) {
+  if (((lambdaStyle === LAMBDA.single && apiType === APITYPE.graphql) || apiType === APITYPE.rest) && database === DATABASE.neptuneDb) {
     properties = [
       {
         name: `${apiName}_lambdaFnArn`,
@@ -249,8 +249,8 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
     ];
     return properties;
   } else if (
-    lambdaStyle === LAMBDA.multiple &&
-    database === DATABASE.neptuneDb
+    (lambdaStyle === LAMBDA.multiple && apiType === APITYPE.graphql) &&
+    database === DATABASE.auroraDb
   ) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
@@ -272,7 +272,7 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
       accessModifier: "public",
     },
   ];
-  if (lambdaStyle === LAMBDA.single) {
+  if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.single) || apiType === APITYPE.rest) {
     properties = [
       {
         name: `${apiName}_lambdaFn`,
@@ -281,7 +281,7 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
       },
     ];
     return properties;
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if (apiType === APITYPE.graphql && lambdaStyle === LAMBDA.multiple) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
         name: `${apiName}_lambdaFn_${key}`,
@@ -296,7 +296,7 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
 export const lambdaHandlerForDynamodb = (output: TextWriter) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
-  if (lambdaStyle === LAMBDA.single) {
+  if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.single) || (apiType === APITYPE.rest)) {
     if (database === DATABASE.dynamoDb) {
       lambda.initializeLambda(
         apiName,
@@ -309,7 +309,7 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
       ts.writeLine();
       ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
     }
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if ((apiType === APITYPE.graphql && lambdaStyle === LAMBDA.multiple)) {
     if (database === DATABASE.dynamoDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
