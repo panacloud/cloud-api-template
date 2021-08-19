@@ -90,7 +90,7 @@ exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
 const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.single) || (apiType === cloud_api_constants_1.APITYPE.rest)) {
         if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, `props!.VPCRef`, `props!.SGRef`, [
                 {
@@ -105,7 +105,7 @@ const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
             ts.writeLine();
         }
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    else if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple)) {
         if (database === cloud_api_constants_1.DATABASE.neptuneDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.VPCRef`, `props!.SGRef`, [
@@ -181,7 +181,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
             accessModifier: "public",
         }
     ];
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single && database === cloud_api_constants_1.DATABASE.neptuneDb) {
+    if (((lambdaStyle === cloud_api_constants_1.LAMBDA.single && apiType === cloud_api_constants_1.APITYPE.graphql) || apiType === cloud_api_constants_1.APITYPE.rest) && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         properties = [
             {
                 name: `${apiName}_lambdaFnArn`,
@@ -197,8 +197,8 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
         ];
         return properties;
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple &&
-        database === cloud_api_constants_1.DATABASE.neptuneDb) {
+    else if ((lambdaStyle === cloud_api_constants_1.LAMBDA.multiple && apiType === cloud_api_constants_1.APITYPE.graphql) &&
+        database === cloud_api_constants_1.DATABASE.auroraDb) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
@@ -219,7 +219,7 @@ const lambdaProperiesHandlerForDynoDb = (output) => {
             accessModifier: "public",
         },
     ];
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.single) || apiType === cloud_api_constants_1.APITYPE.rest) {
         properties = [
             {
                 name: `${apiName}_lambdaFn`,
@@ -229,7 +229,7 @@ const lambdaProperiesHandlerForDynoDb = (output) => {
         ];
         return properties;
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    else if (apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}`,
@@ -244,14 +244,14 @@ exports.lambdaProperiesHandlerForDynoDb = lambdaProperiesHandlerForDynoDb;
 const lambdaHandlerForDynamodb = (output) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.single) || (apiType === cloud_api_constants_1.APITYPE.rest)) {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
             lambda.initializeLambda(apiName, output, lambdaStyle, undefined, undefined, undefined);
             ts.writeLine();
             ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
         }
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    else if ((apiType === cloud_api_constants_1.APITYPE.graphql && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple)) {
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, undefined, undefined);
