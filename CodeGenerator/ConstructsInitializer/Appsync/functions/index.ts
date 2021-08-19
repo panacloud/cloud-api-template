@@ -3,7 +3,6 @@ import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../../Constructs/Appsync";
 import { Cdk } from "../../../../Constructs/Cdk";
-import { Lambda } from "../../../../Constructs/Lambda";
 const model = require("../../../../model.json");
 
 
