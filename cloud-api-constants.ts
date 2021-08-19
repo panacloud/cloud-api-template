@@ -4,8 +4,8 @@ export enum APITYPE {
 }
 
 export enum LAMBDA {
-  single = "Single",
-  multiple = "Multiple",
+  single = "SINGLE",
+  multiple = "MULTIPLE",
 }
 
 export enum DATABASE {
