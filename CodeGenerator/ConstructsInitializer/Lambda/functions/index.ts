@@ -87,6 +87,7 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,apiName:string,lambd
 
 
 export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
+  console.log("console from line 90 lambdaHandlerForNeptunedb ===>",lambdaStyle)
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {

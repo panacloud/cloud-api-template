@@ -6,8 +6,9 @@ import { Cdk } from "../../../../Constructs/Cdk";
 const model = require("../../../../model.json");
 
 
-export const appsyncDatasourceHandler = (apiName :string , output: TextWriter,lambdaStyle:LAMBDA,mutationsAndQueries:any) => {
+export const appsyncDatasourceHandler = (apiName :string , output: TextWriter,lambdaStyle:string,mutationsAndQueries:any) => {
   const appsync = new Appsync(output);
+  console.log("console from line 11 appsyncDatasourceHandler ===>",lambdaStyle)
   appsync.apiName = apiName
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
