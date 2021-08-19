@@ -99,7 +99,7 @@ class Appsync extends core_1.CodeWriter {
       countResourcesLike("AWS::AppSync::GraphQLSchema",1, {
         ApiId: {
           "Fn::GetAtt": [
-            "${this.apiName}",
+            stack.getLogicalId(appsync_api[0] as cdk.CfnElement),
              "ApiId"
           ],
         },
@@ -110,7 +110,7 @@ class Appsync extends core_1.CodeWriter {
         this.writeLine(`expect(actual).to(
       haveResource("AWS::AppSync::ApiKey", {
         ApiId: {
-          "Fn::GetAtt": ["${this.apiName}", "ApiId"],
+          "Fn::GetAtt": [stack.getLogicalId(appsync_api[0] as cdk.CfnElement), "ApiId"],
         },
       })
     );
@@ -121,7 +121,7 @@ class Appsync extends core_1.CodeWriter {
         this.writeLine(`expect(actual).to(
       countResourcesLike("AWS::AppSync::DataSource",1, {
           ApiId: {
-            "Fn::GetAtt": ["${this.apiName}", "ApiId"],
+            "Fn::GetAtt": [stack.getLogicalId(appsync_api[0] as cdk.CfnElement), "ApiId"],
           },
           Name: "${dataSourceName}",
           Type: "AWS_LAMBDA",
@@ -149,7 +149,7 @@ class Appsync extends core_1.CodeWriter {
       countResourcesLike("AWS::AppSync::Resolver",1, {
           "ApiId": {
               "Fn::GetAtt": [
-                "${this.apiName}",
+                stack.getLogicalId(appsync_api[0] as cdk.CfnElement),
                 "ApiId"
               ]
             },

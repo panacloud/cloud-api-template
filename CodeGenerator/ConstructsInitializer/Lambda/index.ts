@@ -32,8 +32,11 @@ Generator.generateFromModel(
         lambda.importLambda(output)
         iam.importIam(output)
         if(database===DATABASE.dynamoDb){
-          lambdaProps = undefined
-          lambdaPropsWithName = undefined
+          lambdaProps = [{
+            name:"tableName",
+            type:"string"
+          }]
+          lambdaPropsWithName = "handlerProps"
           lambdaProperties = lambdaProperiesHandlerForDynoDb(output)
         }
         if(database===DATABASE.neptuneDb){

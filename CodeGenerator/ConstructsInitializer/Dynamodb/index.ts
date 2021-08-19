@@ -9,8 +9,7 @@ import {
 } from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
-import { Lambda } from "../../../Constructs/Lambda";
-import { dynamodbAccessHandler, dynamodbPropsHandler } from "./functions";
+import { dynamodbAccessHandler } from "./functions";
 const model = require("../../../model.json");
 const { database } = model.api;
 
@@ -31,9 +30,7 @@ if (database && database === DATABASE.dynamoDb) {
       const mutationsAndQueries = { ...mutations, ...queries };
       const cdk = new Cdk(output);
       const dynamoDB = new DynamoDB(output);
-      const lambda = new Lambda(output);
       cdk.importsForStack(output);
-      lambda.importLambda(output);
       dynamoDB.importDynamodb(output);
       ts.writeLine();
 
@@ -55,16 +52,16 @@ if (database && database === DATABASE.dynamoDb) {
 
       const properties: PropertyDefinition[] = [
         {
-          name: "tableName",
-          typeName: "string",
+          name: "table",
+          typeName: "dynamodb.Table",
           accessModifier: "public",
           isReadonly: true,
-        },
+        }
       ];
 
       cdk.initializeConstruct(
         CONSTRUCTS.dynamodb,
-        "dbProps",
+        undefined,
         () => {
           dynamoDB.initializeDynamodb(apiName, output);
           ts.writeLine();
@@ -72,7 +69,7 @@ if (database && database === DATABASE.dynamoDb) {
           ts.writeLine();
         },
         output,
-        props,
+        undefined,
         properties
       );
     }

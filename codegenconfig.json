@@ -37,6 +37,18 @@
     {
       "templateFile": "./CodeGenerator/ConstructsInitializer/ApiGateway/index.js",
       "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.js",
+      "modelFile": "model.json"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.js",
+      "modelFile": "model.json"
     }
   ],
   "compileTypeScript": false

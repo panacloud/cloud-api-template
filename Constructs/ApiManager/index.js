@@ -12,7 +12,7 @@ class apiManager extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
             name: "apiManager",
-            typeName: "any",
+            typeName: "PanacloudManager",
             initializer: () => {
                 ts.writeLine(`new PanacloudManager(this, "${name}APIManager")`);
             },

@@ -10,6 +10,7 @@ import {
 import { apiManager } from "../../Constructs/ApiManager";
 import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
+import { DynamoDB } from "../../Constructs/DynamoDB";
 import {
   lambdaEnvHandler,
   propsHandlerForAppsyncConstructDynamodb,
@@ -39,8 +40,8 @@ Generator.generateFromModel(
     }
 
     const mutationsAndQueries = { ...mutations, ...queries };
-    // const appsync = new Appsync(output);
     const cdk = new Cdk(output);
+    const dynamodb = new DynamoDB(output);
     const manager = new apiManager(output);
     cdk.importsForStack(output);
     manager.importApiManager(output);
@@ -52,7 +53,7 @@ Generator.generateFromModel(
     }
     ts.writeImports(`./${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
     if (database === DATABASE.dynamoDb) {
-      ts.writeImports(`./${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
+      cdk.importForDynamodbConstruct(output)
     }
     if (database === DATABASE.neptuneDb) {
       ts.writeImports(`./${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);

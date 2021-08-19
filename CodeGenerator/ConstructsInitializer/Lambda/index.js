@@ -29,8 +29,11 @@ templating_1.Generator.generateFromModel({
     lambda.importLambda(output);
     iam.importIam(output);
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
-        lambdaProps = undefined;
-        lambdaPropsWithName = undefined;
+        lambdaProps = [{
+                name: "tableName",
+                type: "string"
+            }];
+        lambdaPropsWithName = "handlerProps";
         lambdaProperties = functions_1.lambdaProperiesHandlerForDynoDb(output);
     }
     if (database === cloud_api_constants_1.DATABASE.neptuneDb) {

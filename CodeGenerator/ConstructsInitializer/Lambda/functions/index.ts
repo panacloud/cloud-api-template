@@ -304,7 +304,8 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
         lambdaStyle,
         undefined,
         undefined,
-        undefined
+        undefined,
+        [{name:"TableName",value:"props!.tableName"}]
       );
       ts.writeLine();
       ts.writeLine(`this.${apiName}_lambdaFn = ${apiName}_lambdaFn`);
@@ -318,7 +319,8 @@ export const lambdaHandlerForDynamodb = (output: TextWriter) => {
           lambdaStyle,
           key,
           undefined,
-          undefined
+          undefined,
+          [{name:"TableName",value:"props!.tableName"}]
         );
         ts.writeLine();
         ts.writeLine(

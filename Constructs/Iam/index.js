@@ -115,7 +115,7 @@ class Iam extends core_1.CodeWriter {
                   {
                     "Fn::GetAtt": [
                       stack.getLogicalId(
-                        dbConstruct[0].node.defaultChild as cdk.CfnElement
+                        db_table[0].node.defaultChild as cdk.CfnElement
                       ),
                       "Arn",
                     ],
@@ -146,8 +146,38 @@ class Iam extends core_1.CodeWriter {
       return elem instanceof cdk.aws_iam.Role;
     });`);
     }
-    DynodbIdentifierFromStack() {
-        this.writeLine(`const dbConstruct = stack.node.children.filter((elem) => {
+    dynamodbConsturctIdentifier() {
+        this.writeLine(`const dbConstruct = stack.node.children.filter(elem => {
+        return elem instanceof DynamodbConstruct;
+      });`);
+    }
+    lambdaConsturctIdentifier() {
+        this.writeLine(`const Lambda_consturct = stack.node.children.filter(
+      (elem) => elem instanceof LambdaConstruct
+    );`);
+    }
+    lambdaIdentifier() {
+        this.writeLine(`const lambda_func = Lambda_consturct[0].node.children.filter(
+      (elem) => elem instanceof cdk.aws_lambda.Function
+    );`);
+    }
+    appsyncConsturctIdentifier() {
+        this.writeLine(`const Appsync_consturct = stack.node.children.filter(
+      (elem) => elem instanceof AppsyncConstruct
+    );`);
+    }
+    appsyncApiIdentifier() {
+        this.writeLine(`const appsync_api = Appsync_consturct[0].node.children.filter(
+      (elem) => elem instanceof cdk.aws_appsync.CfnGraphQLApi
+    );`);
+    }
+    appsyncRoleIdentifier() {
+        this.writeLine(`const role = Appsync_consturct[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_iam.Role;
+    });`);
+    }
+    DynodbTableIdentifier() {
+        this.writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_dynamodb.Table;
     });`);
     }
