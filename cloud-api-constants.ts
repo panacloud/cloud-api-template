@@ -1,5 +1,5 @@
 export enum APITYPE {
-  graphql = "GraphQL",
+  graphql = "GRAPHQL API",
   rest = "REST OpenAPI",
 }
 
@@ -9,11 +9,11 @@ export enum LAMBDA {
 }
 
 export enum DATABASE {
-  dynamoDb = "DynamoDB (NoSQL)",
-  neptuneDb = "Neptune (Graph)",
-  auroraDb = "Aurora Serverless (Relational)",
-  document = "DocumentDB (NoSQL MongoDB)",
+  dynamoDb = "DYNAMODB",
+  auroraDb = "AURORASERVERLESS",
+  neptuneDb = "NEPTUNE",
 }
+
 
 export enum SAASTYPE {
   app = "App",
