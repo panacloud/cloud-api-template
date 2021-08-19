@@ -189,7 +189,7 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
       accessModifier: "public",
     },
   ];
-  if (lambdaStyle === LAMBDA.single && database === DATABASE.auroraDb) {
+  if (((lambdaStyle === LAMBDA.single && apiType === APITYPE.graphql) || apiType === APITYPE.rest) && database === DATABASE.auroraDb) {
     properties = [
       {
         name: `${apiName}_lambdaFnArn`,
@@ -205,7 +205,7 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
     ];
     return properties;
   } else if (
-    lambdaStyle === LAMBDA.multiple &&
+    (lambdaStyle === LAMBDA.multiple && apiType === APITYPE.graphql) &&
     database === DATABASE.auroraDb
   ) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
