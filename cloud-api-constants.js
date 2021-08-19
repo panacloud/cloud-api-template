@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CONSTRUCTS = exports.SAASTYPE = exports.DATABASE = exports.LAMBDA = exports.APITYPE = void 0;
 var APITYPE;
 (function (APITYPE) {
-    APITYPE["graphql"] = "GraphQL";
+    APITYPE["graphql"] = "GRAPHQL API";
     APITYPE["rest"] = "REST OpenAPI";
 })(APITYPE = exports.APITYPE || (exports.APITYPE = {}));
 var LAMBDA;
@@ -13,10 +13,9 @@ var LAMBDA;
 })(LAMBDA = exports.LAMBDA || (exports.LAMBDA = {}));
 var DATABASE;
 (function (DATABASE) {
-    DATABASE["dynamoDb"] = "DynamoDB (NoSQL)";
-    DATABASE["neptuneDb"] = "Neptune (Graph)";
-    DATABASE["auroraDb"] = "Aurora Serverless (Relational)";
-    DATABASE["document"] = "DocumentDB (NoSQL MongoDB)";
+    DATABASE["dynamoDb"] = "DYNAMODB";
+    DATABASE["auroraDb"] = "AURORASERVERLESS";
+    DATABASE["neptuneDb"] = "NEPTUNE";
 })(DATABASE = exports.DATABASE || (exports.DATABASE = {}));
 var SAASTYPE;
 (function (SAASTYPE) {
