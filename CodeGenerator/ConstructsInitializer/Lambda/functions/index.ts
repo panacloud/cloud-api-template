@@ -88,8 +88,6 @@ export const lambdaHandlerForAuroradb = (output: TextWriter,apiName:string,lambd
 
 export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lambdaStyle:LAMBDA,dataBase:DATABASE,mutationsAndQueries:any) => {
   const lambda = new Lambda(output);
-  console.log("line number 91 lambdaHandlerForNeptunedb===>",lambdaStyle)
-
   const ts = new TypeScriptWriter(output);
   if (lambdaStyle === LAMBDA.single) {
     if (dataBase === DATABASE.neptuneDb) {
@@ -113,7 +111,6 @@ export const lambdaHandlerForNeptunedb = (output: TextWriter,apiName:string,lamb
       ts.writeLine()
     }
   } else if (lambdaStyle === LAMBDA.multiple) {
-    console.log("line number 91 under condition lambdaHandlerForNeptunedb===>",lambdaStyle)
     if (dataBase === DATABASE.neptuneDb) {
       Object.keys(mutationsAndQueries).forEach((key) => {
         lambda.initializeLambda(
