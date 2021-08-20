@@ -9,10 +9,16 @@ export enum DATABASE {
   neptuneDb = "NEPTUNE",
 }
 
+export enum APITYPE {
+  graphql = "GRAPHQL API",
+  rest = "REST API",
+}
+
 export enum CONSTRUCTS {
   appsync = "AppsyncConstruct",
   dynamodb = "DynamodbConstruct",
   lambda = "LambdaConstruct",
   neptuneDb = "VpcNeptuneConstruct",
-  auroradb = "AuroraDbConstruct"
+  auroradb = "AuroraDbConstruct",
+  apigateway = "ApiGatewayConstruct"
 }

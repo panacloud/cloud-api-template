@@ -1,9 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.propsHandlerForDynoDbConstruct = exports.LambdaAccessHandler = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaConstructPropsHandlerAuroradb = exports.lambdaConstructPropsHandlerNeptunedb = exports.lambdaPropsHandlerDynamodb = void 0;
+exports.propsHandlerForDynoDbConstruct = exports.propsHandlerForApiGatewayConstruct = exports.LambdaAccessHandler = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaConstructPropsHandlerAuroradb = exports.lambdaConstructPropsHandlerNeptunedb = exports.lambdaPropsHandlerDynamodb = exports.lambdaEnvHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
 const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const DynamoDB_1 = require("../../../Constructs/DynamoDB");
+const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => {
+    const ts = new typescript_1.TypeScriptWriter(output);
+    let apiLambda = apiName + "Lambda";
+    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        let lambdafunc = `${apiName}_lambdaFn`;
+        ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`);
+        ts.writeLine();
+    }
+    if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        Object.keys(mutationsAndQueries).forEach((key) => {
+            let lambdafunc = `${apiName}_lambdaFn_${key}`;
+            ts.writeLine(`${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`);
+            ts.writeLine();
+        });
+    }
+};
+exports.lambdaEnvHandler = lambdaEnvHandler;
 const lambdaPropsHandlerDynamodb = (output, dbConstructName) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     ts.writeLine(`tableName:${dbConstructName}.table.tableName`);
@@ -68,6 +85,12 @@ const LambdaAccessHandler = (output, apiName, lambdaStyle, mutationsAndQueries) 
     }
 };
 exports.LambdaAccessHandler = LambdaAccessHandler;
+const propsHandlerForApiGatewayConstruct = (output, apiName) => {
+    const ts = new typescript_1.TypeScriptWriter(output);
+    let lambdafunc = `${apiName}_lambdaFn`;
+    ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`);
+};
+exports.propsHandlerForApiGatewayConstruct = propsHandlerForApiGatewayConstruct;
 const propsHandlerForDynoDbConstruct = (output, apiName, lambdaStyle, mutationsAndQueries) => {
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {

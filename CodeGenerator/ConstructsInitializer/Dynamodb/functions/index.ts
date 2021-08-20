@@ -1,17 +1,17 @@
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
+import { APITYPE, DATABASE, LAMBDA } from "../../../../cloud-api-constants";
 import { DynamoDB } from "../../../../Constructs/DynamoDB";
 const model = require("../../../../model.json");
-const {  lambdaStyle } = model.api;
+const { lambdaStyle, apiType } = model.api;
 
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-
-const mutationsAndQueries = {
-  ...mutations,
-  ...queries,
-};
+let mutations = {};
+let queries = {}
+if (apiType === APITYPE.graphql) {
+  mutations = model.type.Mutation ? model.type.Mutation : {};
+  queries = model.type.Query ? model.type.Query : {};
+}
+const mutationsAndQueries = { ...mutations, ...queries };
 
 export const dynamodbAccessHandler = (apiName:string,output:TextWriter)=>{
   const dynamoDB = new DynamoDB(output)

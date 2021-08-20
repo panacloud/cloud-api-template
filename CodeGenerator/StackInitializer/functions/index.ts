@@ -3,13 +3,40 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { LAMBDA } from "../../../cloud-api-constants";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 
+export const lambdaEnvHandler = (
+  output: TextWriter,
+  apiName: string,
+  lambdaStyle: LAMBDA,
+  mutationsAndQueries: any
+) => {
+  const ts = new TypeScriptWriter(output);
+  let apiLambda = apiName + "Lambda";
+
+  if (lambdaStyle === LAMBDA.single) {
+    let lambdafunc = `${apiName}_lambdaFn`;
+    ts.writeLine(
+      `${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`
+    );
+    ts.writeLine();
+  }
+  if (lambdaStyle === LAMBDA.multiple) {
+    Object.keys(mutationsAndQueries).forEach((key) => {
+      let lambdafunc = `${apiName}_lambdaFn_${key}`;
+      ts.writeLine(
+        `${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`
+      );
+      ts.writeLine();
+    });
+  }
+};
+
 export const lambdaPropsHandlerDynamodb = (
   output: TextWriter,
   dbConstructName: string
 ) => {
   const ts = new TypeScriptWriter(output);
   ts.writeLine(`tableName:${dbConstructName}.table.tableName`);
-  ts.writeLine()
+  ts.writeLine();
 };
 
 export const lambdaConstructPropsHandlerNeptunedb = (
@@ -101,6 +128,15 @@ export const LambdaAccessHandler = (
       );
     });
   }
+};
+
+export const propsHandlerForApiGatewayConstruct = (
+  output: TextWriter,
+  apiName: string
+) => {
+  const ts = new TypeScriptWriter(output);
+  let lambdafunc = `${apiName}_lambdaFn`;
+  ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`);
 };
 
 export const propsHandlerForDynoDbConstruct = (

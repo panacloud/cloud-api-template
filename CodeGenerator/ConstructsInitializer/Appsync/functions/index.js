@@ -7,9 +7,6 @@ const Appsync_1 = require("../../../../Constructs/Appsync");
 const Cdk_1 = require("../../../../Constructs/Cdk");
 const model = require("../../../../model.json");
 const { lambdaStyle } = model.api;
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const appsyncDatasourceHandler = (apiName, output) => {
     const appsync = new Appsync_1.Appsync(output);
     appsync.apiName = apiName;
@@ -18,6 +15,9 @@ const appsyncDatasourceHandler = (apiName, output) => {
         appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle);
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        const mutations = model.type.Mutation ? model.type.Mutation : {};
+        const queries = model.type.Query ? model.type.Query : {};
+        const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
         Object.keys(mutationsAndQueries).forEach((key) => {
             appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle, key);
             ts.writeLine();

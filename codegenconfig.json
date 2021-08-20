@@ -35,6 +35,10 @@
       "modelFile": "model.json"
     },
     {
+      "templateFile": "./CodeGenerator/ConstructsInitializer/ApiGateway/index.js",
+      "modelFile": "model.json"
+    },
+    {
       "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js",
       "modelFile": "model.json"
     },
