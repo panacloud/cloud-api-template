@@ -96,6 +96,7 @@ var Cdk = /** @class */ (function (_super) {
         ts.writeLine("const actual = app.synth().getStackArtifact(stack.artifactId).template;");
         ts.writeLine();
         contents();
+<<<<<<< HEAD
         ts.writeLineIndented("})");
     };
     Cdk.prototype.initializeTest2 = function (description, contents, output, workingDir) {
@@ -109,6 +110,21 @@ var Cdk = /** @class */ (function (_super) {
     };
     Cdk.prototype.ImportsForTest = function (output, workingDir) {
         var ts = new typescript_1.TypeScriptWriter(output);
+=======
+        ts.writeLineIndented(`})`);
+    }
+    initializeTest2(description, contents, output, workingDir) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeLineIndented(`test("${description}", () => {`);
+        ts.writeLine(`const stack = new Stack();`);
+        ts.writeLine(`const neptune = new ${workingDir}.${_.upperFirst(_.camelCase(workingDir))}Stack(stack, "MyTestStack");`);
+        ts.writeLine();
+        contents();
+        ts.writeLineIndented(`})`);
+    }
+    ImportsForTest(output, workingDir) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+>>>>>>> 2fbb6ecf0cc95dc9963e0c07b8fbd2a14beea399
         ts.writeImports("aws-cdk-lib", "cdk");
         ts.writeImports("@aws-cdk/assert", [
             "countResources",
@@ -116,6 +132,7 @@ var Cdk = /** @class */ (function (_super) {
             "expect",
             "countResourcesLike",
         ]);
+<<<<<<< HEAD
         ts.writeImports("../lib/" + workingDir + "-stack", workingDir);
     };
     Cdk.prototype.ImportsForTest2 = function (output, workingDir) {
@@ -126,4 +143,15 @@ var Cdk = /** @class */ (function (_super) {
     };
     return Cdk;
 }(core_1.CodeWriter));
+=======
+        ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+    }
+    ImportsForTest2(output, workingDir) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports("aws-cdk-lib", "cdk");
+        ts.writeImports("@aws-cdk/assert/jest");
+        ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+    }
+}
+>>>>>>> 2fbb6ecf0cc95dc9963e0c07b8fbd2a14beea399
 exports.Cdk = Cdk;
