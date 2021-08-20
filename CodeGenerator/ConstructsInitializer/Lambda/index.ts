@@ -16,10 +16,10 @@ Generator.generateFromModel(
       outputFile: `../../../../../lib/${CONSTRUCTS.lambda}/index.ts`,
     },
     (output: TextWriter,model: any) => {
-        const { apiName, lambdaStyle, database } = model.api;
-        const mutations = model.type.Mutation ? model.type.Mutation : {};
-        const queries = model.type.Query ? model.type.Query : {};    
-        const mutationsAndQueries = {...mutations,...queries,};
+        // const { apiName, lambdaStyle, database } = model.api;
+        // const mutations = model.type.Mutation ? model.type.Mutation : {};
+        // const queries = model.type.Query ? model.type.Query : {};    
+        // const mutationsAndQueries = {...mutations,...queries,};
         const lambda = new Lambda(output);
         let lambdaPropsWithName : string | undefined
         let lambdaProps : {name : string,type:string}[] | undefined
@@ -32,8 +32,11 @@ Generator.generateFromModel(
         lambda.importLambda(output)
         iam.importIam(output)
         if(database===DATABASE.dynamoDb){
-          lambdaProps = undefined
-          lambdaPropsWithName = undefined
+          lambdaProps = [{
+            name:"tableName",
+            type:"string"
+          }]
+          lambdaPropsWithName = "handlerProps"
           lambdaProperties = lambdaProperiesHandlerForDynoDb(output)
         }
         if(database===DATABASE.neptuneDb){

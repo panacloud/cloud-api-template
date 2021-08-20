@@ -13,10 +13,10 @@ const { apiName, lambdaStyle, database } = model.api;
 templating_1.Generator.generateFromModel({
     outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}/index.ts`,
 }, (output, model) => {
-    const { apiName, lambdaStyle, database } = model.api;
-    const mutations = model.type.Mutation ? model.type.Mutation : {};
-    const queries = model.type.Query ? model.type.Query : {};
-    const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
+    // const { apiName, lambdaStyle, database } = model.api;
+    // const mutations = model.type.Mutation ? model.type.Mutation : {};
+    // const queries = model.type.Query ? model.type.Query : {};    
+    // const mutationsAndQueries = {...mutations,...queries,};
     const lambda = new Lambda_1.Lambda(output);
     let lambdaPropsWithName;
     let lambdaProps;
@@ -29,8 +29,11 @@ templating_1.Generator.generateFromModel({
     lambda.importLambda(output);
     iam.importIam(output);
     if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
-        lambdaProps = undefined;
-        lambdaPropsWithName = undefined;
+        lambdaProps = [{
+                name: "tableName",
+                type: "string"
+            }];
+        lambdaPropsWithName = "handlerProps";
         lambdaProperties = functions_1.lambdaProperiesHandlerForDynoDb(output);
     }
     if (database === cloud_api_constants_1.DATABASE.neptuneDb) {

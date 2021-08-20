@@ -1,7 +1,8 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDA } from "../../cloud-api-constants";
-
+import { APITYPE, LAMBDA } from "../../cloud-api-constants";
+const model = require("../../model.json")
+const { apiType } = model.api;
 export class LambdaFunction extends CodeWriter {
   public initializeLambdaFunction(
     output: TextWriter,
@@ -10,6 +11,7 @@ export class LambdaFunction extends CodeWriter {
   ) {
     const ts = new TypeScriptWriter(output);
 
+    if (apiType === APITYPE.graphql) {
     if (lambdaStyle === LAMBDA.multiple) {
       ts.writeLineIndented(`
       var AWS = require('aws-sdk');
@@ -27,6 +29,23 @@ export class LambdaFunction extends CodeWriter {
       ts.writeLine(`}`);
       ts.writeLine(`}`);
     }
+  }
+  else {
+    /* rest api */
+    ts.writeLine(`exports.handler = async (event: any) => {`);
+      ts.writeLine(`try {`);
+      ts.writeLine();
+      ts.writeLine("const method = event.httpMethod;")
+      ts.writeLine("const requestName = event.path.startsWith('/') ? event.path.substring(1) : event.path;")
+      ts.writeLine("const body = JSON.parse(event.body);")
+      content();
+      ts.writeLine();
+      ts.writeLine(`}`);
+      ts.writeLine("catch(err) {")
+      ts.writeLine("return err;")
+      ts.writeLine(`}`);
+      ts.writeLine(`}`);
+  }
   }
   public importIndividualFunction(
     output: TextWriter,

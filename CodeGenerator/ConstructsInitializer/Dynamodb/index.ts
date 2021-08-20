@@ -1,11 +1,15 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
+import {
+  APITYPE,
+  CONSTRUCTS,
+  DATABASE,
+  LAMBDA,
+} from "../../../cloud-api-constants";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
-import { Lambda } from "../../../Constructs/Lambda";
-import { dynamodbAccessHandler, dynamodbPropsHandler } from "./functions";
+import { dynamodbAccessHandler } from "./functions";
 const model = require("../../../model.json");
 const { database } = model.api;
 
@@ -16,26 +20,30 @@ if (database && database === DATABASE.dynamoDb) {
     },
     (output: TextWriter, model: any) => {
       const ts = new TypeScriptWriter(output);
-      const { apiName, lambdaStyle, database } = model.api;
-      const mutations = model.type.Mutation ? model.type.Mutation : {};
-      const queries = model.type.Query ? model.type.Query : {};
+      const { apiName, lambdaStyle, apiType } = model.api;
+      let mutations = {};
+      let queries = {};
+      if (apiType === APITYPE.graphql) {
+        mutations = model.type.Mutation ? model.type.Mutation : {};
+        queries = model.type.Query ? model.type.Query : {};
+      }
       const mutationsAndQueries = { ...mutations, ...queries };
       const cdk = new Cdk(output);
       const dynamoDB = new DynamoDB(output);
-      const lambda = new Lambda(output);
       cdk.importsForStack(output);
-      lambda.importLambda(output);
       dynamoDB.importDynamodb(output);
       ts.writeLine();
-      
-      let props = [{
-        name: `${apiName}_lambdaFn`,
-        type: "lambda.Function",       
-      }]
-    
+
+      let props = [
+        {
+          name: `${apiName}_lambdaFn`,
+          type: "lambda.Function",
+        },
+      ];
+
       if (lambdaStyle && lambdaStyle === LAMBDA.multiple) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
-           props[index] = {
+          props[index] = {
             name: `${apiName}_lambdaFn_${key}`,
             type: "lambda.Function",
           };
@@ -44,24 +52,24 @@ if (database && database === DATABASE.dynamoDb) {
 
       const properties: PropertyDefinition[] = [
         {
-          name: "tableName",
-          typeName: "string",
+          name: "table",
+          typeName: "dynamodb.Table",
           accessModifier: "public",
           isReadonly: true,
-        },
+        }
       ];
 
       cdk.initializeConstruct(
         CONSTRUCTS.dynamodb,
-        "dbProps",
+        undefined,
         () => {
           dynamoDB.initializeDynamodb(apiName, output);
           ts.writeLine();
-          dynamodbAccessHandler(apiName,output);
+          dynamodbAccessHandler(apiName, output);
           ts.writeLine();
         },
         output,
-        props,
+        undefined,
         properties
       );
     }

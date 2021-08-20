@@ -1,11 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CONSTRUCTS = exports.SAASTYPE = exports.DATABASE = exports.LAMBDA = exports.APITYPE = void 0;
-var APITYPE;
-(function (APITYPE) {
-    APITYPE["graphql"] = "GraphQL";
-    APITYPE["rest"] = "REST OpenAPI";
-})(APITYPE = exports.APITYPE || (exports.APITYPE = {}));
+exports.CONSTRUCTS = exports.APITYPE = exports.DATABASE = exports.LAMBDA = void 0;
 var LAMBDA;
 (function (LAMBDA) {
     LAMBDA["single"] = "Single";
@@ -18,11 +13,11 @@ var DATABASE;
     DATABASE["auroraDb"] = "Aurora Serverless (Relational)";
     DATABASE["document"] = "DocumentDB (NoSQL MongoDB)";
 })(DATABASE = exports.DATABASE || (exports.DATABASE = {}));
-var SAASTYPE;
-(function (SAASTYPE) {
-    SAASTYPE["app"] = "App";
-    SAASTYPE["api"] = "API";
-})(SAASTYPE = exports.SAASTYPE || (exports.SAASTYPE = {}));
+var APITYPE;
+(function (APITYPE) {
+    APITYPE["graphql"] = "GRAPHQL API";
+    APITYPE["rest"] = "REST API";
+})(APITYPE = exports.APITYPE || (exports.APITYPE = {}));
 var CONSTRUCTS;
 (function (CONSTRUCTS) {
     CONSTRUCTS["appsync"] = "AppsyncConstruct";
@@ -30,4 +25,5 @@ var CONSTRUCTS;
     CONSTRUCTS["lambda"] = "LambdaConstruct";
     CONSTRUCTS["neptuneDb"] = "VpcNeptuneConstruct";
     CONSTRUCTS["auroradb"] = "AuroraDbConstruct";
+    CONSTRUCTS["apigateway"] = "ApiGatewayConstruct";
 })(CONSTRUCTS = exports.CONSTRUCTS || (exports.CONSTRUCTS = {}));

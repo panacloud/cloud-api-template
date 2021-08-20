@@ -21,7 +21,7 @@ class DynamoDB extends core_1.CodeWriter {
           partitionKey:{
             name: "id",
             type: dynamodb.AttributeType.STRING,
-          },
+          }
         });`);
             },
         }, "const");
@@ -33,6 +33,35 @@ class DynamoDB extends core_1.CodeWriter {
         else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`);
         }
+    }
+    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, functionName) {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+            this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
+        }
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+            this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn_${functionName});`);
+        }
+    }
+    initializeTestForDynamodb(TableName) {
+        this.writeLine(`expect(actual).to(
+      countResourcesLike("AWS::DynamoDB::Table",1, {
+        KeySchema: [
+          {
+            AttributeName: "id",
+            KeyType: "HASH",
+          },
+        ],
+        AttributeDefinitions: [
+          {
+            AttributeName: "id",
+            AttributeType: "S",
+          },
+        ],
+        BillingMode: "PAY_PER_REQUEST",
+        TableName: "${TableName}",
+      })
+    );
+  `);
     }
 }
 exports.DynamoDB = DynamoDB;
