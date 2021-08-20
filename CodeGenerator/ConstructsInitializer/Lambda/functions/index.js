@@ -71,7 +71,6 @@ const lambdaHandlerForAuroradb = (output, apiName, lambdaStyle, dataBase, mutati
 exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
 const lambdaHandlerForNeptunedb = (output, apiName, lambdaStyle, dataBase, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
-    console.log("line number 91 lambdaHandlerForNeptunedb===>", lambdaStyle);
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         if (dataBase === cloud_api_constants_1.DATABASE.neptuneDb) {
@@ -87,7 +86,6 @@ const lambdaHandlerForNeptunedb = (output, apiName, lambdaStyle, dataBase, mutat
         }
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        console.log("line number 91 under condition lambdaHandlerForNeptunedb===>", lambdaStyle);
         if (dataBase === cloud_api_constants_1.DATABASE.neptuneDb) {
             Object.keys(mutationsAndQueries).forEach((key) => {
                 lambda.initializeLambda(apiName, output, lambdaStyle, key, `props!.VPCRef`, `props!.SGRef`, [
