@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CONSTRUCTS = exports.DATABASE = exports.LAMBDA = void 0;
+exports.__esModule = true;
 var LAMBDA;
 (function (LAMBDA) {
     LAMBDA["single"] = "SINGLE";
