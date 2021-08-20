@@ -104,6 +104,21 @@ export class Cdk extends CodeWriter {
     ts.writeLineIndented(`})`);
   }
 
+  public initializeTest2(
+    description: string,
+    contents: any,
+    output: TextWriter,
+    workingDir:string
+  ) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeLineIndented(`test("${description}", () => {`);
+    ts.writeLine(`const stack = new Stack();`);
+    ts.writeLine(`const neptune = new ${workingDir}.${_.upperFirst(_.camelCase(workingDir))}Stack(stack, "MyTestStack");`);
+    ts.writeLine();
+    contents();
+    ts.writeLineIndented(`})`);
+  }
+
   public ImportsForTest(output: TextWriter,workingDir:string) {
     const ts = new TypeScriptWriter(output);
     ts.writeImports("aws-cdk-lib", "cdk");
@@ -113,6 +128,13 @@ export class Cdk extends CodeWriter {
       "expect",
       "countResourcesLike",
     ]);
+    ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+  }
+
+  public ImportsForTest2(output: TextWriter,workingDir:string) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports("aws-cdk-lib", "cdk");
+    ts.writeImports("@aws-cdk/assert/jest");
     ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
   }
 }
