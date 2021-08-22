@@ -24,6 +24,7 @@ export enum PATH {
   bin = "../../../bin/",
   lib = "../../../lib/",
   lambda = "../../../lambda-fns/",
+  test = "../../../../test/"
 }
 
 export enum CONSTRUCTS {

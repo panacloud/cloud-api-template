@@ -4,30 +4,32 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
-import { LAMBDA } from "../../../cloud-api-constants";
-const jsonObj = require(`../../../model.json`);
-const { USER_WORKING_DIRECTORY } = jsonObj;
+import { PATH, LAMBDASTYLE, APITYPE } from "../../../cloud-api-constants";
+const model = require(`../../../model.json`);
+const { USER_WORKING_DIRECTORY } = model;
+const { apiType } = model.api;
 
-const API_TYPE = "GRAPHQL";
-
-if (API_TYPE === "GRAPHQL") {
-  Generator.generateFromModel(
+if (apiType === APITYPE.graphql) {
+  Generator.generate(
     {
-      outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-appsync.test.ts`,
+      outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     },
-    (output: TextWriter, model: any) => {
-      const { apiName, lambdaStyle, database } = model.api;
+    (output: TextWriter) => {
+      const { apiName, lambdaStyle } = model.api;
       const ts = new TypeScriptWriter(output);
       const iam = new Iam(output);
       const appsync = new Appsync(output);
-      const cdk = new Cdk(output)
+      const cdk = new Cdk(output);
       const testClass = new Cdk(output);
+
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
+
       testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
-      cdk.importForAppsyncConstruct(output)
-      cdk.importForLambdaConstruct(output)
+      cdk.importForAppsyncConstruct(output);
+      cdk.importForLambdaConstruct(output);
+
       testClass.initializeTest(
         "Appsync Api Constructs Test",
         () => {
@@ -51,12 +53,12 @@ if (API_TYPE === "GRAPHQL") {
           iam.lambdaIdentifier();
           ts.writeLine();
 
-          if (lambdaStyle === LAMBDA.single) {
+          if (lambdaStyle === LAMBDASTYLE.single) {
             let dsName = `${apiName}_dataSource`;
             appsync.appsyncDatasourceTest(dsName, 0);
-          } else if (lambdaStyle === LAMBDA.multiple && mutationsAndQueries) {
+          } else if (lambdaStyle === LAMBDASTYLE.multi && mutationsAndQueries) {
             Object.keys(mutationsAndQueries).forEach((key, index) => {
-              if (lambdaStyle === LAMBDA.multiple) {
+              if (lambdaStyle === LAMBDASTYLE.multi) {
                 let dsName = `${apiName}_dataSource_${key}`;
                 appsync.appsyncDatasourceTest(dsName, index);
                 ts.writeLine();
@@ -67,14 +69,14 @@ if (API_TYPE === "GRAPHQL") {
 
           if (model?.type?.Query) {
             for (var key in model?.type?.Query) {
-              if (lambdaStyle === LAMBDA.single) {
+              if (lambdaStyle === LAMBDASTYLE.single) {
                 appsync.appsyncResolverTest(
                   key,
                   "Query",
                   `${apiName}_dataSource`
                 );
               }
-              if (lambdaStyle === LAMBDA.multiple) {
+              if (lambdaStyle === LAMBDASTYLE.multi) {
                 appsync.appsyncResolverTest(
                   key,
                   "Query",
@@ -88,7 +90,7 @@ if (API_TYPE === "GRAPHQL") {
 
           if (model?.type?.Mutation) {
             for (var key in model?.type?.Mutation) {
-              if (lambdaStyle === LAMBDA.single) {
+              if (lambdaStyle === LAMBDASTYLE.single) {
                 appsync.appsyncResolverTest(
                   key,
                   "Mutation",
@@ -96,7 +98,7 @@ if (API_TYPE === "GRAPHQL") {
                 );
                 ts.writeLine();
               }
-              if (lambdaStyle === LAMBDA.multiple) {
+              if (lambdaStyle === LAMBDASTYLE.multi) {
                 appsync.appsyncResolverTest(
                   key,
                   "Mutation",
