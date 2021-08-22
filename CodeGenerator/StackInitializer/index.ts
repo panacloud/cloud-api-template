@@ -1,39 +1,33 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import {
-  CONSTRUCTS,
-  DATABASE,
-  LAMBDA,
-  APITYPE,
-} from "../../cloud-api-constants";
+import { CONSTRUCTS, DATABASE, APITYPE, PATH } from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
-import { Appsync } from "../../Constructs/Appsync";
 import { Cdk } from "../../Constructs/Cdk";
 import { DynamoDB } from "../../Constructs/DynamoDB";
 import {
   lambdaEnvHandler,
   propsHandlerForAppsyncConstructDynamodb,
-  propsHandlerForDynoDbConstruct,
+  propsHandlerForDynamoDbConstruct,
   propsHandlerForAppsyncConstructNeptunedb,
   lambdaConstructPropsHandlerNeptunedb,
   lambdaConstructPropsHandlerAuroradb,
   propsHandlerForApiGatewayConstruct,
 } from "./functions";
-const jsonObj = require("../../model.json");
-const { USER_WORKING_DIRECTORY } = jsonObj;
-const fs = require("fs");
+const model = require("../../model.json");
+const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");
-Generator.generateFromModel(
+
+Generator.generate(
   {
-    outputFile: `../../../../lib/${USER_WORKING_DIRECTORY}-stack.ts`,
+    outputFile: `${PATH.lib}${USER_WORKING_DIRECTORY}-stack.ts`,
   },
-  (output: TextWriter, model: any) => {
+  (output: TextWriter) => {
     const ts = new TypeScriptWriter(output);
     const { apiName, lambdaStyle, database, apiType } = model.api;
 
     let mutations = {};
-    let queries = {}
+    let queries = {};
     if (apiType === APITYPE.graphql) {
       mutations = model.type.Mutation ? model.type.Mutation : {};
       queries = model.type.Query ? model.type.Query : {};
@@ -47,18 +41,17 @@ Generator.generateFromModel(
     manager.importApiManager(output);
     if (apiType === APITYPE.graphql) {
       ts.writeImports(`./${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
-    }
-    else {
+    } else {
       ts.writeImports(`./${CONSTRUCTS.apigateway}`, [CONSTRUCTS.apigateway]);
     }
     ts.writeImports(`./${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
-    if (database === DATABASE.dynamoDb) {
-      cdk.importForDynamodbConstruct(output)
+    if (database === DATABASE.dynamo) {
+      cdk.importForDynamodbConstruct(output);
     }
-    if (database === DATABASE.neptuneDb) {
+    if (database === DATABASE.neptune) {
       ts.writeImports(`./${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);
     }
-    if (database === DATABASE.auroraDb) {
+    if (database === DATABASE.aurora) {
       ts.writeImports(`./${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
     }
     ts.writeLine();
@@ -67,7 +60,7 @@ Generator.generateFromModel(
       () => {
         manager.apiManagerInitializer(output, USER_WORKING_DIRECTORY);
         ts.writeLine();
-        if (database == DATABASE.dynamoDb) {
+        if (database == DATABASE.dynamo) {
           ts.writeLine(
             `const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}");`
           );
@@ -75,7 +68,7 @@ Generator.generateFromModel(
           ts.writeLine(
             `const ${apiName}_table = new ${CONSTRUCTS.dynamodb}(this,"${apiName}${CONSTRUCTS.dynamodb}",{`
           );
-          propsHandlerForDynoDbConstruct(
+          propsHandlerForDynamoDbConstruct(
             output,
             apiName,
             lambdaStyle,
@@ -96,8 +89,7 @@ Generator.generateFromModel(
             );
             ts.writeLine("})");
           }
-        }
-        else if (database == DATABASE.neptuneDb) {
+        } else if (database == DATABASE.neptune) {
           ts.writeLine(
             `const ${apiName}_neptunedb = new ${CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`
           );
@@ -121,8 +113,7 @@ Generator.generateFromModel(
             ts.writeLine("})");
           }
           ts.writeLine();
-        }
-        else if (database == DATABASE.auroraDb) {
+        } else if (database == DATABASE.aurora) {
           ts.writeLine(
             `const ${apiName}_auroradb = new ${CONSTRUCTS.auroradb}(this,"${CONSTRUCTS.auroradb}");`
           );
@@ -152,12 +143,11 @@ Generator.generateFromModel(
           ts.writeLine(
             `const ${apiName} = new ${CONSTRUCTS.apigateway}(this,"${apiName}${CONSTRUCTS.apigateway}",{`
           );
-          propsHandlerForApiGatewayConstruct(output, apiName)
+          propsHandlerForApiGatewayConstruct(output, apiName);
           ts.writeLine("})");
         }
-      }
+      },
 
-      ,
       output
     );
   }

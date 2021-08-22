@@ -1,13 +1,14 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
+import { PATH } from "../../cloud-api-constants";
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");
 
 Generator.generate(
   {
-    outputFile: `../../../../bin/${USER_WORKING_DIRECTORY}.ts`,
+    outputFile: `${PATH.bin}${USER_WORKING_DIRECTORY}.ts`,
   },
   (output: TextWriter) => {
     const ts = new TypeScriptWriter(output);

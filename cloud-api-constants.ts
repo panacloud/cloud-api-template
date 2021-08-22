@@ -3,15 +3,15 @@ export enum APITYPE {
   rest = "REST OpenAPI",
 }
 
-export enum LAMBDA {
+export enum LAMBDASTYLE {
   single = "Single",
-  multiple = "Multiple",
+  multi = "Multiple",
 }
 
 export enum DATABASE {
-  dynamoDb = "DynamoDB (NoSQL)",
-  neptuneDb = "Neptune (Graph)",
-  auroraDb = "Aurora Serverless (Relational)",
+  dynamo = "DynamoDB (NoSQL)",
+  neptune = "Neptune (Graph)",
+  aurora = "Aurora Serverless (Relational)",
   document = "DocumentDB (NoSQL MongoDB)",
 }
 
@@ -20,9 +20,9 @@ export enum SAASTYPE {
   api = "API",
 }
 
-export enum APITYPE {
-  graphql = "GRAPHQL API",
-  rest = "REST API",
+export enum PATH {
+  bin = "../../../bin/",
+  lib = "../../../lib/",
 }
 
 export enum CONSTRUCTS {
@@ -31,5 +31,5 @@ export enum CONSTRUCTS {
   lambda = "LambdaConstruct",
   neptuneDb = "VpcNeptuneConstruct",
   auroradb = "AuroraDbConstruct",
-  apigateway = "ApiGatewayConstruct"
+  apigateway = "ApiGatewayConstruct",
 }
