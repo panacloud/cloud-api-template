@@ -39,16 +39,16 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             ts.writeLine();
             neptune.initializeTesForEC2Vpc();
             ts.writeLine();
-            neptune.initializeTestForSubnet(apiName, fnNum0, subnet1, '0');
+            neptune.initializeTestForSubnet(apiName, 0, '1', '0');
             ts.writeLine();
-            neptune.initializeTestForSubnet(apiName, fnNum1, subnet2, '1');
+            neptune.initializeTestForSubnet(apiName, 1, '2', '1');
             ts.writeLine();
-            neptune.initiaizeTestForRouteTable(apiName, subnet1);
+            neptune.initiaizeTestForRouteTable(apiName, '1');
             ts.writeLine();
-            neptune.initiaizeTestForRouteTable(apiName, subnet2);
-            neptune.initializeTestForSubnetRouteTableAssociation(isolatedRouteTables1);
+            neptune.initiaizeTestForRouteTable(apiName, '2');
+            neptune.initializeTestForSubnetRouteTableAssociation(1);
             ts.writeLine();
-            neptune.initializeTestForSubnetRouteTableAssociation(isolatedRouteTables2);
+            neptune.initializeTestForSubnetRouteTableAssociation(2);
             ts.writeLine();
             neptune.initializeTestForSecurityGroup(apiName);
             ts.writeLine();
@@ -67,6 +67,14 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             ts.writeLine();
             neptune.initializeTestForDBInstance(apiName);
             ts.writeLine();
+            neptune.initializeTestForCountResources('AWS::EC2::VPC', 1);
+            neptune.initializeTestForCountResources('AWS::EC2::Subnet', 2);
+            neptune.initializeTestForCountResources('AWS::EC2::RouteTable', 2);
+            neptune.initializeTestForCountResources('AWS::EC2::SubnetRouteTableAssociation', 2);
+            neptune.initializeTestForCountResources('AWS::EC2::SecurityGroup', 1);
+            neptune.initializeTestForCountResources('AWS::EC2::SecurityGroupIngress', 1);
+            neptune.initializeTestForCountResources('AWS::Neptune::DBCluster', 1);
+            neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1);
             //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::VPC', 1);`)
             //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::Subnet', 2);`)
             //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::RouteTable', 2);`)

@@ -243,5 +243,8 @@ class Neptune extends core_1.CodeWriter {
     DBClusterIdentifier: '${apiName}Cluster',
   });`);
     }
+    initializeTestForCountResources(service, count) {
+        this.writeLine(`expect(stack).toCountResources(${service}, ${count});`);
+    }
 }
 exports.Neptune = Neptune;
