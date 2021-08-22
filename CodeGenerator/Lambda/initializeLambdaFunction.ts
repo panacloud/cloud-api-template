@@ -10,9 +10,9 @@ const { lambdaStyle, apiType } = model.api;
 
 if (apiType === APITYPE.graphql) {
   if (lambdaStyle === LAMBDASTYLE.single) {
-    Generator.generateFromModel(
+    Generator.generate(
       { outputFile: `${PATH.lambda}main.ts` },
-      (output: TextWriter, model: any) => {
+      (output: TextWriter) => {
         const ts = new TypeScriptWriter(output);
         const lambda = new LambdaFunction(output);
         for (var key in model.type.Query) {
