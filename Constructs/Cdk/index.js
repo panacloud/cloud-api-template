@@ -23,6 +23,10 @@ class Cdk extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
     }
+    importForNeptuneConstruct(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
+    }
     initializeStack(name, contents, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const classDefinition = {
@@ -89,7 +93,7 @@ class Cdk extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeLineIndented(`test("${description}", () => {`);
         ts.writeLine(`const stack = new Stack();`);
-        ts.writeLine(`const neptune = new ${workingDir}.${_.upperFirst(_.camelCase(workingDir))}Stack(stack, "MyTestStack");`);
+        ts.writeLine(`const neptune = new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}.${_.upperFirst(_.camelCase(cloud_api_constants_1.CONSTRUCTS.neptuneDb))}Stack(stack, "MyTestStack");`);
         ts.writeLine();
         contents();
         ts.writeLineIndented(`})`);
@@ -109,7 +113,7 @@ class Cdk extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", "cdk");
         ts.writeImports("@aws-cdk/assert/jest");
-        ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+        // ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
     }
 }
 exports.Cdk = Cdk;

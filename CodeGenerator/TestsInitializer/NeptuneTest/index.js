@@ -25,14 +25,17 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         const neptune = new Neptune_1.Neptune(output);
         const { apiName } = model.api;
         testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+        cdk.importForNeptuneConstruct(output);
         ts.writeLine();
         testClass.initializeTest2('Neptune Construct Tests', () => {
             ts.writeLine(`const constructs = vpc.node.children;`);
             ts.writeLine(`expect(constructs).toHaveLength(5);`);
+            ts.writeLine();
             ts.writeLine(`const isolated_subnets = vpc.VPCRef.isolatedSubnets;`);
             ts.writeLine(`const isolatedRouteTables = [`);
             ts.writeLine(`isolated_subnets[0].routeTable,`);
             ts.writeLine(`isolated_subnets[1].routeTable,`);
+            ts.writeLine(`]`);
             ts.writeLine();
             neptune.initializeTesForEC2Vpc();
             ts.writeLine();
@@ -54,7 +57,7 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             ts.writeLine(`const subnetRefArray = [];`);
             ts.writeLine(`for (let subnet of subnets) {`);
             ts.writeLine(`subnetRefArray.push({`);
-            ts.writeLine(`Ref: stack.getLogicalId(subnet.node.defaultChild as CfnElement),`);
+            ts.writeLine(`Ref: stack.getLogicalId(subnet.node.defaultChild as cdk.CfnElement),`);
             ts.writeLine(`});`);
             ts.writeLine(`}`);
             ts.writeLine();
