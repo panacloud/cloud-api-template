@@ -2,10 +2,10 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import {
-  DATABASE,
-  LAMBDA,
+  LAMBDASTYLE,
   CONSTRUCTS,
   APITYPE,
+  PATH,
 } from "../../../cloud-api-constants";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Cdk } from "../../../Constructs/Cdk";
@@ -17,15 +17,16 @@ const { apiType } = model.api;
 const fs = require("fs");
 
 if (apiType === APITYPE.graphql) {
-  Generator.generateFromModel(
+  Generator.generate(
     {
-      outputFile: `../../../../../lib/${CONSTRUCTS.appsync}/index.ts`,
+      outputFile: `${PATH.lib}${CONSTRUCTS.appsync}/index.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
       const appsync = new Appsync(output);
       const cdk = new Cdk(output);
       const iam = new Iam(output);
+
       const schema = fs
         .readFileSync(`../../../schema.graphql`)
         .toString("utf8");
@@ -33,6 +34,7 @@ if (apiType === APITYPE.graphql) {
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
       const { apiName, lambdaStyle, database } = model.api;
+
       cdk.importsForStack(output);
       appsync.importAppsync(output);
       iam.importIam(output);
@@ -44,7 +46,7 @@ if (apiType === APITYPE.graphql) {
         },
       ];
 
-      if (lambdaStyle && lambdaStyle === LAMBDA.multiple) {
+      if (lambdaStyle && lambdaStyle === LAMBDASTYLE.multi) {
         Object.keys(mutationsAndQueries).forEach(
           (key: string, index: number) => {
             ConstructProps[index] = {

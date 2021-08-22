@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { APITYPE, CONSTRUCTS } from "../../../cloud-api-constants";
+import { APITYPE, CONSTRUCTS, PATH } from "../../../cloud-api-constants";
 import { ApiGateway } from "../../../Constructs/ApiGateway";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
@@ -9,11 +9,11 @@ const model = require("../../../model.json");
 const { apiName, apiType } = model.api;
 
 if (apiType === APITYPE.rest) {
-  Generator.generateFromModel(
+  Generator.generate(
     {
-      outputFile: `../../../../../lib/${CONSTRUCTS.apigateway}/index.ts`,
+      outputFile: `${PATH.lib}${CONSTRUCTS.apigateway}/index.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
       const cdk = new Cdk(output);
       const lambda = new Lambda(output);
