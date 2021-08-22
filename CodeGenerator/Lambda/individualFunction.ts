@@ -1,19 +1,18 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
-import { APITYPE, LAMBDA } from "../../cloud-api-constants";
-const SwaggerParser = require('@apidevtools/swagger-parser');
-const jsonObj = require(`../../model.json`);
-// const openApi = require("../../schema.json")s
-const { lambdaStyle, apiType } = jsonObj.api;
+import { APITYPE, LAMBDASTYLE, PATH } from "../../cloud-api-constants";
+const SwaggerParser = require("@apidevtools/swagger-parser");
+const model = require(`../../model.json`);
+const { lambdaStyle, apiType } = model.api;
 
 if (apiType === APITYPE.graphql) {
-  if(lambdaStyle === LAMBDA.single) {
-    if (jsonObj?.type?.Query) {
-      Object.keys(jsonObj.type.Query).forEach((key) => {
+  if (lambdaStyle === LAMBDASTYLE.single) {
+    if (model?.type?.Query) {
+      Object.keys(model.type.Query).forEach((key) => {
         Generator.generate(
           {
-            outputFile: `../../../../lambda-fns/${key}.ts`,
+            outputFile: `${PATH.lambda}${key}.ts`,
           },
           (writer: TextWriter) => {
             const lambda = new LambdaFunction(writer);
@@ -22,12 +21,12 @@ if (apiType === APITYPE.graphql) {
         );
       });
     }
-  
-    if (jsonObj.type.Mutation) {
-      Object.keys(jsonObj.type.Mutation).forEach((key) => {
+
+    if (model.type.Mutation) {
+      Object.keys(model.type.Mutation).forEach((key) => {
         Generator.generate(
           {
-            outputFile: `../../../../lambda-fns/${key}.ts`,
+            outputFile: `${PATH.lambda}${key}.ts`,
           },
           (writer: TextWriter) => {
             const lambda = new LambdaFunction(writer);
@@ -37,19 +36,18 @@ if (apiType === APITYPE.graphql) {
       });
     }
   }
-}
-else {
-  SwaggerParser.validate(jsonObj.openApiDef, (err: any, api: any) => {
+} else {
+  SwaggerParser.validate(model.openApiDef, (err: any, api: any) => {
     if (err) {
       console.error(err);
-    }
-    else {
+    } else {
       Object.keys(api.paths).forEach((path) => {
         for (var methodName in api.paths[`${path}`]) {
-          let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`]
+          let lambdaFunctionFile =
+            api.paths[`${path}`][`${methodName}`][`operationId`];
           Generator.generate(
             {
-              outputFile: `../../../../lambda-fns/${lambdaFunctionFile}.ts`,
+              outputFile: `${PATH.lambda}${lambdaFunctionFile}.ts`,
             },
             (writer: TextWriter) => {
               const lambda = new LambdaFunction(writer);
@@ -57,7 +55,7 @@ else {
             }
           );
         }
-      })
+      });
     }
-  })
+  });
 }
