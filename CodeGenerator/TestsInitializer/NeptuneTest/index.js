@@ -39,9 +39,9 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             ts.writeLine();
             neptune.initializeTesForEC2Vpc();
             ts.writeLine();
-            neptune.initializeTestForSubnet(apiName, fnNum0, subnet1);
+            neptune.initializeTestForSubnet(apiName, fnNum0, subnet1, '0');
             ts.writeLine();
-            neptune.initializeTestForSubnet(apiName, fnNum1, subnet2);
+            neptune.initializeTestForSubnet(apiName, fnNum1, subnet2, '1');
             ts.writeLine();
             neptune.initiaizeTestForRouteTable(apiName, subnet1);
             ts.writeLine();

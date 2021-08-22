@@ -93,7 +93,7 @@ class Cdk extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeLineIndented(`test("${description}", () => {`);
         ts.writeLine(`const stack = new Stack();`);
-        ts.writeLine(`const neptune = new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}.${_.upperFirst(_.camelCase(cloud_api_constants_1.CONSTRUCTS.neptuneDb))}Stack(stack, "MyTestStack");`);
+        ts.writeLine(`const vpc = new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}.${_.upperFirst(_.camelCase(cloud_api_constants_1.CONSTRUCTS.neptuneDb))}Stack(stack, "neptuneTestStack");`);
         ts.writeLine();
         contents();
         ts.writeLineIndented(`})`);

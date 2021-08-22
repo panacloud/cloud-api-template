@@ -66,9 +66,9 @@ class Neptune extends core_1.CodeWriter {
         InstanceTenancy: 'default',
       })`);
     }
-    initializeTestForSubnet(apiName, fnNum, subnetNum) {
+    initializeTestForSubnet(apiName, fnNum, subnetNum, cidr) {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
-      CidrBlock: '10.0.0.0/24',
+      CidrBlock: '10.0.${cidr}.0/24',
       VpcId: {
         Ref: stack.getLogicalId(vpc.VPCRef.node.defaultChild as cdk.CfnElement),
       },
