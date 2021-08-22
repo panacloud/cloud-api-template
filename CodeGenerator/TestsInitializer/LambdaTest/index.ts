@@ -9,11 +9,11 @@ const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
 if (model?.api?.lambdaStyle) {
-  Generator.generateFromModel(
+  Generator.generate(
     {
       outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
       const testClass = new Cdk(output);
       const iam = new Iam(output);
