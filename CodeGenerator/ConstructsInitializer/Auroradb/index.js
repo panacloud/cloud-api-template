@@ -10,10 +10,10 @@ const Iam_1 = require("../../../Constructs/Iam");
 const function_1 = require("./function");
 const model = require("../../../model.json");
 const { database } = model.api;
-if (database && database === cloud_api_constants_1.DATABASE.auroraDb) {
-    templating_1.Generator.generateFromModel({ outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.auroradb}/index.ts`, }, (output, model) => {
+if (database && database === cloud_api_constants_1.DATABASE.aurora) {
+    templating_1.Generator.generate({ outputFile: `${cloud_api_constants_1.PATH.lib}${cloud_api_constants_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
-        const { apiName, lambdaStyle, database } = model.api;
+        const { apiName } = model.api;
         const cdk = new Cdk_1.Cdk(output);
         const ec2 = new Ec2_1.Ec2(output);
         const aurora = new AuroraServerless_1.AuroraServerless(output);

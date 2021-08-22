@@ -52,7 +52,7 @@ class Appsync extends core_1.CodeWriter {
         let ds_variable = `ds_${dataSourceName}`;
         let ds_name = `${dataSourceName}_dataSource`;
         let lambdaFunctionArn = `props!.${this.apiName}_lambdaFnArn`;
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
             ds_initializerName = this.apiName + "dataSourceGraphql" + functionName;
             ds_variable = `ds_${dataSourceName}_${functionName}`;
             ds_name = `${this.apiName}_dataSource_${functionName}`;
@@ -78,7 +78,8 @@ class Appsync extends core_1.CodeWriter {
             name: `${fieldName}_resolver`,
             typeName: "appsync.CfnResolver",
             initializer: () => {
-                this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
+                this
+                    .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
             apiId: ${this.apiName}_appsync.attrApiId,
             typeName: "${typeName}",
             fieldName: "${fieldName}",
