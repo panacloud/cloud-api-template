@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dynamodbPropsHandler = exports.dynamodbAccessHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../../../cloud-api-constants");
+const constant_1 = require("../../../../constant");
 const DynamoDB_1 = require("../../../../Constructs/DynamoDB");
 const model = require("../../../../model.json");
 const { lambdaStyle, apiType } = model.api;
 let mutations = {};
 let queries = {};
-if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+if (apiType === constant_1.APITYPE.graphql) {
     mutations = model.type.Mutation ? model.type.Mutation : {};
     queries = model.type.Query ? model.type.Query : {};
 }
@@ -16,10 +16,10 @@ const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries)
 const dynamodbAccessHandler = (apiName, output) => {
     const dynamoDB = new DynamoDB_1.DynamoDB(output);
     const ts = new typescript_1.TypeScriptWriter(output);
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
         dynamoDB.grantFullAccess(`${apiName}`, `${apiName}_table`, lambdaStyle);
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
         Object.keys(mutationsAndQueries).forEach((key) => {
             dynamoDB.grantFullAccess(`${apiName}`, `${apiName}_table`, lambdaStyle, key);
             ts.writeLine();
@@ -29,13 +29,13 @@ const dynamodbAccessHandler = (apiName, output) => {
 exports.dynamodbAccessHandler = dynamodbAccessHandler;
 const dynamodbPropsHandler = (apiName, output) => {
     const ts = new typescript_1.TypeScriptWriter(output);
-    if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    if (lambdaStyle && lambdaStyle === constant_1.LAMBDASTYLE.single) {
         const props = {
             name: `${apiName}_lambdaFn`,
             type: "lambda.Function",
         };
     }
-    if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    if (lambdaStyle && lambdaStyle === constant_1.LAMBDASTYLE.multi) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             const props = {
                 name: `${apiName}_lambdaFn_${key}`,

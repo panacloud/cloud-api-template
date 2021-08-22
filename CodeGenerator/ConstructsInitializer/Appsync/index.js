@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const Appsync_1 = require("../../../Constructs/Appsync");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Iam_1 = require("../../../Constructs/Iam");
@@ -11,10 +11,10 @@ const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
 const fs = require("fs");
-if (apiType === cloud_api_constants_1.APITYPE.graphql) {
-    templating_1.Generator.generateFromModel({
-        outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}/index.ts`,
-    }, (output, model) => {
+if (apiType === constant_1.APITYPE.graphql) {
+    templating_1.Generator.generate({
+        outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.appsync}/index.ts`,
+    }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const appsync = new Appsync_1.Appsync(output);
         const cdk = new Cdk_1.Cdk(output);
@@ -35,7 +35,7 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
                 type: "string",
             },
         ];
-        if (lambdaStyle && lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        if (lambdaStyle && lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             Object.keys(mutationsAndQueries).forEach((key, index) => {
                 ConstructProps[index] = {
                     name: `${apiName}_lambdaFn_${key}Arn`,
@@ -43,7 +43,7 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
                 };
             });
         }
-        cdk.initializeConstruct(`${cloud_api_constants_1.CONSTRUCTS.appsync}`, "AppsyncProps", () => {
+        cdk.initializeConstruct(`${constant_1.CONSTRUCTS.appsync}`, "AppsyncProps", () => {
             ts.writeLine();
             appsync.initializeAppsyncApi(apiName, output);
             ts.writeLine();

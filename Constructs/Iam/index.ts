@@ -102,8 +102,8 @@ export class Iam extends CodeWriter {
     this.writeLine();
   }
 
-  public lambdaServiceRoleTest(){
-     this.writeLine(`expect(actual).to(
+  public lambdaServiceRoleTest() {
+    this.writeLine(`expect(actual).to(
       haveResource("AWS::IAM::Role", {
         AssumeRolePolicyDocument: {
           Statement: [
@@ -118,11 +118,11 @@ export class Iam extends CodeWriter {
           Version: "2012-10-17",
         },
       })
-    );`)
+    );`);
   }
 
-  public lambdaServiceRolePolicyTestForDynodb(policyCount:number){
-      this.writeLine(`expect(actual).to(
+  public lambdaServiceRolePolicyTestForDynodb(policyCount: number) {
+    this.writeLine(`expect(actual).to(
         countResourcesLike("AWS::IAM::Policy",${policyCount}, {
           PolicyDocument: {
             Statement: [
@@ -147,7 +147,7 @@ export class Iam extends CodeWriter {
             Version: "2012-10-17",
           }
         })
-      );`)
+      );`);
   }
 
   public roleIdentifierFromStack() {
@@ -163,51 +163,55 @@ export class Iam extends CodeWriter {
   }
 
   public roleIdentifierFromLambda() {
-    this.writeLine(`const lambda_role = lambda_func[0].node.children.filter((elem) => {
+    this
+      .writeLine(`const lambda_role = lambda_func[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_iam.Role;
     });`);
   }
 
-  public dynamodbConsturctIdentifier(){
-      this.writeLine(`const dbConstruct = stack.node.children.filter(elem => {
+  public dynamodbConsturctIdentifier() {
+    this.writeLine(`const dbConstruct = stack.node.children.filter(elem => {
         return elem instanceof DynamodbConstruct;
-      });`)    
+      });`);
   }
 
-  public lambdaConsturctIdentifier(){
+  public lambdaConsturctIdentifier() {
     this.writeLine(`const Lambda_consturct = stack.node.children.filter(
       (elem) => elem instanceof LambdaConstruct
-    );`)    
+    );`);
   }
 
-  public lambdaIdentifier(){
-    this.writeLine(`const lambda_func = Lambda_consturct[0].node.children.filter(
+  public lambdaIdentifier() {
+    this
+      .writeLine(`const lambda_func = Lambda_consturct[0].node.children.filter(
       (elem) => elem instanceof cdk.aws_lambda.Function
-    );`)
+    );`);
   }
 
-  public appsyncConsturctIdentifier(){
+  public appsyncConsturctIdentifier() {
     this.writeLine(`const Appsync_consturct = stack.node.children.filter(
       (elem) => elem instanceof AppsyncConstruct
-    );`)    
+    );`);
   }
 
-  public appsyncApiIdentifier(){
-    this.writeLine(`const appsync_api = Appsync_consturct[0].node.children.filter(
+  public appsyncApiIdentifier() {
+    this
+      .writeLine(`const appsync_api = Appsync_consturct[0].node.children.filter(
       (elem) => elem instanceof cdk.aws_appsync.CfnGraphQLApi
-    );`)
+    );`);
   }
 
-  public appsyncRoleIdentifier(){
-    this.writeLine(`const role = Appsync_consturct[0].node.children.filter((elem) => {
+  public appsyncRoleIdentifier() {
+    this
+      .writeLine(`const role = Appsync_consturct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_iam.Role;
-    });`)
+    });`);
   }
 
   public DynodbTableIdentifier() {
-    this.writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
+    this
+      .writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_dynamodb.Table;
     });`);
-
   }
 }

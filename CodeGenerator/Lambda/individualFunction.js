@@ -3,27 +3,26 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
-const SwaggerParser = require('@apidevtools/swagger-parser');
-const jsonObj = require(`../../model.json`);
-// const openApi = require("../../schema.json")s
-const { lambdaStyle, apiType } = jsonObj.api;
-if (apiType === cloud_api_constants_1.APITYPE.graphql) {
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        if ((_a = jsonObj === null || jsonObj === void 0 ? void 0 : jsonObj.type) === null || _a === void 0 ? void 0 : _a.Query) {
-            Object.keys(jsonObj.type.Query).forEach((key) => {
+const constant_1 = require("../../constant");
+const SwaggerParser = require("@apidevtools/swagger-parser");
+const model = require(`../../model.json`);
+const { lambdaStyle, apiType } = model.api;
+if (apiType === constant_1.APITYPE.graphql) {
+    if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
+        if ((_a = model === null || model === void 0 ? void 0 : model.type) === null || _a === void 0 ? void 0 : _a.Query) {
+            Object.keys(model.type.Query).forEach((key) => {
                 templating_1.Generator.generate({
-                    outputFile: `../../../../lambda-fns/${key}.ts`,
+                    outputFile: `${constant_1.PATH.lambda}${key}.ts`,
                 }, (writer) => {
                     const lambda = new lambdaFunction_1.LambdaFunction(writer);
                     lambda.helloWorldFunction(key);
                 });
             });
         }
-        if (jsonObj.type.Mutation) {
-            Object.keys(jsonObj.type.Mutation).forEach((key) => {
+        if (model.type.Mutation) {
+            Object.keys(model.type.Mutation).forEach((key) => {
                 templating_1.Generator.generate({
-                    outputFile: `../../../../lambda-fns/${key}.ts`,
+                    outputFile: `${constant_1.PATH.lambda}${key}.ts`,
                 }, (writer) => {
                     const lambda = new lambdaFunction_1.LambdaFunction(writer);
                     lambda.helloWorldFunction(key);
@@ -33,7 +32,7 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
     }
 }
 else {
-    SwaggerParser.validate(jsonObj.openApiDef, (err, api) => {
+    SwaggerParser.validate(model.openApiDef, (err, api) => {
         if (err) {
             console.error(err);
         }
@@ -42,7 +41,7 @@ else {
                 for (var methodName in api.paths[`${path}`]) {
                     let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`];
                     templating_1.Generator.generate({
-                        outputFile: `../../../../lambda-fns/${lambdaFunctionFile}.ts`,
+                        outputFile: `${constant_1.PATH.lambda}${lambdaFunctionFile}.ts`,
                     }, (writer) => {
                         const lambda = new lambdaFunction_1.LambdaFunction(writer);
                         lambda.helloWorldFunction(lambdaFunctionFile);

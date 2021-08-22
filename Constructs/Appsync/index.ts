@@ -1,10 +1,10 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDA } from "../../cloud-api-constants";
+import { LAMBDASTYLE } from "../../constant";
 
 interface Props {
-  name :string,
-  type:string
+  name: string;
+  type: string;
 }
 
 export class Appsync extends CodeWriter {
@@ -15,7 +15,11 @@ export class Appsync extends CodeWriter {
     ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
   }
 
-  public initializeAppsyncApi(name: string,output: TextWriter,authenticationType?: string) {
+  public initializeAppsyncApi(
+    name: string,
+    output: TextWriter,
+    authenticationType?: string
+  ) {
     this.apiName = name;
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
@@ -57,20 +61,26 @@ export class Appsync extends CodeWriter {
       })`);
   }
 
-  public appsyncLambdaDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle: LAMBDA,functionName?: string) {
+  public appsyncLambdaDataSource(
+    output: TextWriter,
+    dataSourceName: string,
+    serviceRole: string,
+    lambdaStyle: LAMBDASTYLE,
+    functionName?: string
+  ) {
     const ts = new TypeScriptWriter(output);
-    let ds_initializerName = this.apiName + "dataSourceGraphql"
-    let ds_variable = `ds_${dataSourceName}`
-    let ds_name = `${dataSourceName}_dataSource`
-    let lambdaFunctionArn = `props!.${this.apiName}_lambdaFnArn`
+    let ds_initializerName = this.apiName + "dataSourceGraphql";
+    let ds_variable = `ds_${dataSourceName}`;
+    let ds_name = `${dataSourceName}_dataSource`;
+    let lambdaFunctionArn = `props!.${this.apiName}_lambdaFnArn`;
 
-    if (lambdaStyle === LAMBDA.multiple) {
-      ds_initializerName = this.apiName + "dataSourceGraphql" + functionName
-      ds_variable = `ds_${dataSourceName}_${functionName}`
-      ds_name = `${this.apiName}_dataSource_${functionName}`
-      lambdaFunctionArn = `props!.${this.apiName}_lambdaFn_${functionName}Arn`
+    if (lambdaStyle === LAMBDASTYLE.multi) {
+      ds_initializerName = this.apiName + "dataSourceGraphql" + functionName;
+      ds_variable = `ds_${dataSourceName}_${functionName}`;
+      ds_name = `${this.apiName}_dataSource_${functionName}`;
+      lambdaFunctionArn = `props!.${this.apiName}_lambdaFn_${functionName}Arn`;
     }
-    
+
     ts.writeVariableDeclaration(
       {
         name: ds_variable,
@@ -89,19 +99,25 @@ export class Appsync extends CodeWriter {
     );
   }
 
-  public appsyncLambdaResolver(fieldName: string,typeName: string,dataSourceName: string,output:TextWriter) {
+  public appsyncLambdaResolver(
+    fieldName: string,
+    typeName: string,
+    dataSourceName: string,
+    output: TextWriter
+  ) {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
       {
         name: `${fieldName}_resolver`,
         typeName: "appsync.CfnResolver",
         initializer: () => {
-          this.writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
+          this
+            .writeLineIndented(`new appsync.CfnResolver(this,'${fieldName}_resolver',{
             apiId: ${this.apiName}_appsync.attrApiId,
             typeName: "${typeName}",
             fieldName: "${fieldName}",
             dataSourceName: ${dataSourceName}.name
-        })`); 
+        })`);
         },
       },
       "const"
@@ -128,7 +144,6 @@ export class Appsync extends CodeWriter {
     );`);
   }
 
-  
   public appsyncApiKeyTest() {
     this.writeLine(`expect(actual).to(
       haveResource("AWS::AppSync::ApiKey", {
@@ -140,7 +155,10 @@ export class Appsync extends CodeWriter {
   `);
   }
 
-  public appsyncDatasourceTest(dataSourceName:string,lambdaFuncIndex:number) {
+  public appsyncDatasourceTest(
+    dataSourceName: string,
+    lambdaFuncIndex: number
+  ) {
     this.writeLine();
     this.writeLine(`expect(actual).to(
       countResourcesLike("AWS::AppSync::DataSource",1, {
@@ -169,7 +187,11 @@ export class Appsync extends CodeWriter {
       );`);
   }
 
-  public appsyncResolverTest(fieldName:string,typeName:string, dataSourceName:string ){
+  public appsyncResolverTest(
+    fieldName: string,
+    typeName: string,
+    dataSourceName: string
+  ) {
     this.writeLine(`expect(actual).to(
       countResourcesLike("AWS::AppSync::Resolver",1, {
           "ApiId": {

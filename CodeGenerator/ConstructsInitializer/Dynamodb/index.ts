@@ -5,22 +5,24 @@ import {
   APITYPE,
   CONSTRUCTS,
   DATABASE,
-  LAMBDA,
-} from "../../../cloud-api-constants";
+  LAMBDASTYLE,
+  PATH,
+} from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 import { dynamodbAccessHandler } from "./functions";
 const model = require("../../../model.json");
 const { database } = model.api;
 
-if (database && database === DATABASE.dynamoDb) {
-  Generator.generateFromModel(
+if (database && database === DATABASE.dynamo) {
+  Generator.generate(
     {
-      outputFile: `../../../../../lib/${CONSTRUCTS.dynamodb}/index.ts`,
+      outputFile: `${PATH.construct}${CONSTRUCTS.dynamodb}/index.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
       const { apiName, lambdaStyle, apiType } = model.api;
+
       let mutations = {};
       let queries = {};
       if (apiType === APITYPE.graphql) {
@@ -41,7 +43,7 @@ if (database && database === DATABASE.dynamoDb) {
         },
       ];
 
-      if (lambdaStyle && lambdaStyle === LAMBDA.multiple) {
+      if (lambdaStyle && lambdaStyle === LAMBDASTYLE.multi) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
           props[index] = {
             name: `${apiName}_lambdaFn_${key}`,
@@ -56,7 +58,7 @@ if (database && database === DATABASE.dynamoDb) {
           typeName: "dynamodb.Table",
           accessModifier: "public",
           isReadonly: true,
-        }
+        },
       ];
 
       cdk.initializeConstruct(

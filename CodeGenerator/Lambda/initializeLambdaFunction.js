@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require("../../model.json");
 const _ = require("lodash");
 const { lambdaStyle, apiType } = model.api;
-if (apiType === cloud_api_constants_1.APITYPE.graphql) {
-    if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-        templating_1.Generator.generateFromModel({ outputFile: `../../../../lambda-fns/main.ts` }, (output, model) => {
+if (apiType === constant_1.APITYPE.graphql) {
+    if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
+        templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lambda}main.ts` }, (output) => {
             const ts = new typescript_1.TypeScriptWriter(output);
             const lambda = new lambdaFunction_1.LambdaFunction(output);
             for (var key in model.type.Query) {
@@ -43,10 +43,10 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
             });
         });
     }
-    else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+    else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
         if (model.type.Mutation) {
             Object.keys(model.type.Mutation).forEach((key) => {
-                templating_1.Generator.generate({ outputFile: `../../../../lambda-fns/${key}.ts` }, (writer) => {
+                templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lambda}${key}.ts` }, (writer) => {
                     const lambda = new lambdaFunction_1.LambdaFunction(writer);
                     lambda.initializeLambdaFunction(writer, lambdaStyle);
                 });
@@ -54,7 +54,7 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
         }
         if (model.type.Query) {
             Object.keys(model.type.Query).forEach((key) => {
-                templating_1.Generator.generate({ outputFile: `../../../../lambda-fns/${key}.ts` }, (writer) => {
+                templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lambda}${key}.ts` }, (writer) => {
                     const lambda = new lambdaFunction_1.LambdaFunction(writer);
                     lambda.initializeLambdaFunction(writer, lambdaStyle);
                 });
@@ -68,7 +68,7 @@ else {
             console.error(err);
         }
         else {
-            templating_1.Generator.generateFromModel({ outputFile: `../../../../lambda-fns/main.ts` }, (output, model) => {
+            templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lambda}main.ts` }, (output) => {
                 const ts = new typescript_1.TypeScriptWriter(output);
                 const lambda = new lambdaFunction_1.LambdaFunction(output);
                 /* import all lambda files */
@@ -84,13 +84,13 @@ else {
                     Object.keys(api.paths).forEach((path) => {
                         for (var methodName in api.paths[`${path}`]) {
                             let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`];
-                            isFirstIf ?
-                                ts.writeLineIndented(`
+                            isFirstIf
+                                ? ts.writeLineIndented(`
                   if (method === "${_.upperCase(methodName)}" && requestName === "${path.substring(1)}") {
                     return await ${lambdaFunctionFile}();
                   }
-                `) :
-                                ts.writeLineIndented(`
+                `)
+                                : ts.writeLineIndented(`
                   else if (method === "${_.upperCase(methodName)}" && requestName === "${path.substring(1)}") {
                     return await ${lambdaFunctionFile}();
                   }

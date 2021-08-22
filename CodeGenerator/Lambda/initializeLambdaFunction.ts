@@ -2,17 +2,17 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
-import { LAMBDA, APITYPE } from "../../cloud-api-constants";
+import { LAMBDASTYLE, APITYPE, PATH } from "../../constant";
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require("../../model.json");
-import _ = require("lodash")
+import _ = require("lodash");
 const { lambdaStyle, apiType } = model.api;
 
 if (apiType === APITYPE.graphql) {
-  if (lambdaStyle === LAMBDA.single) {
-    Generator.generateFromModel(
-      { outputFile: `../../../../lambda-fns/main.ts` },
-      (output: TextWriter, model: any) => {
+  if (lambdaStyle === LAMBDASTYLE.single) {
+    Generator.generate(
+      { outputFile: `${PATH.lambda}main.ts` },
+      (output: TextWriter) => {
         const ts = new TypeScriptWriter(output);
         const lambda = new LambdaFunction(output);
         for (var key in model.type.Query) {
@@ -46,11 +46,11 @@ if (apiType === APITYPE.graphql) {
         });
       }
     );
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if (lambdaStyle === LAMBDASTYLE.multi) {
     if (model.type.Mutation) {
       Object.keys(model.type.Mutation).forEach((key) => {
         Generator.generate(
-          { outputFile: `../../../../lambda-fns/${key}.ts` },
+          { outputFile: `${PATH.lambda}${key}.ts` },
           (writer: TextWriter) => {
             const lambda = new LambdaFunction(writer);
             lambda.initializeLambdaFunction(writer, lambdaStyle);
@@ -62,7 +62,7 @@ if (apiType === APITYPE.graphql) {
     if (model.type.Query) {
       Object.keys(model.type.Query).forEach((key) => {
         Generator.generate(
-          { outputFile: `../../../../lambda-fns/${key}.ts` },
+          { outputFile: `${PATH.lambda}${key}.ts` },
           (writer: TextWriter) => {
             const lambda = new LambdaFunction(writer);
             lambda.initializeLambdaFunction(writer, lambdaStyle);
@@ -76,9 +76,9 @@ if (apiType === APITYPE.graphql) {
     if (err) {
       console.error(err);
     } else {
-      Generator.generateFromModel(
-        { outputFile: `../../../../lambda-fns/main.ts` },
-        (output: TextWriter, model: any) => {
+      Generator.generate(
+        { outputFile: `${PATH.lambda}main.ts` },
+        (output: TextWriter) => {
           const ts = new TypeScriptWriter(output);
           const lambda = new LambdaFunction(output);
 
@@ -102,17 +102,21 @@ if (apiType === APITYPE.graphql) {
               for (var methodName in api.paths[`${path}`]) {
                 let lambdaFunctionFile =
                   api.paths[`${path}`][`${methodName}`][`operationId`];
-                isFirstIf?
-                ts.writeLineIndented(`
-                  if (method === "${_.upperCase(methodName)}" && requestName === "${path.substring(1)}") {
-                    return await ${lambdaFunctionFile}();
-                  }
-                `):
-                ts.writeLineIndented(`
-                  else if (method === "${_.upperCase(methodName)}" && requestName === "${path.substring(1)}") {
+                isFirstIf
+                  ? ts.writeLineIndented(`
+                  if (method === "${_.upperCase(
+                    methodName
+                  )}" && requestName === "${path.substring(1)}") {
                     return await ${lambdaFunctionFile}();
                   }
                 `)
+                  : ts.writeLineIndented(`
+                  else if (method === "${_.upperCase(
+                    methodName
+                  )}" && requestName === "${path.substring(1)}") {
+                    return await ${lambdaFunctionFile}();
+                  }
+                `);
                 isFirstIf = false;
               }
             });
