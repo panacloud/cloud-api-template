@@ -23,6 +23,7 @@ export enum SAASTYPE {
 export enum PATH {
   bin = "../../../bin/",
   lib = "../../../lib/",
+  construct = "../../../../lib/",
   lambda = "../../../lambda-fns/",
   test = "../../../../test/"
 }

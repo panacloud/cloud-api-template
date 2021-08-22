@@ -26,7 +26,7 @@ const { lambdaStyle, database } = model.api;
 
 Generator.generate(
   {
-    outputFile: `${PATH.lib}${CONSTRUCTS.lambda}/index.ts`,
+    outputFile: `${PATH.construct}${CONSTRUCTS.lambda}/index.ts`,
   },
   (output: TextWriter) => {
     const lambda = new Lambda(output);

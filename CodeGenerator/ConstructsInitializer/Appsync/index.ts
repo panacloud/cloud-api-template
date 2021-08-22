@@ -1,12 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import {
-  LAMBDASTYLE,
-  CONSTRUCTS,
-  APITYPE,
-  PATH,
-} from "../../../constant";
+import { LAMBDASTYLE, CONSTRUCTS, APITYPE, PATH } from "../../../constant";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Iam } from "../../../Constructs/Iam";
@@ -19,7 +14,7 @@ const fs = require("fs");
 if (apiType === APITYPE.graphql) {
   Generator.generate(
     {
-      outputFile: `${PATH.lib}${CONSTRUCTS.appsync}/index.ts`,
+      outputFile: `${PATH.construct}${CONSTRUCTS.appsync}/index.ts`,
     },
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);

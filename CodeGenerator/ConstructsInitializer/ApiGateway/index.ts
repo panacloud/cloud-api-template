@@ -11,7 +11,7 @@ const { apiName, apiType } = model.api;
 if (apiType === APITYPE.rest) {
   Generator.generate(
     {
-      outputFile: `${PATH.lib}${CONSTRUCTS.apigateway}/index.ts`,
+      outputFile: `${PATH.construct}${CONSTRUCTS.apigateway}/index.ts`,
     },
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);

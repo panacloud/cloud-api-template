@@ -12,7 +12,7 @@ const { database } = model.api;
 
 if (database && database === DATABASE.neptune) {
   Generator.generate(
-    { outputFile: `${PATH.lib}${CONSTRUCTS.neptuneDb}/index.ts` },
+    { outputFile: `${PATH.construct}${CONSTRUCTS.neptuneDb}/index.ts` },
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
       const { apiName } = model.api;

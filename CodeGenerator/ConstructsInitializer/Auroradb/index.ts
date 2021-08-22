@@ -15,7 +15,7 @@ const { database } = model.api;
 
 if (database && database === DATABASE.aurora) {
   Generator.generate(
-    { outputFile: `${PATH.lib}${CONSTRUCTS.auroradb}/index.ts` },
+    { outputFile: `${PATH.construct}${CONSTRUCTS.auroradb}/index.ts` },
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
       const { apiName } = model.api;
