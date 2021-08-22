@@ -6,12 +6,12 @@ const typescript_1 = require("@yellicode/typescript");
 const Iam_1 = require("../../../Constructs/Iam");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Lambda_1 = require("../../../Constructs/Lambda");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _a === void 0 ? void 0 : _a.lambdaStyle) {
     templating_1.Generator.generateFromModel({
-        outputFile: `${cloud_api_constants_1.PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
+        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     }, (output, model) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const testClass = new Cdk_1.Cdk(output);
@@ -31,12 +31,12 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
             ts.writeLine();
             iam.DynodbTableIdentifier();
             ts.writeLine();
-            if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+            if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                 let funcName = `${apiName}Lambda`;
                 lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
                 ts.writeLine();
             }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+            else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
                     let funcName = `${apiName}Lambda${key}`;
                     lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
@@ -45,10 +45,10 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
             }
             iam.lambdaServiceRoleTest();
             ts.writeLine();
-            if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+            if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                 iam.lambdaServiceRolePolicyTestForDynodb(1);
             }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+            else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                 iam.lambdaServiceRolePolicyTestForDynodb(Object.keys(mutationsAndQueries).length);
             }
             ts.writeLine();

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lambda = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 class Lambda extends core_1.CodeWriter {
     importLambda(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -25,7 +25,7 @@ class Lambda extends core_1.CodeWriter {
             ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
             : "";
         let role = roleName ? `role: ${roleName},` : "";
-        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
             funcName = `${apiName}Lambda${functionName}`;
             handlerName = `${functionName}.handler`;
@@ -49,10 +49,10 @@ class Lambda extends core_1.CodeWriter {
         }, "const");
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
             this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+        else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
         }
     }

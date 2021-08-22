@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const AuroraServerless_1 = require("../../../Constructs/AuroraServerless");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const Ec2_1 = require("../../../Constructs/Ec2");
@@ -10,8 +10,8 @@ const Iam_1 = require("../../../Constructs/Iam");
 const function_1 = require("./function");
 const model = require("../../../model.json");
 const { database } = model.api;
-if (database && database === cloud_api_constants_1.DATABASE.aurora) {
-    templating_1.Generator.generate({ outputFile: `${cloud_api_constants_1.PATH.lib}${cloud_api_constants_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {
+if (database && database === constant_1.DATABASE.aurora) {
+    templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lib}${constant_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const { apiName } = model.api;
         const cdk = new Cdk_1.Cdk(output);
@@ -25,7 +25,7 @@ if (database && database === cloud_api_constants_1.DATABASE.aurora) {
         aurora.importRds(output);
         ec2.importEc2(output);
         ts.writeLine();
-        cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.auroradb, undefined, () => {
+        cdk.initializeConstruct(constant_1.CONSTRUCTS.auroradb, undefined, () => {
             ec2.initializeVpc(apiName, output);
             ts.writeLine();
             aurora.initializeAuroraCluster(apiName, `${apiName}_vpc`, output);

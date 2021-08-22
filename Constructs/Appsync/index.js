@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Appsync = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 class Appsync extends core_1.CodeWriter {
     constructor() {
         super(...arguments);
@@ -52,7 +52,7 @@ class Appsync extends core_1.CodeWriter {
         let ds_variable = `ds_${dataSourceName}`;
         let ds_name = `${dataSourceName}_dataSource`;
         let lambdaFunctionArn = `props!.${this.apiName}_lambdaFnArn`;
-        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             ds_initializerName = this.apiName + "dataSourceGraphql" + functionName;
             ds_variable = `ds_${dataSourceName}_${functionName}`;
             ds_name = `${this.apiName}_dataSource_${functionName}`;

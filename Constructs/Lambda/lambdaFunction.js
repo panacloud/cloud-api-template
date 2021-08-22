@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LambdaFunction = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 const model = require("../../model.json");
 const { apiType } = model.api;
 class LambdaFunction extends core_1.CodeWriter {
     initializeLambdaFunction(output, lambdaStyle, content) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        if (apiType === cloud_api_constants_1.APITYPE.graphql) {
-            if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+        if (apiType === constant_1.APITYPE.graphql) {
+            if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                 ts.writeLineIndented(`
       var AWS = require('aws-sdk');
       
@@ -19,7 +19,7 @@ class LambdaFunction extends core_1.CodeWriter {
       }
       `);
             }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+            else if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                 ts.writeLine(`exports.handler = async (event:Event) => {`);
                 ts.writeLine(`switch (event.info.fieldName) {`);
                 ts.writeLine();

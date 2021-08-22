@@ -5,13 +5,13 @@ const typescript_1 = require("@yellicode/typescript");
 const Appsync_1 = require("../../../Constructs/Appsync");
 const Iam_1 = require("../../../Constructs/Iam");
 const Cdk_1 = require("../../../Constructs/Cdk");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
-if (apiType === cloud_api_constants_1.APITYPE.graphql) {
+if (apiType === constant_1.APITYPE.graphql) {
     templating_1.Generator.generate({
-        outputFile: `${cloud_api_constants_1.PATH.test}${USER_WORKING_DIRECTORY}-appsync.test.ts`,
+        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     }, (output) => {
         const { apiName, lambdaStyle } = model.api;
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -46,13 +46,13 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
             ts.writeLine();
             iam.lambdaIdentifier();
             ts.writeLine();
-            if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+            if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                 let dsName = `${apiName}_dataSource`;
                 appsync.appsyncDatasourceTest(dsName, 0);
             }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi && mutationsAndQueries) {
+            else if (lambdaStyle === constant_1.LAMBDASTYLE.multi && mutationsAndQueries) {
                 Object.keys(mutationsAndQueries).forEach((key, index) => {
-                    if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+                    if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                         let dsName = `${apiName}_dataSource_${key}`;
                         appsync.appsyncDatasourceTest(dsName, index);
                         ts.writeLine();
@@ -62,10 +62,10 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
             ts.writeLine();
             if ((_a = model === null || model === void 0 ? void 0 : model.type) === null || _a === void 0 ? void 0 : _a.Query) {
                 for (var key in (_b = model === null || model === void 0 ? void 0 : model.type) === null || _b === void 0 ? void 0 : _b.Query) {
-                    if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+                    if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                         appsync.appsyncResolverTest(key, "Query", `${apiName}_dataSource`);
                     }
-                    if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+                    if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                         appsync.appsyncResolverTest(key, "Query", `${apiName}_dataSource_${key}`);
                         ts.writeLine();
                     }
@@ -74,11 +74,11 @@ if (apiType === cloud_api_constants_1.APITYPE.graphql) {
             ts.writeLine();
             if ((_c = model === null || model === void 0 ? void 0 : model.type) === null || _c === void 0 ? void 0 : _c.Mutation) {
                 for (var key in (_d = model === null || model === void 0 ? void 0 : model.type) === null || _d === void 0 ? void 0 : _d.Mutation) {
-                    if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
+                    if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                         appsync.appsyncResolverTest(key, "Mutation", `${apiName}_dataSource`);
                         ts.writeLine();
                     }
-                    if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
+                    if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                         appsync.appsyncResolverTest(key, "Mutation", `${apiName}_dataSource_${key}`);
                         ts.writeLine();
                     }
