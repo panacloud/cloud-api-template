@@ -10,11 +10,12 @@ interface Environment {
 export class Lambda extends CodeWriter {
 
   public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
-
+    
+    const ts = new TypeScriptWriter(output);
+    let lambdaConstructName:string = `${apiName}Lambda` 
     let lambdaVariable:string = `${apiName}_lambdaFn`
     let funcName :string = `${apiName}Lambda`
     let handlerName:string = "main.handler"    
-    const ts = new TypeScriptWriter(output);
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
     let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],`: "";
     let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},` : "";
@@ -22,6 +23,7 @@ export class Lambda extends CodeWriter {
     let role = roleName ? `role: ${roleName},` : "";
      
      if (lambdaStyle === LAMBDA.multiple) {
+       lambdaConstructName = `${apiName}Lambda${functionName}` 
        lambdaVariable = `${apiName}_lambdaFn_${functionName}`
        funcName  = `${apiName}Lambda${functionName}`
        handlerName = `${functionName}.handler`
@@ -32,7 +34,7 @@ export class Lambda extends CodeWriter {
         name: lambdaVariable,
         typeName: "lambda.Function",
         initializer: () => {
-          ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
+          ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",

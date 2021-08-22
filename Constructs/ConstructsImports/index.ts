@@ -58,18 +58,18 @@ export class Imports extends CodeWriter {
 
   public importForAppsyncConstruct(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
-    ts.writeImports(`../lib/${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
+    ts.writeImports(`./${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
   }
 
   public importForDynamodbConstruct(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
-    ts.writeImports(`../lib/${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
+    ts.writeImports(`./${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
   }
 
   
   public importForLambdaConstruct(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
-    ts.writeImports(`../lib/${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
+    ts.writeImports(`./${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
   }
 
   public importForNeptuneConstruct(output: TextWriter) {
