@@ -122,7 +122,7 @@ export class Neptune extends CodeWriter {
         },
         {
           Key: 'Name',
-          Value: 'Default/neptuneTestStack/${apiName}/IngressSubnet${subnetNum}',
+          Value: 'Default/neptuneTestStack/${apiName}Vpc/IngressSubnet${subnetNum}',
         },
       ],
     });`);
@@ -168,7 +168,7 @@ export class Neptune extends CodeWriter {
       Tags: [
         {
           Key: 'Name',
-          Value: 'Default/neptuneTestStack/${apiName}/IngressSubnet${subnetNum}',
+          Value: 'Default/neptuneTestStack/${apiName}Vpc/IngressSubnet${subnetNum}',
         },
       ],
     });`);
