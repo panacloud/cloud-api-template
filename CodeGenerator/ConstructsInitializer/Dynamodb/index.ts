@@ -7,7 +7,7 @@ import {
   DATABASE,
   LAMBDASTYLE,
   PATH,
-} from "../../../cloud-api-constants";
+} from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 import { dynamodbAccessHandler } from "./functions";

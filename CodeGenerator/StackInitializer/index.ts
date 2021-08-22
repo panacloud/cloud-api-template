@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS, DATABASE, APITYPE, PATH } from "../../cloud-api-constants";
+import { CONSTRUCTS, DATABASE, APITYPE, PATH } from "../../constant";
 import { apiManager } from "../../Constructs/ApiManager";
 import { Cdk } from "../../Constructs/Cdk";
 import { DynamoDB } from "../../Constructs/DynamoDB";

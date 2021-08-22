@@ -4,7 +4,7 @@ import {
   PropertyDefinition,
   TypeScriptWriter,
 } from "@yellicode/typescript";
-import { CONSTRUCTS } from "../../cloud-api-constants";
+import { CONSTRUCTS } from "../../constant";
 const _ = require("lodash");
 
 interface consturctProps {

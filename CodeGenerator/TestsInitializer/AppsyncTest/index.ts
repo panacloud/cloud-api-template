@@ -4,7 +4,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
-import { PATH, LAMBDASTYLE, APITYPE } from "../../../cloud-api-constants";
+import { PATH, LAMBDASTYLE, APITYPE } from "../../../constant";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;

@@ -4,7 +4,7 @@ import {
   APITYPE,
   DATABASE,
   LAMBDASTYLE,
-} from "../../../../cloud-api-constants";
+} from "../../../../constant";
 import { Lambda } from "../../../../Constructs/Lambda";
 const model = require("../../../../model.json");
 const { apiName, lambdaStyle, database, apiType } = model.api;

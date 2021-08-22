@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
-import { APITYPE, LAMBDASTYLE, PATH } from "../../cloud-api-constants";
+import { APITYPE, LAMBDASTYLE, PATH } from "../../constant";
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require(`../../model.json`);
 const { lambdaStyle, apiType } = model.api;

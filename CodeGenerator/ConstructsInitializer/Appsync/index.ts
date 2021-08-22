@@ -6,7 +6,7 @@ import {
   CONSTRUCTS,
   APITYPE,
   PATH,
-} from "../../../cloud-api-constants";
+} from "../../../constant";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Iam } from "../../../Constructs/Iam";

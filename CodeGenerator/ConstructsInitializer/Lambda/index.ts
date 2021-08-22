@@ -6,7 +6,7 @@ import {
   DATABASE,
   LAMBDASTYLE,
   PATH,
-} from "../../../cloud-api-constants";
+} from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Ec2 } from "../../../Constructs/Ec2";
 import { Iam } from "../../../Constructs/Iam";

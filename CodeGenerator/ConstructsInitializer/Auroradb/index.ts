@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS, DATABASE, PATH } from "../../../cloud-api-constants";
+import { CONSTRUCTS, DATABASE, PATH } from "../../../constant";
 import { AuroraServerless } from "../../../Constructs/AuroraServerless";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Ec2 } from "../../../Constructs/Ec2";

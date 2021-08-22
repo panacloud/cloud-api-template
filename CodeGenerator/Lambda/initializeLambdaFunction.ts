@@ -2,7 +2,7 @@ import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
-import { LAMBDASTYLE, APITYPE, PATH } from "../../cloud-api-constants";
+import { LAMBDASTYLE, APITYPE, PATH } from "../../constant";
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require("../../model.json");
 import _ = require("lodash");

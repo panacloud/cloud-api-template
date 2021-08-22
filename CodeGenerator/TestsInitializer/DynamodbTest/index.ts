@@ -3,7 +3,7 @@ import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { Cdk } from "../../../Constructs/Cdk";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
-import { DATABASE, PATH } from "../../../cloud-api-constants";
+import { DATABASE, PATH } from "../../../constant";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 

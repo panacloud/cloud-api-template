@@ -4,7 +4,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
-import { LAMBDASTYLE, PATH } from "../../../cloud-api-constants";
+import { LAMBDASTYLE, PATH } from "../../../constant";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 

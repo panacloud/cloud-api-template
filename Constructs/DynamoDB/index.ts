@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../cloud-api-constants";
+import { LAMBDASTYLE } from "../../constant";
 
 export class DynamoDB extends CodeWriter {
   public importDynamodb(output: TextWriter) {
