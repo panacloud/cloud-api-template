@@ -284,6 +284,6 @@ export class Neptune extends CodeWriter {
   }
 
   public initializeTestForCountResources(service: string, count: number) {
-    this.writeLine(`expect(stack).toCountResources(${service}, ${count});`)
+    this.writeLine(`expect(stack).toCountResources('${service}', ${count});`)
   }
 }
