@@ -10,7 +10,7 @@ const _ = require("lodash");
 const { lambdaStyle, apiType } = model.api;
 if (apiType === constant_1.APITYPE.graphql) {
     if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
-        templating_1.Generator.generateFromModel({ outputFile: `${constant_1.PATH.lambda}main.ts` }, (output, model) => {
+        templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lambda}main.ts` }, (output) => {
             const ts = new typescript_1.TypeScriptWriter(output);
             const lambda = new lambdaFunction_1.LambdaFunction(output);
             for (var key in model.type.Query) {
