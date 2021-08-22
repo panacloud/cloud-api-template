@@ -92,7 +92,7 @@ class Neptune extends core_1.CodeWriter {
         },
         {
           Key: 'Name',
-          Value: 'Default/neptuneTestStack/${apiName}/IngressSubnet${subnetNum}',
+          Value: 'Default/neptuneTestStack/${apiName}Vpc/IngressSubnet${subnetNum}',
         },
       ],
     });`);
@@ -136,7 +136,7 @@ class Neptune extends core_1.CodeWriter {
       Tags: [
         {
           Key: 'Name',
-          Value: 'Default/neptuneTestStack/${apiName}/IngressSubnet${subnetNum}',
+          Value: 'Default/neptuneTestStack/${apiName}Vpc/IngressSubnet${subnetNum}',
         },
       ],
     });`);
