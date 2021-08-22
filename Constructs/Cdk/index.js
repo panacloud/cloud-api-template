@@ -44,7 +44,7 @@ class Cdk extends core_1.CodeWriter {
         ts.writeLine();
         if (constructProps) {
             ts.writeInterfaceBlock({
-                name: propsName
+                name: propsName,
             }, () => {
                 constructProps === null || constructProps === void 0 ? void 0 : constructProps.forEach(({ name, type }) => {
                     ts.writeLine(`${name}: ${type}`);

@@ -10,21 +10,25 @@ const auroradbPropertiesInitializer = (output, apiName) => {
 };
 exports.auroradbPropertiesInitializer = auroradbPropertiesInitializer;
 const auroradbPropertiesHandler = () => {
-    return [{
+    return [
+        {
             name: "secretRef",
             typeName: "string",
             accessModifier: "public",
-            isReadonly: true
-        }, {
+            isReadonly: true,
+        },
+        {
             name: "vpcRef",
             typeName: "ec2.Vpc",
             accessModifier: "public",
-            isReadonly: true
-        }, {
+            isReadonly: true,
+        },
+        {
             name: "serviceRole",
             typeName: "iam.Role",
             accessModifier: "public",
-            isReadonly: true
-        }];
+            isReadonly: true,
+        },
+    ];
 };
 exports.auroradbPropertiesHandler = auroradbPropertiesHandler;

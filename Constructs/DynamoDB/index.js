@@ -27,18 +27,18 @@ class DynamoDB extends core_1.CodeWriter {
         }, "const");
     }
     grantFullAccess(lambda, tableName, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`);
         }
     }
     dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
             this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
             this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn_${functionName});`);
         }
     }

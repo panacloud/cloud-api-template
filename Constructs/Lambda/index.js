@@ -15,11 +15,17 @@ class Lambda extends core_1.CodeWriter {
         let handlerName = "main.handler";
         const ts = new typescript_1.TypeScriptWriter(output);
         let vpc = vpcName ? `vpc: ${vpcName},` : "";
-        let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
-        let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},` : "";
-        let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
+        let securityGroups = securityGroupsName
+            ? `securityGroups: [${securityGroupsName}],`
+            : "";
+        let env = environments
+            ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},`
+            : "";
+        let vpcSubnet = vpcSubnets
+            ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+            : "";
         let role = roleName ? `role: ${roleName},` : "";
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
             funcName = `${apiName}Lambda${functionName}`;
             handlerName = `${functionName}.handler`;
@@ -43,10 +49,10 @@ class Lambda extends core_1.CodeWriter {
         }, "const");
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
             this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
             this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
         }
     }

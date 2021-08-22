@@ -10,7 +10,7 @@ class LambdaFunction extends core_1.CodeWriter {
     initializeLambdaFunction(output, lambdaStyle, content) {
         const ts = new typescript_1.TypeScriptWriter(output);
         if (apiType === cloud_api_constants_1.APITYPE.graphql) {
-            if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+            if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.multi) {
                 ts.writeLineIndented(`
       var AWS = require('aws-sdk');
       
@@ -19,7 +19,7 @@ class LambdaFunction extends core_1.CodeWriter {
       }
       `);
             }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+            else if (lambdaStyle === cloud_api_constants_1.LAMBDASTYLE.single) {
                 ts.writeLine(`exports.handler = async (event:Event) => {`);
                 ts.writeLine(`switch (event.info.fieldName) {`);
                 ts.writeLine();

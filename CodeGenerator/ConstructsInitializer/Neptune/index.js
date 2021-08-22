@@ -9,12 +9,11 @@ const Iam_1 = require("../../../Constructs/Iam");
 const Neptune_1 = require("../../../Constructs/Neptune");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
-const { USER_WORKING_DIRECTORY } = model;
-const { apiName, lambdaStyle, database } = model.api;
-if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
-    templating_1.Generator.generateFromModel({ outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.neptuneDb}/index.ts`, }, (output, model) => {
+const { database } = model.api;
+if (database && database === cloud_api_constants_1.DATABASE.neptune) {
+    templating_1.Generator.generate({ outputFile: `${cloud_api_constants_1.PATH.lib}${cloud_api_constants_1.CONSTRUCTS.neptuneDb}/index.ts` }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
-        const { apiName, lambdaStyle, database } = model.api;
+        const { apiName } = model.api;
         const cdk = new Cdk_1.Cdk(output);
         const ec2 = new Ec2_1.Ec2(output);
         const neptune = new Neptune_1.Neptune(output);
@@ -24,22 +23,26 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         neptune.importNeptune(output);
         ec2.importEc2(output);
         ts.writeLine();
-        const propertiesForNeptuneDbConstruct = [{
+        const propertiesForNeptuneDbConstruct = [
+            {
                 name: "VPCRef",
                 typeName: "ec2.Vpc",
                 accessModifier: "public",
-                isReadonly: true
-            }, {
+                isReadonly: true,
+            },
+            {
                 name: "SGRef",
                 typeName: "ec2.SecurityGroup",
                 accessModifier: "public",
-                isReadonly: true
-            }, {
+                isReadonly: true,
+            },
+            {
                 name: "neptuneReaderEndpoint",
                 typeName: "string",
                 accessModifier: "public",
-                isReadonly: true
-            }];
+                isReadonly: true,
+            },
+        ];
         cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.neptuneDb, undefined, () => {
             ec2.initializeVpc(apiName, output, `
                 {
