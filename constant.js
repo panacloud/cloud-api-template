@@ -27,6 +27,7 @@ var PATH;
 (function (PATH) {
     PATH["bin"] = "../../../bin/";
     PATH["lib"] = "../../../lib/";
+    PATH["construct"] = "../../../../lib/";
     PATH["lambda"] = "../../../lambda-fns/";
     PATH["test"] = "../../../../test/";
 })(PATH = exports.PATH || (exports.PATH = {}));

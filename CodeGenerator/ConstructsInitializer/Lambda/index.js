@@ -10,7 +10,7 @@ const functions_1 = require("./functions");
 const model = require("../../../model.json");
 const { lambdaStyle, database } = model.api;
 templating_1.Generator.generate({
-    outputFile: `${constant_1.PATH.lib}${constant_1.CONSTRUCTS.lambda}/index.ts`,
+    outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.lambda}/index.ts`,
 }, (output) => {
     const lambda = new Lambda_1.Lambda(output);
     let lambdaPropsWithName;

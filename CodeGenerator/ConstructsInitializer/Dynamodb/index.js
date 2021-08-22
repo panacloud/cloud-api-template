@@ -10,7 +10,7 @@ const model = require("../../../model.json");
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.dynamo) {
     templating_1.Generator.generate({
-        outputFile: `${constant_1.PATH.lib}${constant_1.CONSTRUCTS.dynamodb}/index.ts`,
+        outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.dynamodb}/index.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const { apiName, lambdaStyle, apiType } = model.api;

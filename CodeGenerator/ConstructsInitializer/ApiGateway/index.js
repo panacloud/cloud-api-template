@@ -10,7 +10,7 @@ const model = require("../../../model.json");
 const { apiName, apiType } = model.api;
 if (apiType === constant_1.APITYPE.rest) {
     templating_1.Generator.generate({
-        outputFile: `${constant_1.PATH.lib}${constant_1.CONSTRUCTS.apigateway}/index.ts`,
+        outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.apigateway}/index.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const cdk = new Cdk_1.Cdk(output);

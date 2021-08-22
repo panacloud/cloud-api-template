@@ -11,7 +11,7 @@ const function_1 = require("./function");
 const model = require("../../../model.json");
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.aurora) {
-    templating_1.Generator.generate({ outputFile: `${constant_1.PATH.lib}${constant_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {
+    templating_1.Generator.generate({ outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const { apiName } = model.api;
         const cdk = new Cdk_1.Cdk(output);

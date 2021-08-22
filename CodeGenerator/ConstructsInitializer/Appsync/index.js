@@ -13,7 +13,7 @@ const { apiType } = model.api;
 const fs = require("fs");
 if (apiType === constant_1.APITYPE.graphql) {
     templating_1.Generator.generate({
-        outputFile: `${constant_1.PATH.lib}${constant_1.CONSTRUCTS.appsync}/index.ts`,
+        outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.appsync}/index.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const appsync = new Appsync_1.Appsync(output);
