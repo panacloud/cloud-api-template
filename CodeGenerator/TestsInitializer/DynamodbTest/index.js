@@ -5,12 +5,8 @@ const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const DynamoDB_1 = require("../../../Constructs/DynamoDB");
-<<<<<<< HEAD
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
-=======
 const constant_1 = require("../../../constant");
->>>>>>> dev
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 if (((_a = model === null || model === void 0 ? void 0 : model.api) === null || _a === void 0 ? void 0 : _a.database) === constant_1.DATABASE.dynamo) {

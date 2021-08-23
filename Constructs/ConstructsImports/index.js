@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Imports = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 class Imports extends core_1.CodeWriter {
     importsForStack(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -48,43 +48,43 @@ class Imports extends core_1.CodeWriter {
     }
     importForAppsyncConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+        ts.writeImports(`./${constant_1.CONSTRUCTS.appsync}`, [constant_1.CONSTRUCTS.appsync]);
     }
     importForDynamodbConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
+        ts.writeImports(`./${constant_1.CONSTRUCTS.dynamodb}`, [constant_1.CONSTRUCTS.dynamodb]);
     }
     importForLambdaConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
+        ts.writeImports(`./${constant_1.CONSTRUCTS.lambda}`, [constant_1.CONSTRUCTS.lambda]);
     }
     importForNeptuneConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
+        ts.writeImports(`./${constant_1.CONSTRUCTS.neptuneDb}`, [constant_1.CONSTRUCTS.neptuneDb]);
     }
     importForAuroraDbConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
+        ts.writeImports(`./${constant_1.CONSTRUCTS.auroradb}`, [constant_1.CONSTRUCTS.auroradb]);
     }
     importForAppsyncConstructInTest(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.appsync}`, [constant_1.CONSTRUCTS.appsync]);
     }
     importForDynamodbConstructInTest(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
+        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.dynamodb}`, [constant_1.CONSTRUCTS.dynamodb]);
     }
     importForLambdaConstructInTest(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
+        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.lambda}`, [constant_1.CONSTRUCTS.lambda]);
     }
     importForNeptuneConstructInTest(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
+        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.neptuneDb}`, [constant_1.CONSTRUCTS.neptuneDb]);
     }
     importForAuroraDbConstructInTest(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
+        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.auroradb}`, [constant_1.CONSTRUCTS.auroradb]);
     }
     ImportsForTest(output, workingDir) {
         const ts = new typescript_1.TypeScriptWriter(output);

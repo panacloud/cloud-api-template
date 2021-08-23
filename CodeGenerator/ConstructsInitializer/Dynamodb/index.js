@@ -8,15 +8,7 @@ const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const DynamoDB_1 = require("../../../Constructs/DynamoDB");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
-<<<<<<< HEAD
 const { database, apiName } = model.api;
-if (database && database === cloud_api_constants_1.DATABASE.dynamoDb) {
-    templating_1.Generator.generate({
-        outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.dynamodb}/index.ts`,
-    }, (output) => {
-        const ts = new typescript_1.TypeScriptWriter(output);
-=======
-const { database } = model.api;
 if (database && database === constant_1.DATABASE.dynamo) {
     templating_1.Generator.generate({
         outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.dynamodb}/index.ts`,
@@ -30,7 +22,6 @@ if (database && database === constant_1.DATABASE.dynamo) {
             queries = model.type.Query ? model.type.Query : {};
         }
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
->>>>>>> dev
         const cdk = new Cdk_1.Cdk(output);
         const imp = new ConstructsImports_1.Imports(output);
         const dynamoDB = new DynamoDB_1.DynamoDB(output);
@@ -62,7 +53,7 @@ if (database && database === constant_1.DATABASE.dynamo) {
         cdk.initializeConstruct(constant_1.CONSTRUCTS.dynamodb, undefined, () => {
             dynamoDB.initializeDynamodb(apiName, output);
             ts.writeLine();
-            functions_1.dynamodbAccessHandler(apiName, output);
+            functions_1.dynamodbAccessHandler(apiName, output, lambdaStyle, mutationsAndQueries);
             ts.writeLine();
         }, output, undefined, properties);
     });

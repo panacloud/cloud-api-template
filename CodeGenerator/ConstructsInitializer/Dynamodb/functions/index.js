@@ -4,20 +4,7 @@ exports.dynamodbPropsHandler = exports.dynamodbAccessHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../../../constant");
 const DynamoDB_1 = require("../../../../Constructs/DynamoDB");
-<<<<<<< HEAD
 const dynamodbAccessHandler = (apiName, output, lambdaStyle, mutationsAndQueries) => {
-=======
-const model = require("../../../../model.json");
-const { lambdaStyle, apiType } = model.api;
-let mutations = {};
-let queries = {};
-if (apiType === constant_1.APITYPE.graphql) {
-    mutations = model.type.Mutation ? model.type.Mutation : {};
-    queries = model.type.Query ? model.type.Query : {};
-}
-const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-const dynamodbAccessHandler = (apiName, output) => {
->>>>>>> dev
     const dynamoDB = new DynamoDB_1.DynamoDB(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === constant_1.LAMBDASTYLE.single) {

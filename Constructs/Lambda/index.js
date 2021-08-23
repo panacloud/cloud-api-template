@@ -22,15 +22,13 @@ class Lambda extends core_1.CodeWriter {
             ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
             : "";
         let role = roleName ? `role: ${roleName},` : "";
-<<<<<<< HEAD
         if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
-=======
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             lambdaConstructName = `${apiName}Lambda${functionName}`;
-<<<<<<< HEAD
->>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
-=======
->>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
+            lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
+            funcName = `${apiName}Lambda${functionName}`;
+            handlerName = `${functionName}.handler`;
+        }
+        if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
             funcName = `${apiName}Lambda${functionName}`;
             handlerName = `${functionName}.handler`;
