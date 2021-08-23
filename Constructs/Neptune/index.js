@@ -244,7 +244,7 @@ class Neptune extends core_1.CodeWriter {
   });`);
     }
     initializeTestForCountResources(service, count) {
-        this.writeLine(`expect(stack).toCountResources(${service}, ${count});`);
+        this.writeLine(`expect(stack).toCountResources('${service}', ${count});`);
     }
 }
 exports.Neptune = Neptune;
