@@ -178,7 +178,7 @@ export const lambdaHandlerForNeptunedb = (
   }
 };
 
-export const lambdaProperiesHandlerForAuroraDb = (apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries:any) => {
+export const lambdaProperiesHandlerForAuroraDb = (apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries?:any) => {
   
   let properties: PropertyDefinition[] = [
     {
@@ -311,7 +311,7 @@ export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:string,apiName:strin
   }
 };
 
-export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries:any) => {
+export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries?:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (
