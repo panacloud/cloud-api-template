@@ -108,9 +108,9 @@ Generator.generate(
           },
           "const"
         );
-        apiType === APITYPE.rest
-        ? LambdaAccessHandler( output,  apiName,  LAMBDASTYLE.single,  mutationsAndQueries )
-        : LambdaAccessHandler(  output,  apiName,  lambdaStyle,  mutationsAndQueries);
+        if(database === DATABASE.dynamo){
+               LambdaAccessHandler( output, apiName, lambdaStyle ,apiType, mutationsAndQueries )
+        }
 
 
         if (apiType === APITYPE.graphql) {
