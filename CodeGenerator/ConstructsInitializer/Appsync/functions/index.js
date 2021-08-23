@@ -8,14 +8,12 @@ const Cdk_1 = require("../../../../Constructs/Cdk");
 const model = require("../../../../model.json");
 const appsyncDatasourceHandler = (apiName, output, lambdaStyle, mutationsAndQueries) => {
     const appsync = new Appsync_1.Appsync(output);
-    console.log("line number 21 appsyncDatasourceHandler===>", lambdaStyle);
     appsync.apiName = apiName;
     const ts = new typescript_1.TypeScriptWriter(output);
     if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
         appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle);
     }
     else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-        console.log("line number 21 under condition appsyncDatasourceHandler===>", lambdaStyle);
         Object.keys(mutationsAndQueries).forEach((key) => {
             appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle, key);
             ts.writeLine();
