@@ -193,7 +193,7 @@ const lambdaProperiesHandlerForNeptuneDb = (apiName, apiType, lambdaStyle, datab
     }
     else if (lambdaStyle === constant_1.LAMBDASTYLE.multi &&
         apiType === constant_1.APITYPE.graphql &&
-        database === constant_1.DATABASE.aurora) {
+        database === constant_1.DATABASE.neptune) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
