@@ -61,6 +61,11 @@ export class Imports extends CodeWriter {
     ts.writeImports(`./${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
   }
 
+  public importForApiGatewayConstruct(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports(`./${CONSTRUCTS.apigateway}`, [CONSTRUCTS.apigateway]);
+  }
+
   public importForDynamodbConstruct(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     ts.writeImports(`./${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
