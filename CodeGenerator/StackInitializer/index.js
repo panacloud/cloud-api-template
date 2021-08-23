@@ -33,9 +33,7 @@ templating_1.Generator.generate({
     else {
         imp.importForApiGatewayConstruct(output);
     }
-    if (lambdaStyle) {
-        imp.importForLambdaConstruct(output);
-    }
+    imp.importForLambdaConstruct(output);
     if (database === constant_1.DATABASE.dynamo) {
         imp.importForDynamodbConstruct(output);
     }
@@ -58,20 +56,6 @@ templating_1.Generator.generate({
                 },
             }, "const");
             ts.writeLine();
-            if (lambdaStyle) {
-                ts.writeVariableDeclaration({
-                    name: `${apiName}Lambda`,
-                    typeName: constant_1.CONSTRUCTS.lambda,
-                    initializer: () => {
-                        ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
-                        functions_1.lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
-                        ts.writeLine("})");
-                    },
-                }, "const");
-                ts.writeLine();
-                functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, mutationsAndQueries);
-                ts.writeLine();
-            }
         }
         else if (database == constant_1.DATABASE.neptune) {
             ts.writeVariableDeclaration({
@@ -82,55 +66,40 @@ templating_1.Generator.generate({
                 }
             }, "const");
             ts.writeLine();
-            ts.writeVariableDeclaration({
-                name: `${apiName}Lambda`,
-                typeName: constant_1.CONSTRUCTS.lambda,
-                initializer: () => {
-                    ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
-                    functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
-                    ts.writeLine("})");
-                },
-            }, "const");
-            ts.writeLine();
         }
         else if (database == constant_1.DATABASE.aurora) {
-            ts.writeLine(`const ${apiName}_auroradb = new ${constant_1.CONSTRUCTS.auroradb}(this,"${constant_1.CONSTRUCTS.auroradb}");`);
-            ts.writeLine();
             ts.writeVariableDeclaration({
-                name: `${apiName}Lambda`,
-                typeName: constant_1.CONSTRUCTS.lambda,
+                name: `${apiName}_auroradb`,
+                typeName: constant_1.CONSTRUCTS.auroradb,
                 initializer: () => {
-                    ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
-                    functions_1.lambdaConstructPropsHandlerAuroradb(output, apiName);
-                    ts.writeLine("})");
-                },
+                    ts.writeLine(`new ${constant_1.CONSTRUCTS.auroradb}(this,"${constant_1.CONSTRUCTS.auroradb}");`);
+                }
             }, "const");
             ts.writeLine();
-            ts.writeLine();
         }
-        if (apiType === constant_1.APITYPE.graphql && database === constant_1.DATABASE.dynamo) {
+        ts.writeVariableDeclaration({
+            name: `${apiName}Lambda`,
+            typeName: constant_1.CONSTRUCTS.lambda,
+            initializer: () => {
+                ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
+                database === constant_1.DATABASE.dynamo && functions_1.lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
+                database === constant_1.DATABASE.neptune && functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
+                database === constant_1.DATABASE.aurora && functions_1.lambdaConstructPropsHandlerAuroradb(output, apiName);
+                ts.writeLine("})");
+            },
+        }, "const");
+        apiType === constant_1.APITYPE.rest
+            ? functions_1.LambdaAccessHandler(output, apiName, constant_1.LAMBDASTYLE.single, mutationsAndQueries)
+            : functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, mutationsAndQueries);
+        if (apiType === constant_1.APITYPE.graphql) {
             ts.writeVariableDeclaration({
                 name: `${apiName}`,
                 typeName: constant_1.CONSTRUCTS.appsync,
                 initializer: () => {
                     ts.writeLine(`new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-                    functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
-                    ts.writeLine("})");
-                },
-            }, "const");
-        }
-        if (apiType === constant_1.APITYPE.graphql && database === constant_1.DATABASE.aurora) {
-            ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-            functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.writeLine("})");
-        }
-        if (apiType === constant_1.APITYPE.graphql && database === constant_1.DATABASE.neptune) {
-            ts.writeVariableDeclaration({
-                name: `${apiName}`,
-                typeName: constant_1.CONSTRUCTS.appsync,
-                initializer: () => {
-                    ts.writeLine(`new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-                    functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    database === constant_1.DATABASE.dynamo && functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    database === constant_1.DATABASE.neptune && functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    database === constant_1.DATABASE.aurora && functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
                     ts.writeLine("})");
                 },
             }, "const");
