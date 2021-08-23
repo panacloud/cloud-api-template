@@ -75,14 +75,6 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             neptune.initializeTestForCountResources('AWS::EC2::SecurityGroupIngress', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBCluster', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1);
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::VPC', 1);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::Subnet', 2);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::RouteTable', 2);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::SubnetRouteTableAssociation', 2);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::SecurityGroup', 1);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::EC2::SecurityGroupIngress', 1);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::Neptune::DBCluster', 1);`)
-            //   ts.writeLine(`expect(stack).toCountResources('AWS::Neptune::DBInstance', 1);`)
         }, output, USER_WORKING_DIRECTORY);
     });
 }
