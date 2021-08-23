@@ -30,8 +30,8 @@ class DynamoDB extends core_1.CodeWriter {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`);
         }
     }
-    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, functionName) {
-        if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
+    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, apiType, functionName) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.single || apiType === constant_1.APITYPE.rest) {
             this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
         }
         else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {

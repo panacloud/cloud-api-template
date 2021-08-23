@@ -88,9 +88,7 @@ templating_1.Generator.generate({
                 ts.writeLine("})");
             },
         }, "const");
-        if (database === constant_1.DATABASE.dynamo) {
-            functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, apiType, mutationsAndQueries);
-        }
+        database === constant_1.DATABASE.dynamo && functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, apiType, mutationsAndQueries);
         if (apiType === constant_1.APITYPE.graphql) {
             ts.writeVariableDeclaration({
                 name: `${apiName}`,
