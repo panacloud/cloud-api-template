@@ -68,5 +68,41 @@ class Lambda extends core_1.CodeWriter {
       })
     );`);
     }
+    initializeTestForLambdaWithNeptune(funcName, handlerName) {
+        this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
+    FunctionName: '${funcName}',
+    Handler: '${handlerName}.handler',
+    Runtime: 'nodejs12.x',
+    Environment: {
+      Variables: {
+        NEPTUNE_ENDPOINT: {
+          'Fn::GetAtt': [
+            stack.getLogicalId(cfn_cluster[0] as CfnElement),
+            'ReadEndpoint',
+          ],
+        },
+      },
+    },
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          'Fn::GetAtt': [
+            stack.getLogicalId(vpc.SGRef.node.defaultChild as cdk.CfnElement),
+            'GroupId',
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: stack.getLogicalId(isolated_subnets[0].node.defaultChild as cdk.CfnElement),
+        },
+        {
+          Ref: stack.getLogicalId(isolated_subnets[1].node.defaultChild as cdk.CfnElement),
+        },
+      ],
+    },
+  });
+`);
+    }
 }
 exports.Lambda = Lambda;
