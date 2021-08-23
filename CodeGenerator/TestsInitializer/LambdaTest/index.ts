@@ -26,7 +26,7 @@ if (model?.api?.lambdaStyle) {
       const mutationsAndQueries = { ...mutations, ...queries };
       imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
       if(database === DATABASE.dynamoDb){
-        imp.importForDynamodbConstruct(output)
+        imp.importForDynamodbConstructInTest(output)
         ts.writeLine();  
       }
       cdk.initializeTest(

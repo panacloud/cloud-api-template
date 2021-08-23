@@ -25,8 +25,8 @@ if (model?.api?.apiType === APITYPE.graphql) {
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
       imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
-      imp.importForAppsyncConstruct(output)
-      imp.importForLambdaConstruct(output)
+      imp.importForAppsyncConstructInTest(output)
+      imp.importForLambdaConstructInTest(output)
       testClass.initializeTest(
         "Appsync Api Constructs Test",
         () => {

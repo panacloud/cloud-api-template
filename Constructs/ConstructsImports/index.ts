@@ -82,6 +82,32 @@ export class Imports extends CodeWriter {
     ts.writeImports(`./${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
 }
 
+public importForAppsyncConstructInTest(output: TextWriter) {
+  const ts = new TypeScriptWriter(output);
+  ts.writeImports(`../lib/${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
+}
+
+public importForDynamodbConstructInTest(output: TextWriter) {
+  const ts = new TypeScriptWriter(output);
+  ts.writeImports(`../lib/${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
+}
+
+
+public importForLambdaConstructInTest(output: TextWriter) {
+  const ts = new TypeScriptWriter(output);
+  ts.writeImports(`../lib/${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
+}
+
+public importForNeptuneConstructInTest(output: TextWriter) {
+  const ts = new TypeScriptWriter(output);
+  ts.writeImports(`../lib/${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);
+}
+
+public importForAuroraDbConstructInTest(output: TextWriter) {
+  const ts = new TypeScriptWriter(output);
+  ts.writeImports(`../lib/${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
+}
+
 
   public ImportsForTest(output: TextWriter,workingDir:string) {
     const ts = new TypeScriptWriter(output);

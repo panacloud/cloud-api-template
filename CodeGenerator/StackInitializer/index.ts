@@ -1,12 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import {
-  APITYPE,
-  CONSTRUCTS,
-  DATABASE,
-  LAMBDA,
-} from "../../cloud-api-constants";
+import {APITYPE,CONSTRUCTS, DATABASE, LAMBDA} from "../../cloud-api-constants";
 import { apiManager } from "../../Constructs/ApiManager";
 import { Cdk } from "../../Constructs/Cdk";
 import { Imports } from "../../Constructs/ConstructsImports";
@@ -89,12 +84,7 @@ Generator.generateFromModel(
               "const"
             );
             ts.writeLine();
-            LambdaAccessHandler(
-              output,
-              apiName,
-              lambdaStyle,
-              mutationsAndQueries
-            );
+            LambdaAccessHandler(output,apiName,lambdaStyle, mutationsAndQueries );
             ts.writeLine();
           }
           if (apiType === APITYPE.graphql) {
@@ -120,50 +110,90 @@ Generator.generateFromModel(
           }
         }
         if (database == DATABASE.neptuneDb) {
-          ts.writeLine(
-            `const ${apiName}_neptunedb = new ${CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`
-          );
+
+          ts.writeVariableDeclaration({
+          name:`${apiName}_neptunedb`,
+          typeName:CONSTRUCTS.neptuneDb,
+          initializer:()=>{
+            ts.writeLine(`new ${CONSTRUCTS.neptuneDb}(this,"${apiName}${CONSTRUCTS.neptuneDb}")`)
+          }},
+          "const")
+
           ts.writeLine();
-          ts.writeLine(
-            `const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}Lambda`,
+              typeName: CONSTRUCTS.lambda,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`
+                );
+                lambdaConstructPropsHandlerNeptunedb(output, apiName);
+                ts.writeLine("})");
+              },
+            },
+            "const"
           );
-          lambdaConstructPropsHandlerNeptunedb(output, apiName);
-          ts.writeLine("})");
+
           ts.writeLine();
-          ts.writeLine(
-            `const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}`,
+              typeName: CONSTRUCTS.appsync,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`
+                );
+                propsHandlerForAppsyncConstructNeptunedb(output, apiName,lambdaStyle,mutationsAndQueries);
+                ts.writeLine("})");
+              },
+            },
+            "const"
           );
-          propsHandlerForAppsyncConstructNeptunedb(
-            output,
-            apiName,
-            lambdaStyle,
-            mutationsAndQueries
-          );
-          ts.writeLine("})");
-          ts.writeLine();
         }
         if (database == DATABASE.auroraDb) {
-          ts.writeLine(
-            `const ${apiName}_auroradb = new ${CONSTRUCTS.auroradb}(this,"${CONSTRUCTS.auroradb}");`
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}_auroradb`,
+              typeName: CONSTRUCTS.auroradb,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.auroradb}(this,"${CONSTRUCTS.auroradb}");`
+                );
+              },
+            },
+            "const"
+          );
+          ts.writeLine()
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}Lambda`,
+              typeName: CONSTRUCTS.lambda,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`
+                );
+                lambdaConstructPropsHandlerAuroradb(output, apiName);
+                ts.writeLine("})");      
+              },
+            },
+            "const"
           );
           ts.writeLine();
-          ts.writeLine(
-            `const ${apiName}Lambda = new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}`,
+              typeName: CONSTRUCTS.appsync,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`
+                );
+                propsHandlerForAppsyncConstructNeptunedb( output,apiName,lambdaStyle, mutationsAndQueries);
+                ts.writeLine("})");      
+              },
+            },
+            "const"
           );
-          lambdaConstructPropsHandlerAuroradb(output, apiName);
-          ts.writeLine("})");
-          ts.writeLine();
-          ts.writeLine(
-            `const ${apiName} = new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`
-          );
-          propsHandlerForAppsyncConstructNeptunedb(
-            output,
-            apiName,
-            lambdaStyle,
-            mutationsAndQueries
-          );
-          ts.writeLine("})");
-          ts.writeLine();
         }
       },
       output
