@@ -27,6 +27,9 @@ class Lambda extends core_1.CodeWriter {
 =======
         if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
             lambdaConstructName = `${apiName}Lambda${functionName}`;
+<<<<<<< HEAD
+>>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
+=======
 >>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
             funcName = `${apiName}Lambda${functionName}`;

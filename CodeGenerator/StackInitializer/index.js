@@ -122,6 +122,7 @@ templating_1.Generator.generate({
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         else if (database == constant_1.DATABASE.neptune) {
             ts.writeLine(`const ${apiName}_neptunedb = new ${constant_1.CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`);
             ts.writeLine();
@@ -156,6 +157,28 @@ templating_1.Generator.generate({
 >>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
             ts.writeLine();
             ts.writeVariableDeclaration({
+=======
+        if (database == cloud_api_constants_1.DATABASE.neptuneDb) {
+            ts.writeVariableDeclaration({
+                name: `${apiName}_neptunedb`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.neptuneDb,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.neptuneDb}")`);
+                }
+            }, "const");
+            ts.writeLine();
+            ts.writeVariableDeclaration({
+                name: `${apiName}Lambda`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.lambda,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}",{`);
+                    functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
+                    ts.writeLine("})");
+                },
+            }, "const");
+            ts.writeLine();
+            ts.writeVariableDeclaration({
+>>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
                 name: `${apiName}`,
                 typeName: cloud_api_constants_1.CONSTRUCTS.appsync,
                 initializer: () => {
@@ -165,6 +188,7 @@ templating_1.Generator.generate({
                 },
             }, "const");
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
         else if (database == constant_1.DATABASE.aurora) {
             ts.writeLine(`const ${apiName}_auroradb = new ${constant_1.CONSTRUCTS.auroradb}(this,"${constant_1.CONSTRUCTS.auroradb}");`);
@@ -185,10 +209,29 @@ templating_1.Generator.generate({
                 typeName: cloud_api_constants_1.CONSTRUCTS.auroradb,
                 initializer: () => {
                     ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.auroradb}(this,"${cloud_api_constants_1.CONSTRUCTS.auroradb}");`);
+=======
+        if (database == cloud_api_constants_1.DATABASE.auroraDb) {
+            ts.writeVariableDeclaration({
+                name: `${apiName}_auroradb`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.auroradb,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.auroradb}(this,"${cloud_api_constants_1.CONSTRUCTS.auroradb}");`);
                 },
             }, "const");
             ts.writeLine();
             ts.writeVariableDeclaration({
+                name: `${apiName}Lambda`,
+                typeName: cloud_api_constants_1.CONSTRUCTS.lambda,
+                initializer: () => {
+                    ts.writeLine(`new ${cloud_api_constants_1.CONSTRUCTS.lambda}(this,"${apiName}${cloud_api_constants_1.CONSTRUCTS.lambda}",{`);
+                    functions_1.lambdaConstructPropsHandlerAuroradb(output, apiName);
+                    ts.writeLine("})");
+>>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
+                },
+            }, "const");
+            ts.writeLine();
+            ts.writeVariableDeclaration({
+<<<<<<< HEAD
                 name: `${apiName}Lambda`,
                 typeName: cloud_api_constants_1.CONSTRUCTS.lambda,
                 initializer: () => {
@@ -200,6 +243,8 @@ templating_1.Generator.generate({
 >>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
             ts.writeLine();
             ts.writeVariableDeclaration({
+=======
+>>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
                 name: `${apiName}`,
                 typeName: cloud_api_constants_1.CONSTRUCTS.appsync,
                 initializer: () => {
@@ -208,11 +253,14 @@ templating_1.Generator.generate({
                     ts.writeLine("})");
                 },
             }, "const");
+<<<<<<< HEAD
         }
         if (apiType === constant_1.APITYPE.rest) {
             ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.apigateway}(this,"${apiName}${constant_1.CONSTRUCTS.apigateway}",{`);
             functions_1.propsHandlerForApiGatewayConstruct(output, apiName);
             ts.writeLine("})");
+=======
+>>>>>>> 97ae2538fc56736641690bc8efe05574e6cc766c
         }
     }, output);
 });
