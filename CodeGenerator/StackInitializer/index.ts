@@ -108,10 +108,8 @@ Generator.generate(
           },
           "const"
         );
-        if(database === DATABASE.dynamo){
-               LambdaAccessHandler( output, apiName, lambdaStyle ,apiType, mutationsAndQueries )
-        }
-
+        
+        database === DATABASE.dynamo && LambdaAccessHandler( output, apiName, lambdaStyle ,apiType, mutationsAndQueries )
 
         if (apiType === APITYPE.graphql) {
           ts.writeVariableDeclaration(

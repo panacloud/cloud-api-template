@@ -116,7 +116,8 @@ export const LambdaAccessHandler = (
       apiName,
       `${apiName}_table`,
       `${apiName}Lambda`,
-      lambdaStyle
+      lambdaStyle,
+      apiType
     );
   } else if (lambdaStyle === LAMBDASTYLE.multi && apiType === APITYPE.graphql) {
     Object.keys(mutationsAndQueries).forEach((key) => {
@@ -125,6 +126,7 @@ export const LambdaAccessHandler = (
         `${apiName}_table`,
         `${apiName}Lambda`,
         lambdaStyle,
+        apiType,
         key
       );
     });

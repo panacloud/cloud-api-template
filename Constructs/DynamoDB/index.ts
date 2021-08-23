@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../constant";
+import { APITYPE, LAMBDASTYLE } from "../../constant";
 
 export class DynamoDB extends CodeWriter {
 
@@ -47,9 +47,10 @@ export class DynamoDB extends CodeWriter {
     dbConstructName: string,
     lambdaConstructName: string,
     lambdaStyle: string,
+    apiType:string,
     functionName?: string
   ) {
-    if (lambdaStyle === LAMBDASTYLE.single) {
+    if (lambdaStyle === LAMBDASTYLE.single || apiType === APITYPE.rest) {
       this.writeLine(
         `${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`
       );
