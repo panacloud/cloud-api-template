@@ -1,7 +1,34 @@
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDA } from "../../../cloud-api-constants";
+import { LAMBDASTYLE } from "../../../constant";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
+
+export const lambdaEnvHandler = (
+  output: TextWriter,
+  apiName: string,
+  lambdaStyle: LAMBDASTYLE,
+  mutationsAndQueries: any
+) => {
+  const ts = new TypeScriptWriter(output);
+  let apiLambda = apiName + "Lambda";
+
+  if (lambdaStyle === LAMBDASTYLE.single) {
+    let lambdafunc = `${apiName}_lambdaFn`;
+    ts.writeLine(
+      `${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`
+    );
+    ts.writeLine();
+  }
+  if (lambdaStyle === LAMBDASTYLE.multi) {
+    Object.keys(mutationsAndQueries).forEach((key) => {
+      let lambdafunc = `${apiName}_lambdaFn_${key}`;
+      ts.writeLine(
+        `${apiLambda}.${lambdafunc}.addEnvironment("TABLE_NAME",${apiName}_table.tableName)`
+      );
+      ts.writeLine();
+    });
+  }
+};
 
 export const lambdaPropsHandlerDynamodb = (
   output: TextWriter,
@@ -9,7 +36,7 @@ export const lambdaPropsHandlerDynamodb = (
 ) => {
   const ts = new TypeScriptWriter(output);
   ts.writeLine(`tableName:${dbConstructName}.table.tableName`);
-  ts.writeLine()
+  ts.writeLine();
 };
 
 export const lambdaConstructPropsHandlerNeptunedb = (
@@ -37,15 +64,15 @@ export const lambdaConstructPropsHandlerAuroradb = (
 export const propsHandlerForAppsyncConstructDynamodb = (
   output: TextWriter,
   apiName: string,
-  lambdaStyle: LAMBDA,
+  lambdaStyle: LAMBDASTYLE,
   mutationsAndQueries: any
 ) => {
   const ts = new TypeScriptWriter(output);
-  if (lambdaStyle === LAMBDA.single) {
+  if (lambdaStyle === LAMBDASTYLE.single) {
     let apiLambda = apiName + "Lambda";
     let lambdafunc = `${apiName}_lambdaFn`;
     ts.writeLine(`${lambdafunc}Arn : ${apiLambda}.${lambdafunc}.functionArn`);
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if (lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       let apiLambda = `${apiName}Lambda`;
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
@@ -59,15 +86,15 @@ export const propsHandlerForAppsyncConstructDynamodb = (
 export const propsHandlerForAppsyncConstructNeptunedb = (
   output: TextWriter,
   apiName: string,
-  lambdaStyle: LAMBDA,
+  lambdaStyle: LAMBDASTYLE,
   mutationsAndQueries: any
 ) => {
   const ts = new TypeScriptWriter(output);
-  if (lambdaStyle === LAMBDA.single) {
+  if (lambdaStyle === LAMBDASTYLE.single) {
     let apiLambda = apiName + "Lambda";
     let lambdafunc = `${apiName}_lambdaFnArn`;
     ts.writeLine(`${lambdafunc} : ${apiLambda}.${lambdafunc}`);
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if (lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       let apiLambda = `${apiName}Lambda`;
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
@@ -79,18 +106,18 @@ export const propsHandlerForAppsyncConstructNeptunedb = (
 export const LambdaAccessHandler = (
   output: TextWriter,
   apiName: string,
-  lambdaStyle: LAMBDA,
+  lambdaStyle: LAMBDASTYLE,
   mutationsAndQueries: any
 ) => {
   const dynamodb = new DynamoDB(output);
-  if (lambdaStyle === LAMBDA.single) {
+  if (lambdaStyle === LAMBDASTYLE.single) {
     dynamodb.dbConstructLambdaAccess(
       apiName,
       `${apiName}_table`,
       `${apiName}Lambda`,
       lambdaStyle
     );
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if (lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       dynamodb.dbConstructLambdaAccess(
         apiName,
@@ -103,23 +130,30 @@ export const LambdaAccessHandler = (
   }
 };
 
-export const propsHandlerForDynoDbConstruct = (
+export const propsHandlerForApiGatewayConstruct = (
+  output: TextWriter,
+  apiName: string
+) => {
+  const ts = new TypeScriptWriter(output);
+  let lambdafunc = `${apiName}_lambdaFn`;
+  ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`);
+};
+
+export const propsHandlerForDynamoDbConstruct = (
   output: TextWriter,
   apiName: string,
-  lambdaStyle: LAMBDA,
+  lambdaStyle: LAMBDASTYLE,
   mutationsAndQueries: any
 ) => {
   const ts = new TypeScriptWriter(output);
 
-  if (lambdaStyle === LAMBDA.single) {
+  if (lambdaStyle === LAMBDASTYLE.single) {
     let lambdafunc = `${apiName}_lambdaFn`;
     ts.writeLine(`${lambdafunc}: ${apiName}Lambda.${lambdafunc}`);
-  } else if (lambdaStyle === LAMBDA.multiple) {
-    // var dbProps: { [k: string]: string } = {};
+  } else if (lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       let lambdafunc = `${apiName}_lambdaFn_${key}`;
       ts.writeLine(`${lambdafunc} : ${apiName}Lambda.${lambdafunc},`);
     });
-    // return dbProps
   }
 };

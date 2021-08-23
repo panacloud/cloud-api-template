@@ -4,15 +4,16 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
-import { LAMBDA , APITYPE} from "../../../cloud-api-constants";
+import { PATH, LAMBDASTYLE, APITYPE } from "../../../constant";
 import { Imports } from "../../../Constructs/ConstructsImports";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
+const { apiType } = model.api;
 
-if (model?.api?.apiType === APITYPE.graphql) {
+if (apiType === APITYPE.graphql) {
   Generator.generate(
     {
-      outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-appsync.test.ts`,
+      outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     },
     (output: TextWriter) => {
       const { apiName, lambdaStyle, database } = model.api;
@@ -21,6 +22,7 @@ if (model?.api?.apiType === APITYPE.graphql) {
       const appsync = new Appsync(output);
       const imp = new Imports(output)
       const testClass = new Cdk(output);
+
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
@@ -50,12 +52,12 @@ if (model?.api?.apiType === APITYPE.graphql) {
           iam.lambdaIdentifier();
           ts.writeLine();
 
-          if (lambdaStyle === LAMBDA.single) {
+          if (lambdaStyle === LAMBDASTYLE.single) {
             let dsName = `${apiName}_dataSource`;
             appsync.appsyncDatasourceTest(dsName, 0);
-          } else if (lambdaStyle === LAMBDA.multiple && mutationsAndQueries) {
+          } else if (lambdaStyle === LAMBDASTYLE.multi && mutationsAndQueries) {
             Object.keys(mutationsAndQueries).forEach((key, index) => {
-              if (lambdaStyle === LAMBDA.multiple) {
+              if (lambdaStyle === LAMBDASTYLE.multi) {
                 let dsName = `${apiName}_dataSource_${key}`;
                 appsync.appsyncDatasourceTest(dsName, index);
                 ts.writeLine();
@@ -66,14 +68,14 @@ if (model?.api?.apiType === APITYPE.graphql) {
 
           if (model?.type?.Query) {
             for (var key in model?.type?.Query) {
-              if (lambdaStyle === LAMBDA.single) {
+              if (lambdaStyle === LAMBDASTYLE.single) {
                 appsync.appsyncResolverTest(
                   key,
                   "Query",
                   `${apiName}_dataSource`
                 );
               }
-              if (lambdaStyle === LAMBDA.multiple) {
+              if (lambdaStyle === LAMBDASTYLE.multi) {
                 appsync.appsyncResolverTest(
                   key,
                   "Query",
@@ -87,7 +89,7 @@ if (model?.api?.apiType === APITYPE.graphql) {
 
           if (model?.type?.Mutation) {
             for (var key in model?.type?.Mutation) {
-              if (lambdaStyle === LAMBDA.single) {
+              if (lambdaStyle === LAMBDASTYLE.single) {
                 appsync.appsyncResolverTest(
                   key,
                   "Mutation",
@@ -95,7 +97,7 @@ if (model?.api?.apiType === APITYPE.graphql) {
                 );
                 ts.writeLine();
               }
-              if (lambdaStyle === LAMBDA.multiple) {
+              if (lambdaStyle === LAMBDASTYLE.multi) {
                 appsync.appsyncResolverTest(
                   key,
                   "Mutation",

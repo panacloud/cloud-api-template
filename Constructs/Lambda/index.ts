@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDA } from "../../cloud-api-constants";
+import { LAMBDASTYLE } from "../../constant";
 
 interface Environment {
   name: string;
@@ -17,19 +17,31 @@ export class Lambda extends CodeWriter {
     let funcName :string = `${apiName}Lambda`
     let handlerName:string = "main.handler"    
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
-    let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],`: "";
-    let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},` : "";
-    let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
+    let securityGroups = securityGroupsName
+      ? `securityGroups: [${securityGroupsName}],`
+      : "";
+    let env = environments
+      ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},`
+      : "";
+    let vpcSubnet = vpcSubnets
+      ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+      : "";
     let role = roleName ? `role: ${roleName},` : "";
      
-     if (lambdaStyle === LAMBDA.multiple) {
+     if (lambdaStyle === LAMBDASTYLE.multi) {
        lambdaConstructName = `${apiName}Lambda${functionName}` 
        lambdaVariable = `${apiName}_lambdaFn_${functionName}`
        funcName  = `${apiName}Lambda${functionName}`
        handlerName = `${functionName}.handler`
      }
 
-     ts.writeVariableDeclaration(
+    if (lambdaStyle === LAMBDASTYLE.multi) {
+      lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
+      funcName = `${apiName}Lambda${functionName}`;
+      handlerName = `${functionName}.handler`;
+    }
+
+    ts.writeVariableDeclaration(
       {
         name: lambdaVariable,
         typeName: "lambda.Function",
@@ -58,12 +70,11 @@ export class Lambda extends CodeWriter {
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === LAMBDA.single) {
+    if (lambdaStyle === LAMBDASTYLE.single) {
       this.writeLine(
         `${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`
       );
-    } else if (lambdaStyle === LAMBDA.multiple) {
-
+    } else if (lambdaStyle === LAMBDASTYLE.multi) {
       this.writeLine(
         `${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`
       );
@@ -91,5 +102,4 @@ export class Lambda extends CodeWriter {
       })
     );`);
   }
-
 }

@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDA } from "../../cloud-api-constants";
+import { LAMBDASTYLE } from "../../constant";
 
 export class DynamoDB extends CodeWriter {
 
@@ -31,9 +31,11 @@ export class DynamoDB extends CodeWriter {
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === LAMBDA.single) {
-      this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`);
-    } else if (lambdaStyle === LAMBDA.multiple) {
+    if (lambdaStyle === LAMBDASTYLE.single) {
+      this.writeLine(
+        `${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`
+      );
+    } else if (lambdaStyle === LAMBDASTYLE.multi) {
       this.writeLine(
         `${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`
       );
@@ -42,14 +44,16 @@ export class DynamoDB extends CodeWriter {
 
   public dbConstructLambdaAccess(
     apiName: string,
-    dbConstructName:string,
-    lambdaConstructName:string,
+    dbConstructName: string,
+    lambdaConstructName: string,
     lambdaStyle: string,
     functionName?: string
   ) {
-    if (lambdaStyle === LAMBDA.single) {
-      this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
-    } else if (lambdaStyle === LAMBDA.multiple) {
+    if (lambdaStyle === LAMBDASTYLE.single) {
+      this.writeLine(
+        `${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`
+      );
+    } else if (lambdaStyle === LAMBDASTYLE.multi) {
       this.writeLine(
         `${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn_${functionName});`
       );
@@ -77,5 +81,4 @@ export class DynamoDB extends CodeWriter {
     );
   `);
   }
-
 }

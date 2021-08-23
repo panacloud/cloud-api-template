@@ -3,17 +3,19 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const Appsync_1 = require("../../../Constructs/Appsync");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const Iam_1 = require("../../../Constructs/Iam");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
+const { USER_WORKING_DIRECTORY } = model;
+const { apiType } = model.api;
 const fs = require("fs");
-if (((_a = model === null || model === void 0 ? void 0 : model.api) === null || _a === void 0 ? void 0 : _a.apiType) === cloud_api_constants_1.APITYPE.graphql) {
+if (apiType === constant_1.APITYPE.graphql) {
     templating_1.Generator.generate({
-        outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}/index.ts`,
+        outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.appsync}/index.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const appsync = new Appsync_1.Appsync(output);

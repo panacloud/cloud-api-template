@@ -2,17 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const Ec2_1 = require("../../../Constructs/Ec2");
 const Neptune_1 = require("../../../Constructs/Neptune");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
+<<<<<<< HEAD
 const { database, apiName } = model.api;
 if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
     templating_1.Generator.generate({ outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.neptuneDb}/index.ts`, }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
+=======
+const { database } = model.api;
+if (database && database === constant_1.DATABASE.neptune) {
+    templating_1.Generator.generate({ outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.neptuneDb}/index.ts` }, (output) => {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        const { apiName } = model.api;
+>>>>>>> dev
         const cdk = new Cdk_1.Cdk(output);
         const ec2 = new Ec2_1.Ec2(output);
         const neptune = new Neptune_1.Neptune(output);
@@ -22,23 +30,27 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         imp.importNeptune(output);
         imp.importEc2(output);
         ts.writeLine();
-        const propertiesForNeptuneDbConstruct = [{
+        const propertiesForNeptuneDbConstruct = [
+            {
                 name: "VPCRef",
                 typeName: "ec2.Vpc",
                 accessModifier: "public",
-                isReadonly: true
-            }, {
+                isReadonly: true,
+            },
+            {
                 name: "SGRef",
                 typeName: "ec2.SecurityGroup",
                 accessModifier: "public",
-                isReadonly: true
-            }, {
+                isReadonly: true,
+            },
+            {
                 name: "neptuneReaderEndpoint",
                 typeName: "string",
                 accessModifier: "public",
-                isReadonly: true
-            }];
-        cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.neptuneDb, undefined, () => {
+                isReadonly: true,
+            },
+        ];
+        cdk.initializeConstruct(constant_1.CONSTRUCTS.neptuneDb, undefined, () => {
             ec2.initializeVpc(apiName, output, `
                 {
                   cidrMask: 24, 

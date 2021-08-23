@@ -48,15 +48,15 @@ class Imports extends core_1.CodeWriter {
     }
     importForAppsyncConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
     }
     importForDynamodbConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
+        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
     }
     importForLambdaConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
+        ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
     }
     importForNeptuneConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -65,6 +65,26 @@ class Imports extends core_1.CodeWriter {
     importForAuroraDbConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`./${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
+    }
+    importForAppsyncConstructInTest(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.appsync}`, [cloud_api_constants_1.CONSTRUCTS.appsync]);
+    }
+    importForDynamodbConstructInTest(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.dynamodb}`, [cloud_api_constants_1.CONSTRUCTS.dynamodb]);
+    }
+    importForLambdaConstructInTest(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.lambda}`, [cloud_api_constants_1.CONSTRUCTS.lambda]);
+    }
+    importForNeptuneConstructInTest(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
+    }
+    importForAuroraDbConstructInTest(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
     }
     ImportsForTest(output, workingDir) {
         const ts = new typescript_1.TypeScriptWriter(output);

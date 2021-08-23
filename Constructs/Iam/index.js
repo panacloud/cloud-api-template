@@ -138,7 +138,8 @@ class Iam extends core_1.CodeWriter {
     });`);
     }
     roleIdentifierFromLambda() {
-        this.writeLine(`const lambda_role = lambda_func[0].node.children.filter((elem) => {
+        this
+            .writeLine(`const lambda_role = lambda_func[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_iam.Role;
     });`);
     }
@@ -153,7 +154,8 @@ class Iam extends core_1.CodeWriter {
     );`);
     }
     lambdaIdentifier() {
-        this.writeLine(`const lambda_func = Lambda_consturct[0].node.children.filter(
+        this
+            .writeLine(`const lambda_func = Lambda_consturct[0].node.children.filter(
       (elem) => elem instanceof cdk.aws_lambda.Function
     );`);
     }
@@ -163,17 +165,20 @@ class Iam extends core_1.CodeWriter {
     );`);
     }
     appsyncApiIdentifier() {
-        this.writeLine(`const appsync_api = Appsync_consturct[0].node.children.filter(
+        this
+            .writeLine(`const appsync_api = Appsync_consturct[0].node.children.filter(
       (elem) => elem instanceof cdk.aws_appsync.CfnGraphQLApi
     );`);
     }
     appsyncRoleIdentifier() {
-        this.writeLine(`const role = Appsync_consturct[0].node.children.filter((elem) => {
+        this
+            .writeLine(`const role = Appsync_consturct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_iam.Role;
     });`);
     }
     DynodbTableIdentifier() {
-        this.writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
+        this
+            .writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_dynamodb.Table;
     });`);
     }

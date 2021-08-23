@@ -1,15 +1,13 @@
 {
   "templates": [
     {
-      "templateFile": "./CodeGenerator/StackInitializer/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/StackInitializer/index.js"
     },
     {
       "templateFile": "./CodeGenerator/bin/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.js"
     },
     {
       "templateFile": "./CodeGenerator/Lambda/individualFunction.js"
@@ -18,8 +16,7 @@
       "templateFile": "./CodeGenerator/ConstructsInitializer/Appsync/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.js"
     },
     {
       "templateFile": "./CodeGenerator/ConstructsInitializer/Dynamodb/index.js"
@@ -29,6 +26,9 @@
     },
     {
       "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js"
+    },
+    {
+      "templateFile": "./CodeGenerator/ConstructsInitializer/ApiGateway/index.js"
     },
     {
       "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js"
