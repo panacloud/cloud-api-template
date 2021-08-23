@@ -265,7 +265,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (apiName:string,apiType:string
   } else if (
     lambdaStyle === LAMBDASTYLE.multi &&
     apiType === APITYPE.graphql &&
-    database === DATABASE.aurora
+    database === DATABASE.neptune
   ) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
