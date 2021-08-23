@@ -4,16 +4,11 @@ const templating_1 = require("@yellicode/templating");
 const constant_1 = require("../../../constant");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
-const Ec2_1 = require("../../../Constructs/Ec2");
-const Iam_1 = require("../../../Constructs/Iam");
-const Lambda_1 = require("../../../Constructs/Lambda");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
-const { lambdaStyle, database, apiName } = model.api;
 templating_1.Generator.generate({
     outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.lambda}/index.ts`,
 }, (output) => {
-    const lambda = new Lambda_1.Lambda(output);
     const { apiName, lambdaStyle, database, apiType } = model.api;
     let mutations = {};
     let queries = {};
@@ -26,8 +21,6 @@ templating_1.Generator.generate({
     let lambdaProps;
     let lambdaProperties;
     const cdk = new Cdk_1.Cdk(output);
-    const iam = new Iam_1.Iam(output);
-    const ec2 = new Ec2_1.Ec2(output);
     const imp = new ConstructsImports_1.Imports(output);
     imp.importsForStack(output);
     imp.importEc2(output);
