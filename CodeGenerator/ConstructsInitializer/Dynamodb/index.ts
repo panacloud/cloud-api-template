@@ -1,13 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import {
-  APITYPE,
-  CONSTRUCTS,
-  DATABASE,
-  LAMBDASTYLE,
-  PATH,
-} from "../../../constant";
+import {APITYPE,CONSTRUCTS, DATABASE,LAMBDASTYLE,PATH} from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Imports } from "../../../Constructs/ConstructsImports";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
@@ -65,7 +59,7 @@ if (database && database === DATABASE.dynamo) {
 
       cdk.initializeConstruct(
         CONSTRUCTS.dynamodb,
-        undefined,
+        "dbProps",
         () => {
           dynamoDB.initializeDynamodb(apiName, output);
           ts.writeLine();
@@ -73,7 +67,7 @@ if (database && database === DATABASE.dynamo) {
           ts.writeLine();
         },
         output,
-        undefined,
+        props,
         properties
       );
     }
