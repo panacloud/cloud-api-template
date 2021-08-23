@@ -22,36 +22,69 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-        testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
-        cdk.importForDynamodbConstruct(output);
-        ts.writeLine();
-        testClass.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {
+        if (database && database === cloud_api_constants_1.DATABASE.dynamoDb) {
+            testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
+            cdk.importForDynamodbConstruct(output);
             ts.writeLine();
-            iam.dynamodbConsturctIdentifier();
-            ts.writeLine();
-            iam.DynodbTableIdentifier();
-            ts.writeLine();
-            if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-                let funcName = `${apiName}Lambda`;
-                lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
+            testClass.initializeTest('Lambda Attach With Dynamodb Constructs Test', () => {
                 ts.writeLine();
-            }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-                Object.keys(mutationsAndQueries).forEach((key) => {
-                    let funcName = `${apiName}Lambda${key}`;
-                    lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
+                iam.dynamodbConsturctIdentifier();
+                ts.writeLine();
+                iam.DynodbTableIdentifier();
+                ts.writeLine();
+                if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+                    let funcName = `${apiName}Lambda`;
+                    lambda.initializeTestForLambdaWithDynamoDB(funcName, 'main');
                     ts.writeLine();
-                });
-            }
-            iam.lambdaServiceRoleTest();
+                }
+                else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+                    Object.keys(mutationsAndQueries).forEach((key) => {
+                        let funcName = `${apiName}Lambda${key}`;
+                        lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
+                        ts.writeLine();
+                    });
+                }
+                iam.lambdaServiceRoleTest();
+                ts.writeLine();
+                if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+                    iam.lambdaServiceRolePolicyTestForDynodb(1);
+                }
+                else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+                    iam.lambdaServiceRolePolicyTestForDynodb(Object.keys(mutationsAndQueries).length);
+                }
+                ts.writeLine();
+            }, output, USER_WORKING_DIRECTORY);
+        }
+        else if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
+            testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+            cdk.importForNeptuneConstruct;
             ts.writeLine();
-            if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
-                iam.lambdaServiceRolePolicyTestForDynodb(1);
-            }
-            else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
-                iam.lambdaServiceRolePolicyTestForDynodb(Object.keys(mutationsAndQueries).length);
-            }
-            ts.writeLine();
-        }, output, USER_WORKING_DIRECTORY);
+            testClass.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
+                ts.writeLine();
+                ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct.VPCRef.isolatedSubnets;`);
+                ts.writeLine();
+                ts.writeLine(`const lambdaConstruct = new LambdaConstruct(stack, 'lambdaTestStack', {`);
+                ts.writeLine(`VPCRef: vpc.VPCRef,`);
+                ts.writeLine(`SGRef: vpc.SGRef,`);
+                ts.writeLine(`neptuneReaderEndpoint: vpc.neptuneReaderEndpoint,`);
+                ts.writeLine(`});`);
+                ts.writeLine();
+                ts.writeLine(`const cfn_cluster = vpc.node.children.filter(`);
+                ts.writeLine(`(elem) => elem instanceof cdk.aws_neptune.CfnDBCluster`);
+                ts.writeLine(`);`);
+                ts.writeLine();
+                if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+                    let funcName = `${apiName}Lambda`;
+                    lambda.initializeTestForLambdaWithNeptune(funcName, 'main');
+                }
+                else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+                    Object.keys(mutationsAndQueries).forEach((key) => {
+                        let funcName = `${apiName}Lambda${key}`;
+                        lambda.initializeTestForLambdaWithNeptune(funcName, key);
+                        ts.writeLine();
+                    });
+                }
+            }, output, cloud_api_constants_1.CONSTRUCTS.lambda);
+        }
     });
 }

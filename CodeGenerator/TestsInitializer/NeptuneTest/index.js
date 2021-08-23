@@ -9,12 +9,6 @@ const cloud_api_constants_1 = require("../../../cloud-api-constants");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
-const subnet1 = '1';
-const subnet2 = '2';
-const fnNum0 = 0;
-const fnNum1 = 1;
-const isolatedRouteTables1 = 1;
-const isolatedRouteTables2 = 2;
 if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
     templating_1.Generator.generateFromModel({
         outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-neptune.test.ts`,
@@ -28,10 +22,10 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
         cdk.importForNeptuneConstruct(output);
         ts.writeLine();
         testClass.initializeTest2('Neptune Construct Tests', () => {
-            ts.writeLine(`const constructs = vpc.node.children;`);
+            ts.writeLine(`const constructs = VpcNeptuneConstruct.node.children;`);
             ts.writeLine(`expect(constructs).toHaveLength(5);`);
             ts.writeLine();
-            ts.writeLine(`const isolated_subnets = vpc.VPCRef.isolatedSubnets;`);
+            ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct.VPCRef.isolatedSubnets;`);
             ts.writeLine(`const isolatedRouteTables = [`);
             ts.writeLine(`isolated_subnets[0].routeTable,`);
             ts.writeLine(`isolated_subnets[1].routeTable,`);
@@ -53,7 +47,7 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             neptune.initializeTestForSecurityGroup(apiName);
             ts.writeLine();
             neptune.initializeTestForSecurityGroupIngress(apiName);
-            ts.writeLine(`const subnets = vpc.VPCRef.isolatedSubnets;`);
+            ts.writeLine(`const subnets = VpcNeptuneConstruct.VPCRef.isolatedSubnets;`);
             ts.writeLine(`const subnetRefArray = [];`);
             ts.writeLine(`for (let subnet of subnets) {`);
             ts.writeLine(`subnetRefArray.push({`);
@@ -75,6 +69,6 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             neptune.initializeTestForCountResources('AWS::EC2::SecurityGroupIngress', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBCluster', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1);
-        }, output, USER_WORKING_DIRECTORY);
+        }, output, cloud_api_constants_1.CONSTRUCTS.neptuneDb);
     });
 }

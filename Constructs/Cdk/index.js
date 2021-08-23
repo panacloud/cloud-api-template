@@ -89,11 +89,11 @@ class Cdk extends core_1.CodeWriter {
         contents();
         ts.writeLineIndented(`})`);
     }
-    initializeTest2(description, contents, output, workingDir) {
+    initializeTest2(description, contents, output, constructor) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeLineIndented(`test("${description}", () => {`);
         ts.writeLine(`const stack = new cdk.Stack();`);
-        ts.writeLine(`const vpc = new ${cloud_api_constants_1.CONSTRUCTS.neptuneDb}(stack, "neptuneTestStack");`);
+        ts.writeLine(`const ${constructor} = new ${constructor}(stack, "neptuneTestStack");`);
         ts.writeLine();
         contents();
         ts.writeLineIndented(`})`);
@@ -112,8 +112,7 @@ class Cdk extends core_1.CodeWriter {
     ImportsForTest2(output, workingDir) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", "cdk");
-        ts.writeImports("@aws-cdk/assert/jest");
-        // ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+        ts.writeLine(`import "@aws-cdk/assert/jest"`);
     }
 }
 exports.Cdk = Cdk;
