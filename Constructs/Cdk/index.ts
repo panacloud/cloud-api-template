@@ -113,12 +113,12 @@ export class Cdk extends CodeWriter {
     description: string,
     contents: any,
     output: TextWriter,
-    workingDir:string
+    constructor: string
   ) {
     const ts = new TypeScriptWriter(output);
     ts.writeLineIndented(`test("${description}", () => {`);
     ts.writeLine(`const stack = new cdk.Stack();`);
-    ts.writeLine(`const vpc = new ${CONSTRUCTS.neptuneDb}(stack, "neptuneTestStack");`);
+    ts.writeLine(`const ${constructor} = new ${constructor}(stack, "neptuneTestStack");`);
     ts.writeLine();
     contents();
     ts.writeLineIndented(`})`);
@@ -136,10 +136,9 @@ export class Cdk extends CodeWriter {
     ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
   }
 
-  public ImportsForTest2(output: TextWriter,workingDir:string) {
+  public ImportsForTest2(output: TextWriter, workingDir:string) {
     const ts = new TypeScriptWriter(output);
     ts.writeImports("aws-cdk-lib", "cdk");
-    ts.writeImports("@aws-cdk/assert/jest");
-    // ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+    ts.writeLine(`import "@aws-cdk/assert/jest"`);
   }
 }

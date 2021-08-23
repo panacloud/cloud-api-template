@@ -100,7 +100,7 @@ export class Neptune extends CodeWriter {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
       CidrBlock: '10.0.${cidr}.0/24',
       VpcId: {
-        Ref: stack.getLogicalId(vpc.VPCRef.node.defaultChild as cdk.CfnElement),
+        Ref: stack.getLogicalId(VpcNeptuneConstruct.VPCRef.node.defaultChild as cdk.CfnElement),
       },
       AvailabilityZone: {
         'Fn::Select': [
@@ -163,7 +163,7 @@ export class Neptune extends CodeWriter {
   public initiaizeTestForRouteTable(apiName: string, subnetNum: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::RouteTable', {
       VpcId: {
-        Ref: stack.getLogicalId(vpc.VPCRef.node.defaultChild as cdk.CfnElement),
+        Ref: stack.getLogicalId(VpcNeptuneConstruct.VPCRef.node.defaultChild as cdk.CfnElement),
       },
       Tags: [
         {
@@ -216,7 +216,7 @@ export class Neptune extends CodeWriter {
       },
     ],
     VpcId: {
-      "Ref":  stack.getLogicalId(vpc.VPCRef.node.defaultChild as cdk.CfnElement)
+      "Ref":  stack.getLogicalId(VpcNeptuneConstruct.VPCRef.node.defaultChild as cdk.CfnElement)
     },
   });
 `);
@@ -230,13 +230,13 @@ export class Neptune extends CodeWriter {
     FromPort: 8182,
     GroupId: {
       'Fn::GetAtt': [
-        stack.getLogicalId(vpc.SGRef.node.defaultChild as cdk.CfnElement),
+        stack.getLogicalId(VpcNeptuneConstruct.SGRef.node.defaultChild as cdk.CfnElement),
         'GroupId',
       ],
     },
     SourceSecurityGroupId: {
       'Fn::GetAtt': [
-        stack.getLogicalId(vpc.SGRef.node.defaultChild as cdk.CfnElement),
+        stack.getLogicalId(VpcNeptuneConstruct.SGRef.node.defaultChild as cdk.CfnElement),
         'GroupId',
       ],
     },
@@ -260,7 +260,7 @@ export class Neptune extends CodeWriter {
       VpcSecurityGroupIds: [
         {
           'Fn::GetAtt': [
-            stack.getLogicalId(vpc.SGRef.node.defaultChild as cdk.CfnElement),
+            stack.getLogicalId(VpcNeptuneConstruct.SGRef.node.defaultChild as cdk.CfnElement),
             'GroupId',
           ],
         },
