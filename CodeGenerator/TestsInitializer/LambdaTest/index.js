@@ -25,7 +25,7 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
         if (database === cloud_api_constants_1.DATABASE.dynamoDb) {
-            imp.importForDynamodbConstruct(output);
+            imp.importForDynamodbConstructInTest(output);
             ts.writeLine();
         }
         cdk.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {

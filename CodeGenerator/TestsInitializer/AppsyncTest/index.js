@@ -24,8 +24,8 @@ if (((_a = model === null || model === void 0 ? void 0 : model.api) === null || 
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
-        imp.importForAppsyncConstruct(output);
-        imp.importForLambdaConstruct(output);
+        imp.importForAppsyncConstructInTest(output);
+        imp.importForLambdaConstructInTest(output);
         testClass.initializeTest("Appsync Api Constructs Test", () => {
             var _a, _b, _c, _d;
             appsync.apiName = apiName;
