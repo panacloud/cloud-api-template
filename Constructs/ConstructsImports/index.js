@@ -50,6 +50,10 @@ class Imports extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`./${constant_1.CONSTRUCTS.appsync}`, [constant_1.CONSTRUCTS.appsync]);
     }
+    importForApiGatewayConstruct(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`./${constant_1.CONSTRUCTS.apigateway}`, [constant_1.CONSTRUCTS.apigateway]);
+    }
     importForDynamodbConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`./${constant_1.CONSTRUCTS.dynamodb}`, [constant_1.CONSTRUCTS.dynamodb]);

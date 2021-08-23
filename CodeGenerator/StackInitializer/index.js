@@ -31,7 +31,7 @@ templating_1.Generator.generate({
         imp.importForAppsyncConstruct(output);
     }
     else {
-        ts.writeImports(`./${constant_1.CONSTRUCTS.apigateway}`, [constant_1.CONSTRUCTS.apigateway]);
+        imp.importForApiGatewayConstruct(output);
     }
     if (lambdaStyle) {
         imp.importForLambdaConstruct(output);
@@ -50,30 +50,47 @@ templating_1.Generator.generate({
         manager.apiManagerInitializer(output, USER_WORKING_DIRECTORY);
         ts.writeLine();
         if (database == constant_1.DATABASE.dynamo) {
-            ts.writeLine(`const ${apiName}Lambda = new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}");`);
+            ts.writeVariableDeclaration({
+                name: `${apiName}_table`,
+                typeName: constant_1.CONSTRUCTS.dynamodb,
+                initializer: () => {
+                    ts.writeLine(`new ${constant_1.CONSTRUCTS.dynamodb}(this,"${apiName}${constant_1.CONSTRUCTS.dynamodb}")`);
+                },
+            }, "const");
             ts.writeLine();
-            ts.writeLine(`const ${apiName}_table = new ${constant_1.CONSTRUCTS.dynamodb}(this,"${apiName}${constant_1.CONSTRUCTS.dynamodb}",{`);
-            functions_1.propsHandlerForDynamoDbConstruct(output, apiName, lambdaStyle, mutationsAndQueries);
-            ts.writeLine("})");
-            functions_1.lambdaEnvHandler(output, apiName, lambdaStyle, mutationsAndQueries);
-            if (apiType === constant_1.APITYPE.graphql) {
-                ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-                functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
-                ts.writeLine("})");
+            if (lambdaStyle) {
+                ts.writeVariableDeclaration({
+                    name: `${apiName}Lambda`,
+                    typeName: constant_1.CONSTRUCTS.lambda,
+                    initializer: () => {
+                        ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
+                        functions_1.lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
+                        ts.writeLine("})");
+                    },
+                }, "const");
+                ts.writeLine();
+                functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, mutationsAndQueries);
+                ts.writeLine();
             }
         }
         else if (database == constant_1.DATABASE.neptune) {
-            ts.writeLine(`const ${apiName}_neptunedb = new ${constant_1.CONSTRUCTS.neptuneDb}(this,"VpcNeptuneConstruct");`);
+            ts.writeVariableDeclaration({
+                name: `${apiName}_neptunedb`,
+                typeName: constant_1.CONSTRUCTS.neptuneDb,
+                initializer: () => {
+                    ts.writeLine(`new ${constant_1.CONSTRUCTS.neptuneDb}(this,"${apiName}${constant_1.CONSTRUCTS.neptuneDb}")`);
+                }
+            }, "const");
             ts.writeLine();
-            ts.writeLine(`const ${apiName}Lambda = new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
-            functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
-            ts.writeLine("})");
-            ts.writeLine();
-            if (apiType === constant_1.APITYPE.graphql) {
-                ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-                functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
-                ts.writeLine("})");
-            }
+            ts.writeVariableDeclaration({
+                name: `${apiName}Lambda`,
+                typeName: constant_1.CONSTRUCTS.lambda,
+                initializer: () => {
+                    ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
+                    functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
+                    ts.writeLine("})");
+                },
+            }, "const");
             ts.writeLine();
         }
         else if (database == constant_1.DATABASE.aurora) {
@@ -89,12 +106,34 @@ templating_1.Generator.generate({
                 },
             }, "const");
             ts.writeLine();
-            if (apiType === constant_1.APITYPE.graphql) {
-                ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-                functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
-                ts.writeLine("})");
-            }
             ts.writeLine();
+        }
+        if (apiType === constant_1.APITYPE.graphql && database === constant_1.DATABASE.dynamo) {
+            ts.writeVariableDeclaration({
+                name: `${apiName}`,
+                typeName: constant_1.CONSTRUCTS.appsync,
+                initializer: () => {
+                    ts.writeLine(`new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
+                    functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    ts.writeLine("})");
+                },
+            }, "const");
+        }
+        if (apiType === constant_1.APITYPE.graphql && database === constant_1.DATABASE.aurora) {
+            ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
+            functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
+            ts.writeLine("})");
+        }
+        if (apiType === constant_1.APITYPE.graphql && database === constant_1.DATABASE.neptune) {
+            ts.writeVariableDeclaration({
+                name: `${apiName}`,
+                typeName: constant_1.CONSTRUCTS.appsync,
+                initializer: () => {
+                    ts.writeLine(`new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
+                    functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    ts.writeLine("})");
+                },
+            }, "const");
         }
         if (apiType === constant_1.APITYPE.rest) {
             ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.apigateway}(this,"${apiName}${constant_1.CONSTRUCTS.apigateway}",{`);
