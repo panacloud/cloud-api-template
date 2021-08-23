@@ -111,6 +111,7 @@ export const LambdaAccessHandler = (
   mutationsAndQueries: any
 ) => {
   const dynamodb = new DynamoDB(output);
+  const ts = new TypeScriptWriter(output)
   if (lambdaStyle === LAMBDASTYLE.single || apiType === APITYPE.rest){
     dynamodb.dbConstructLambdaAccess(
       apiName,
@@ -119,6 +120,7 @@ export const LambdaAccessHandler = (
       lambdaStyle,
       apiType
     );
+    ts.writeLine()
   } else if (lambdaStyle === LAMBDASTYLE.multi && apiType === APITYPE.graphql) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       dynamodb.dbConstructLambdaAccess(
@@ -130,6 +132,7 @@ export const LambdaAccessHandler = (
         key
       );
     });
+    ts.writeLine()
   }
 };
 
