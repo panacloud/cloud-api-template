@@ -73,12 +73,12 @@ const propsHandlerForAppsyncConstructNeptunedb = (output, apiName, lambdaStyle, 
     }
 };
 exports.propsHandlerForAppsyncConstructNeptunedb = propsHandlerForAppsyncConstructNeptunedb;
-const LambdaAccessHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => {
+const LambdaAccessHandler = (output, apiName, lambdaStyle, apiType, mutationsAndQueries) => {
     const dynamodb = new DynamoDB_1.DynamoDB(output);
-    if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
+    if (lambdaStyle === constant_1.LAMBDASTYLE.single || apiType === constant_1.APITYPE.rest) {
         dynamodb.dbConstructLambdaAccess(apiName, `${apiName}_table`, `${apiName}Lambda`, lambdaStyle);
     }
-    else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
+    else if (lambdaStyle === constant_1.LAMBDASTYLE.multi && apiType === constant_1.APITYPE.graphql) {
         Object.keys(mutationsAndQueries).forEach((key) => {
             dynamodb.dbConstructLambdaAccess(apiName, `${apiName}_table`, `${apiName}Lambda`, lambdaStyle, key);
         });
