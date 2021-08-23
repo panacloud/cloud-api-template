@@ -50,11 +50,11 @@ if (database && database === constant_1.DATABASE.dynamo) {
                 isReadonly: true,
             },
         ];
-        cdk.initializeConstruct(constant_1.CONSTRUCTS.dynamodb, undefined, () => {
+        cdk.initializeConstruct(constant_1.CONSTRUCTS.dynamodb, "dbProps", () => {
             dynamoDB.initializeDynamodb(apiName, output);
             ts.writeLine();
             functions_1.dynamodbAccessHandler(apiName, output, lambdaStyle, mutationsAndQueries);
             ts.writeLine();
-        }, output, undefined, properties);
+        }, output, props, properties);
     });
 }
