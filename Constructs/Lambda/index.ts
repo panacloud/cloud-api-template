@@ -103,7 +103,7 @@ public initializeTestForLambdaWithNeptune(funcName: string, handlerName: string)
       Variables: {
         NEPTUNE_ENDPOINT: {
           'Fn::GetAtt': [
-            stack.getLogicalId(cfn_cluster[0] as CfnElement),
+            stack.getLogicalId(cfn_cluster[0] as cdk.CfnElement),
             'ReadEndpoint',
           ],
         },

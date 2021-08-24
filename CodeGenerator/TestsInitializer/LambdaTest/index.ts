@@ -67,15 +67,15 @@ if (model?.api?.lambdaStyle) {
           ts.writeLine();
           testClass.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
             ts.writeLine();
-            ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct-stack.VPCRef.isolatedSubnets;`)
+            ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`)
             ts.writeLine()
-            ts.writeLine(`const LambdaConstruct-stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
-            ts.writeLine(`VPCRef: VpcNeptuneConstruct-stack.VPCRef,`)
-            ts.writeLine(`SGRef: VpcNeptuneConstruct-stack.SGRef,`)
-            ts.writeLine(`neptuneReaderEndpoint: VpcNeptuneConstruct-stack.neptuneReaderEndpoint,`)
+            ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
+            ts.writeLine(`VPCRef: VpcNeptuneConstruct_stack.VPCRef,`)
+            ts.writeLine(`SGRef: VpcNeptuneConstruct_stack.SGRef,`)
+            ts.writeLine(`neptuneReaderEndpoint: VpcNeptuneConstruct_stack.neptuneReaderEndpoint,`)
             ts.writeLine(`});`)
             ts.writeLine()
-            ts.writeLine(`const cfn_cluster = VpcNeptuneConstruct-stack.node.children.filter(`)
+            ts.writeLine(`const cfn_cluster = VpcNeptuneConstruct_stack.node.children.filter(`)
             ts.writeLine(`(elem) => elem instanceof cdk.aws_neptune.CfnDBCluster`)
             ts.writeLine(`);`)
             ts.writeLine()

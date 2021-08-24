@@ -26,10 +26,10 @@ if (database && database === DATABASE.neptuneDb) {
       testClass.initializeTest2(
         'Neptune Construct Tests',
         () => {
-          ts.writeLine(`const constructs = VpcNeptuneConstruct-stack.node.children;`);
+          ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
           ts.writeLine(`expect(constructs).toHaveLength(5);`);
           ts.writeLine()
-          ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct-stack.VPCRef.isolatedSubnets;`);
+          ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`);
           ts.writeLine(`const isolatedRouteTables = [`);
           ts.writeLine(`isolated_subnets[0].routeTable,`);
           ts.writeLine(`isolated_subnets[1].routeTable,`);
@@ -51,7 +51,7 @@ if (database && database === DATABASE.neptuneDb) {
           neptune.initializeTestForSecurityGroup(apiName);
           ts.writeLine();
           neptune.initializeTestForSecurityGroupIngress(apiName);
-          ts.writeLine(`const subnets = VpcNeptuneConstruct-stack.VPCRef.isolatedSubnets;`);
+          ts.writeLine(`const subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`);
           ts.writeLine(`const subnetRefArray = [];`);
           ts.writeLine(`for (let subnet of subnets) {`);
           ts.writeLine(`subnetRefArray.push({`);
