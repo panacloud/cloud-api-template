@@ -85,7 +85,7 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
                         ts.writeLine();
                     });
                 }
-            }, output, cloud_api_constants_1.CONSTRUCTS.lambda);
+            }, output, cloud_api_constants_1.CONSTRUCTS.neptuneDb);
         }
     });
 }
