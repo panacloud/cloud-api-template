@@ -113,7 +113,7 @@ public initializeTestForLambdaWithNeptune(funcName: string, handlerName: string)
       SecurityGroupIds: [
         {
           'Fn::GetAtt': [
-            stack.getLogicalId(VpcNeptuneConstruct-stack.SGRef.node.defaultChild as cdk.CfnElement),
+            stack.getLogicalId(VpcNeptuneConstruct_stack.SGRef.node.defaultChild as cdk.CfnElement),
             'GroupId',
           ],
         },

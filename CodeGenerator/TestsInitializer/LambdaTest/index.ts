@@ -91,7 +91,7 @@ if (model?.api?.lambdaStyle) {
             }
           }, 
           output, 
-          CONSTRUCTS.lambda)
+          CONSTRUCTS.neptuneDb)
       }
     }
   );
