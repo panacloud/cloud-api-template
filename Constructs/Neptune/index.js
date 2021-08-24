@@ -70,7 +70,7 @@ class Neptune extends core_1.CodeWriter {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
       CidrBlock: '10.0.${cidr}.0/24',
       VpcId: {
-        Ref: stack.getLogicalId(VpcNeptuneConstruct-stack.VPCRef.node.defaultChild as cdk.CfnElement),
+        Ref: stack.getLogicalId(VpcNeptuneConstruct_stack.VPCRef.node.defaultChild as cdk.CfnElement),
       },
       AvailabilityZone: {
         'Fn::Select': [
@@ -131,7 +131,7 @@ class Neptune extends core_1.CodeWriter {
     initiaizeTestForRouteTable(apiName, subnetNum) {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::RouteTable', {
       VpcId: {
-        Ref: stack.getLogicalId(VpcNeptuneConstruct-stack.VPCRef.node.defaultChild as cdk.CfnElement),
+        Ref: stack.getLogicalId(VpcNeptuneConstruct_stack.VPCRef.node.defaultChild as cdk.CfnElement),
       },
       Tags: [
         {
@@ -181,7 +181,7 @@ class Neptune extends core_1.CodeWriter {
       },
     ],
     VpcId: {
-      "Ref":  stack.getLogicalId(VpcNeptuneConstruct-stack.VPCRef.node.defaultChild as cdk.CfnElement)
+      "Ref":  stack.getLogicalId(VpcNeptuneConstruct_stack.VPCRef.node.defaultChild as cdk.CfnElement)
     },
   });
 `);
@@ -194,13 +194,13 @@ class Neptune extends core_1.CodeWriter {
     FromPort: 8182,
     GroupId: {
       'Fn::GetAtt': [
-        stack.getLogicalId(VpcNeptuneConstruct-stack.SGRef.node.defaultChild as cdk.CfnElement),
+        stack.getLogicalId(VpcNeptuneConstruct_stack.SGRef.node.defaultChild as cdk.CfnElement),
         'GroupId',
       ],
     },
     SourceSecurityGroupId: {
       'Fn::GetAtt': [
-        stack.getLogicalId(VpcNeptuneConstruct-stack.SGRef.node.defaultChild as cdk.CfnElement),
+        stack.getLogicalId(VpcNeptuneConstruct_stack.SGRef.node.defaultChild as cdk.CfnElement),
         'GroupId',
       ],
     },
@@ -222,7 +222,7 @@ class Neptune extends core_1.CodeWriter {
       VpcSecurityGroupIds: [
         {
           'Fn::GetAtt': [
-            stack.getLogicalId(VpcNeptuneConstruct-stack.SGRef.node.defaultChild as cdk.CfnElement),
+            stack.getLogicalId(VpcNeptuneConstruct_stack.SGRef.node.defaultChild as cdk.CfnElement),
             'GroupId',
           ],
         },

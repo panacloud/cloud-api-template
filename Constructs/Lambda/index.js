@@ -77,7 +77,7 @@ class Lambda extends core_1.CodeWriter {
       Variables: {
         NEPTUNE_ENDPOINT: {
           'Fn::GetAtt': [
-            stack.getLogicalId(cfn_cluster[0] as CfnElement),
+            stack.getLogicalId(cfn_cluster[0] as cdk.CfnElement),
             'ReadEndpoint',
           ],
         },
