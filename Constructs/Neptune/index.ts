@@ -122,7 +122,7 @@ export class Neptune extends CodeWriter {
         },
         {
           Key: 'Name',
-          Value: 'Default/neptuneTestStack/${apiName}Vpc/IngressSubnet${subnetNum}',
+          Value: 'Default/VpcNeptuneConstructTest/${apiName}Vpc/IngressSubnet${subnetNum}',
         },
       ],
     });`);
@@ -154,7 +154,7 @@ export class Neptune extends CodeWriter {
   //       },
   //       {
   //         Key: 'Name',
-  //         Value: 'Default/neptuneTestStack/${apiName}/IngressSubnet2',
+  //         Value: 'Default/VpcNeptuneConstructTest/${apiName}/IngressSubnet2',
   //       },
   //     ],
   //   });`);
@@ -168,7 +168,7 @@ export class Neptune extends CodeWriter {
       Tags: [
         {
           Key: 'Name',
-          Value: 'Default/neptuneTestStack/${apiName}Vpc/IngressSubnet${subnetNum}',
+          Value: 'Default/VpcNeptuneConstructTest/${apiName}Vpc/IngressSubnet${subnetNum}',
         },
       ],
     });`);
