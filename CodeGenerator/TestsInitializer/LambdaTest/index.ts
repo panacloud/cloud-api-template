@@ -88,7 +88,6 @@ if (model?.api?.lambdaStyle) {
                 ts.writeLine()
               })
             }
-
           }, 
           output, 
           CONSTRUCTS.lambda)
