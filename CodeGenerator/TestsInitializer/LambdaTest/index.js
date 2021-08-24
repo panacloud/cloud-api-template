@@ -57,19 +57,20 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
         }
         else if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
-            cdk.importForNeptuneConstruct;
+            cdk.importForLambdaConstruct(output);
+            cdk.importForNeptuneConstruct(output);
             ts.writeLine();
             testClass.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
                 ts.writeLine();
-                ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct.VPCRef.isolatedSubnets;`);
+                ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct-stack.VPCRef.isolatedSubnets;`);
                 ts.writeLine();
-                ts.writeLine(`const lambdaConstruct = new LambdaConstruct(stack, 'lambdaTestStack', {`);
-                ts.writeLine(`VPCRef: vpc.VPCRef,`);
-                ts.writeLine(`SGRef: vpc.SGRef,`);
-                ts.writeLine(`neptuneReaderEndpoint: vpc.neptuneReaderEndpoint,`);
+                ts.writeLine(`const LambdaConstruct-stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`);
+                ts.writeLine(`VPCRef: VpcNeptuneConstruct-stack.VPCRef,`);
+                ts.writeLine(`SGRef: VpcNeptuneConstruct-stack.SGRef,`);
+                ts.writeLine(`neptuneReaderEndpoint: VpcNeptuneConstruct-stack.neptuneReaderEndpoint,`);
                 ts.writeLine(`});`);
                 ts.writeLine();
-                ts.writeLine(`const cfn_cluster = vpc.node.children.filter(`);
+                ts.writeLine(`const cfn_cluster = VpcNeptuneConstruct-stack.node.children.filter(`);
                 ts.writeLine(`(elem) => elem instanceof cdk.aws_neptune.CfnDBCluster`);
                 ts.writeLine(`);`);
                 ts.writeLine();

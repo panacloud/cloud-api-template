@@ -87,7 +87,7 @@ class Lambda extends core_1.CodeWriter {
       SecurityGroupIds: [
         {
           'Fn::GetAtt': [
-            stack.getLogicalId(vpc.SGRef.node.defaultChild as cdk.CfnElement),
+            stack.getLogicalId(VpcNeptuneConstruct-stack.SGRef.node.defaultChild as cdk.CfnElement),
             'GroupId',
           ],
         },
