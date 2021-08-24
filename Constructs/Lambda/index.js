@@ -28,13 +28,13 @@ class Lambda extends core_1.CodeWriter {
             name: lambdaVariable,
             typeName: "lambda.Function",
             initializer: () => {
-                ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
+                ts.writeLine(`new lambda.Function(this, "${funcName}", {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",
         code: lambda.Code.fromAsset("lambda-fns"),
         ${role}
-       ${vpc}
+        ${vpc}
         ${securityGroups}
         ${env}
         ${vpcSubnet}
