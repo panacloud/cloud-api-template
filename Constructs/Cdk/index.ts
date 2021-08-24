@@ -118,7 +118,7 @@ export class Cdk extends CodeWriter {
     const ts = new TypeScriptWriter(output);
     ts.writeLineIndented(`test("${description}", () => {`);
     ts.writeLine(`const stack = new cdk.Stack();`);
-    ts.writeLine(`const ${constructor} = new ${constructor}(stack, "neptuneTestStack");`);
+    ts.writeLine(`const ${constructor}-stack = new ${constructor}(stack, "${constructor}Test");`);
     ts.writeLine();
     contents();
     ts.writeLineIndented(`})`);
