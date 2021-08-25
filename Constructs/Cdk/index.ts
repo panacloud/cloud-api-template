@@ -36,6 +36,11 @@ export class Cdk extends CodeWriter {
     ts.writeImports( `../lib/${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);
   }
 
+  public importForAuroradbConstruct(output:TextWriter){
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports( `../lib/${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
+  }
+
   public initializeStack(name: string, contents: any, output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     const classDefinition: ClassDefinition = {

@@ -208,6 +208,24 @@ export class Iam extends CodeWriter {
     this.writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_dynamodb.Table;
     });`);
-
   }
+
+  public natgatewayIdentifier(natGatewayNum: string, subnetNum: number) {
+    this.writeLine(`const natGateway${natGatewayNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnNatGateway;
+    });`)
+  }
+  
+  public eipIdentifier(epiNum: string, subnetNum: number) {
+    this.writeLine(`const eip${epiNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnEIP;
+    });`)
+  }
+
+  public internetGatewayIdentifier() {
+    this.writeLine(`const internetGateway = AuroraDbConstruct_stack.vpcRef.node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnInternetGateway;
+    });`)
+  }
+
 }
