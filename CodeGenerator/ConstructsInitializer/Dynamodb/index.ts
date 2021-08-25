@@ -5,6 +5,7 @@ import {APITYPE,CONSTRUCTS, DATABASE,LAMBDASTYLE,PATH} from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Imports } from "../../../Constructs/ConstructsImports";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
+import { dynamodbAccessHandler } from "./functions";
 const model = require("../../../model.json");
 const { database } = model.api;
 

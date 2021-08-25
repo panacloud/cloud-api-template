@@ -13,7 +13,6 @@ export const appsyncDatasourceHandler = (apiName :string , output: TextWriter,la
   if (lambdaStyle === LAMBDASTYLE.single) {
     appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle);
   } else if (lambdaStyle === LAMBDASTYLE.multi) {
-
     Object.keys(mutationsAndQueries).forEach((key) => {
       appsync.appsyncLambdaDataSource(
         output,

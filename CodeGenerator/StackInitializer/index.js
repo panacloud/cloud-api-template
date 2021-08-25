@@ -107,5 +107,10 @@ templating_1.Generator.generate({
             functions_1.propsHandlerForApiGatewayConstruct(output, apiName);
             ts.writeLine("})");
         }
+        if (apiType === constant_1.APITYPE.rest) {
+            ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.apigateway}(this,"${apiName}${constant_1.CONSTRUCTS.apigateway}",{`);
+            functions_1.propsHandlerForApiGatewayConstruct(output, apiName);
+            ts.writeLine("})");
+        }
     }, output);
 });
