@@ -32,17 +32,8 @@ templating_1.Generator.generate({
     }
     cdk.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {
         ts.writeLine();
-        if (apiType === constant_1.APITYPE.rest && database === constant_1.DATABASE.dynamo) {
-            let funcName = `${apiName}Lambda`;
-            iam.dynamodbConsturctIdentifier();
-            ts.writeLine();
-            iam.DynodbTableIdentifier();
-            ts.writeLine();
-            lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
-            ts.writeLine();
-        }
-        else if (apiType === constant_1.APITYPE.graphql) {
-            if (lambdaStyle === constant_1.LAMBDASTYLE.single && database === constant_1.DATABASE.dynamo) {
+        if (database === constant_1.DATABASE.dynamo) {
+            if (apiType === constant_1.APITYPE.rest || (lambdaStyle === constant_1.LAMBDASTYLE.single && apiType === constant_1.APITYPE.graphql)) {
                 let funcName = `${apiName}Lambda`;
                 iam.dynamodbConsturctIdentifier();
                 ts.writeLine();
@@ -51,7 +42,11 @@ templating_1.Generator.generate({
                 lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
                 ts.writeLine();
             }
-            else if (lambdaStyle === constant_1.LAMBDASTYLE.multi && database === constant_1.DATABASE.dynamo) {
+            else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
+                iam.dynamodbConsturctIdentifier();
+                ts.writeLine();
+                iam.DynodbTableIdentifier();
+                ts.writeLine();
                 Object.keys(mutationsAndQueries).forEach((key) => {
                     let funcName = `${apiName}Lambda${key}`;
                     lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
