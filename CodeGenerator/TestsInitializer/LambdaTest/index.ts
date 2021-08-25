@@ -36,17 +36,8 @@ Generator.generate(
         "Lambda Attach With Dynamodb Constructs Test",
         () => {
           ts.writeLine();
-          if(apiType === APITYPE.rest && database === DATABASE.dynamo){
-            let funcName = `${apiName}Lambda`;
-            iam.dynamodbConsturctIdentifier()
-            ts.writeLine();
-            iam.DynodbTableIdentifier();
-            ts.writeLine();  
-            lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
-            ts.writeLine();
-          }
-          else if(apiType === APITYPE.graphql){
-            if (lambdaStyle === LAMBDASTYLE.single && database === DATABASE.dynamo) {
+          if(database === DATABASE.dynamo){
+            if(apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType ===APITYPE.graphql)){
               let funcName = `${apiName}Lambda`;
               iam.dynamodbConsturctIdentifier()
               ts.writeLine();
@@ -54,17 +45,22 @@ Generator.generate(
               ts.writeLine();  
               lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
               ts.writeLine();
-            } else if (lambdaStyle === LAMBDASTYLE.multi && database === DATABASE.dynamo) {
-              Object.keys(mutationsAndQueries).forEach((key) => {
-                let funcName = `${apiName}Lambda${key}`;
-                lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
+            }else if (lambdaStyle === LAMBDASTYLE.multi) {
+                iam.dynamodbConsturctIdentifier()
                 ts.writeLine();
-              });
-            }  
+                iam.DynodbTableIdentifier();
+                ts.writeLine();  
+                Object.keys(mutationsAndQueries).forEach((key) => {
+                  let funcName = `${apiName}Lambda${key}`;
+                  lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
+                  ts.writeLine();
+                });
+            }
           }
+          
           iam.lambdaServiceRoleTest();
           ts.writeLine();
-          
+
           if(apiType === APITYPE.graphql){
             if (lambdaStyle === LAMBDASTYLE.single && database === DATABASE.dynamo) {
               iam.lambdaServiceRolePolicyTestForDynodb(1);
