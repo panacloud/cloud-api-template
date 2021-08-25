@@ -181,5 +181,20 @@ class Iam extends core_1.CodeWriter {
       return elem instanceof cdk.aws_dynamodb.Table;
     });`);
     }
+    natgatewayIdentifier(natGatewayNum, subnetNum) {
+        this.writeLine(`const natGateway${natGatewayNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnNatGateway;
+    });`);
+    }
+    eipIdentifier(epiNum, subnetNum) {
+        this.writeLine(`const eip${epiNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnEIP;
+    });`);
+    }
+    internetGatewayIdentifier() {
+        this.writeLine(`const internetGateway = AuroraDbConstruct_stack.vpcRef.node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnInternetGateway;
+    });`);
+    }
 }
 exports.Iam = Iam;
