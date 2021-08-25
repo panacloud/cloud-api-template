@@ -15,6 +15,9 @@ if (apiType === constant_1.APITYPE.graphql) {
         outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     }, (output) => {
         const { apiName, lambdaStyle, database } = model.api;
+        const ts = new typescript_1.TypeScriptWriter(output);
+        const iam = new Iam_1.Iam(output);
+        const appsync = new Appsync_1.Appsync(output);
         const imp = new ConstructsImports_1.Imports(output);
         const testClass = new Cdk_1.Cdk(output);
         const mutations = model.type.Mutation ? model.type.Mutation : {};
