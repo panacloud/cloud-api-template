@@ -87,5 +87,36 @@ if ((_a = model === null || model === void 0 ? void 0 : model.api) === null || _
                 }
             }, output, cloud_api_constants_1.CONSTRUCTS.neptuneDb);
         }
+        else if (database && database === cloud_api_constants_1.DATABASE.auroraDb) {
+            testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+            cdk.importForLambdaConstruct(output);
+            cdk.importForAuroradbConstruct(output);
+            ts.writeLine();
+            testClass.initializeTest2('Lambda Attach With AuororaDB Constructs Test', () => {
+                ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`);
+                ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`);
+                ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`);
+                ts.writeLine(`serviceRole: AuroraDbConstruct_stack.serviceRole,`);
+                ts.writeLine(`});`);
+                ts.writeLine();
+                iam.serverlessClusterIdentifier();
+                ts.writeLine();
+                iam.secretIdentifier();
+                ts.writeLine();
+                iam.secretAttachment();
+                ts.writeLine();
+                if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+                    let funcName = `${apiName}Lambda`;
+                    lambda.initializeTestForLambdaWithAuroradb(funcName, 'main');
+                }
+                else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+                    Object.keys(mutationsAndQueries).forEach((key) => {
+                        let funcName = `${apiName}Lambda${key}`;
+                        lambda.initializeTestForLambdaWithAuroradb(funcName, key);
+                        ts.writeLine();
+                    });
+                }
+            }, output, cloud_api_constants_1.CONSTRUCTS.auroradb);
+        }
     });
 }

@@ -196,5 +196,20 @@ class Iam extends core_1.CodeWriter {
       return elem instanceof cdk.aws_ec2.CfnInternetGateway;
     });`);
     }
+    serverlessClusterIdentifier() {
+        this.writeLine(`const ServerlessCluster = AuroraDbConstruct_stack.node.children.filter((elem) => {
+      return elem instanceof cdk.aws_rds.ServerlessCluster;
+    }); `);
+    }
+    secretIdentifier() {
+        this.writeLine(`const secret = ServerlessCluster[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_secretsmanager.Secret;
+    });`);
+    }
+    secretAttachment() {
+        this.writeLine(`const secretAttachment = secret[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_secretsmanager.SecretTargetAttachment;
+    });`);
+    }
 }
 exports.Iam = Iam;

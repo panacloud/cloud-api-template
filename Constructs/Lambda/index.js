@@ -104,5 +104,19 @@ class Lambda extends core_1.CodeWriter {
   });
 `);
     }
+    initializeTestForLambdaWithAuroradb(funcName, handlerName) {
+        this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
+    FunctionName: '${funcName}',
+    Handler: '${handlerName}.handler',
+    Runtime: 'nodejs12.x',
+    Environment: {
+      Variables: {
+        INSTANCE_CREDENTIALS: {
+          Ref: stack.getLogicalId(secretAttachment[0].node.defaultChild as cdk.CfnElement),
+        },
+      },
+    },
+  });`);
+    }
 }
 exports.Lambda = Lambda;
