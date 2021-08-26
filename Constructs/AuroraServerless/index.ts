@@ -106,7 +106,7 @@ export class AuroraServerless extends CodeWriter {
       RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].routeTableId),
       SubnetId: {
         Ref: stack.getLogicalId(
-          public_subnets[0].node.defaultChild as cdk.CfnElement
+          ${subnet}[${subnetState}].node.defaultChild as cdk.CfnElement
         ),
       },
     });`)
@@ -138,7 +138,7 @@ export class AuroraServerless extends CodeWriter {
   `)
   }
 
-  public initializeTestForRoute(routeTableState: string, routeTableNum: number, gatewayState: string) {
+  public initializeTestForRoute(routeTableState: string, routeTableNum: number, gatewatIdType:string , gatewayState: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Route', {
       RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].routeTableId),
       DestinationCidrBlock: '0.0.0.0/0',
@@ -160,7 +160,7 @@ export class AuroraServerless extends CodeWriter {
     });`)
   }
 
-  public initializeTestForNatGateway(apiName: string, subentNum: number, stateNum: string) {
+  public initializeTestForNatGateway(apiName: string, subentNum: number, eipNum: string, stateNum: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::NatGateway', {
       SubnetId: {
         Ref: stack.getLogicalId(
@@ -169,7 +169,7 @@ export class AuroraServerless extends CodeWriter {
       },
       AllocationId: {
         'Fn::GetAtt': [
-          stack.getLogicalId(eip1[0] as cdk.CfnElement),
+          stack.getLogicalId(eip${eipNum}[0] as cdk.CfnElement),
           'AllocationId',
         ],
       },
