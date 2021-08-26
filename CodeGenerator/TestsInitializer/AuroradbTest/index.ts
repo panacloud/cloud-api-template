@@ -25,10 +25,10 @@ if (database && database === DATABASE.auroraDb) {
     cdk.initializeTest2("Auroradb Construct Tests", () => {
         ts.writeLine()
         ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`)
-        ts.writeLine(`const publicRouteTables = [
-            public_subnets[0].routeTable,
-            public_subnets[1].routeTable,
-          ];`)
+        auroradb.route_tableIdentifier('public')
+        ts.writeLine()
+        ts.writeLine(`const private_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`)
+        auroradb.route_tableIdentifier('private')
         ts.writeLine()
         iam.natgatewayIdentifier("1", 0)
         ts.writeLine()
@@ -42,13 +42,13 @@ if (database && database === DATABASE.auroraDb) {
         ts.writeLine()
         auroradb.initializeTestForEC2Vpc()
         ts.writeLine()
-        auroradb.initializeTestForSubnet(apiName, '10.0.0.0/18', 0, 'Public', "1")
+        auroradb.initializeTestForSubnet(apiName, '10.0.0.0/18', 0, true, 'Public', "1")
         ts.writeLine()
-        auroradb.initializeTestForSubnet(apiName, '10.0.64.0/18', 1, 'Public', "2")
+        auroradb.initializeTestForSubnet(apiName, '10.0.64.0/18', 1, true, 'Public', "2")
         ts.writeLine()
-        auroradb.initializeTestForSubnet(apiName, '10.0.128.0/18', 0, 'Private', "1")
+        auroradb.initializeTestForSubnet(apiName, '10.0.128.0/18', 0, false, 'Private', "1")
         ts.writeLine()
-        auroradb.initializeTestForSubnet(apiName, '10.0.192.0/18', 1, 'Private', "2")
+        auroradb.initializeTestForSubnet(apiName, '10.0.192.0/18', 1, false, 'Private', "2")
         ts.writeLine()
         auroradb.initializeTestForRouteTable(apiName, 'Public', "1")
         ts.writeLine()
@@ -58,13 +58,13 @@ if (database && database === DATABASE.auroraDb) {
         ts.writeLine()
         auroradb.initializeTestForRouteTable(apiName, 'Private', "2")
         ts.writeLine()
-        auroradb.initializeTestForSubnetRouteTableAssociation("publicRouteTables", 0, "public_subnets", 0)
+        auroradb.initializeTestForSubnetRouteTableAssociation("publicRouteTables", 0, 'routeTableId', '', "public_subnets", 0)
         ts.writeLine()
-        auroradb.initializeTestForSubnetRouteTableAssociation("publicRouteTables", 1, "public_subnets", 1)
+        auroradb.initializeTestForSubnetRouteTableAssociation("publicRouteTables", 1, 'routeTableId', '', "public_subnets", 1)
         ts.writeLine()
-        auroradb.initializeTestForSubnetRouteTableAssociation("private_subnets", 0, "private_subnets", 0)
+        auroradb.initializeTestForSubnetRouteTableAssociation("private_subnets", 0, 'routeTable', '.routeTableId', 'private_subnets', 0)
         ts.writeLine()
-        auroradb.initializeTestForSubnetRouteTableAssociation("private_subnets", 1, "private_subnets", 1)
+        auroradb.initializeTestForSubnetRouteTableAssociation("private_subnets", 1, 'routeTable', '.routeTableId', "private_subnets", 1)
         ts.writeLine()
         auroradb.initializeTestForSecurityGroup()
         ts.writeLine()
@@ -91,6 +91,7 @@ if (database && database === DATABASE.auroraDb) {
           `Ref: stack.getLogicalId(subnet.node.defaultChild as cdk.CfnElement),`
         );
         ts.writeLine(`});`);
+        ts.writeLine(`};`);
         ts.writeLine()
         auroradb.initializeTestForDBSubnetGroup(apiName)
         ts.writeLine()
