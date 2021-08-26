@@ -228,4 +228,22 @@ export class Iam extends CodeWriter {
     });`)
   }
 
+  public serverlessClusterIdentifier() {
+    this.writeLine(`const ServerlessCluster = AuroraDbConstruct_stack.node.children.filter((elem) => {
+      return elem instanceof cdk.aws_rds.ServerlessCluster;
+    }); `) 
+  }
+
+  public secretIdentifier() {
+    this.writeLine(`const secret = ServerlessCluster[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_secretsmanager.Secret;
+    });`)
+  }
+
+  public secretAttachment() {
+    this.writeLine(`const secretAttachment = secret[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_secretsmanager.SecretTargetAttachment;
+    });`)
+  }
+
 }
