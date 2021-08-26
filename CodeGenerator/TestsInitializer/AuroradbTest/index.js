@@ -1,0 +1,108 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const templating_1 = require("@yellicode/templating");
+const typescript_1 = require("@yellicode/typescript");
+const AuroraServerless_1 = require("../../../Constructs/AuroraServerless");
+const Cdk_1 = require("../../../Constructs/Cdk");
+const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const Iam_1 = require("../../../Constructs/Iam");
+const model = require(`../../../model.json`);
+const { USER_WORKING_DIRECTORY } = model;
+const { database } = model.api;
+if (database && database === cloud_api_constants_1.DATABASE.auroraDb) {
+    templating_1.Generator.generateFromModel({
+        outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
+    }, (output) => {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        const testClass = new Cdk_1.Cdk(output);
+        const cdk = new Cdk_1.Cdk(output);
+        const iam = new Iam_1.Iam(output);
+        const auroradb = new AuroraServerless_1.AuroraServerless(output);
+        const { apiName } = model.api;
+        testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+        cdk.importForAuroradbConstruct(output);
+        ts.writeLine();
+        cdk.initializeTest2("Auroradb Construct Tests", () => {
+            ts.writeLine();
+            ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`);
+            ts.writeLine(`const publicRouteTables = [
+            public_subnets[0].routeTable,
+            public_subnets[1].routeTable,
+          ];`);
+            ts.writeLine();
+            iam.natgatewayIdentifier("1", 0);
+            ts.writeLine();
+            iam.natgatewayIdentifier("2", 1);
+            ts.writeLine();
+            iam.internetGatewayIdentifier();
+            ts.writeLine();
+            iam.eipIdentifier('1', 0);
+            ts.writeLine();
+            iam.eipIdentifier('2', 1);
+            ts.writeLine();
+            auroradb.initializeTestForEC2Vpc();
+            ts.writeLine();
+            auroradb.initializeTestForSubnet(apiName, 0, 'Public', "1");
+            ts.writeLine();
+            auroradb.initializeTestForSubnet(apiName, 1, 'Public', "2");
+            ts.writeLine();
+            auroradb.initializeTestForSubnet(apiName, 0, 'Private', "1");
+            ts.writeLine();
+            auroradb.initializeTestForSubnet(apiName, 1, 'Private', "2");
+            ts.writeLine();
+            auroradb.initializeTestForRouteTable(apiName, 'Public', "1");
+            ts.writeLine();
+            auroradb.initializeTestForRouteTable(apiName, 'Public', "2");
+            ts.writeLine();
+            auroradb.initializeTestForRouteTable(apiName, 'Private', "1");
+            ts.writeLine();
+            auroradb.initializeTestForRouteTable(apiName, 'Private', "2");
+            ts.writeLine();
+            auroradb.initializeTestForSubnetRouteTableAssociation("publicRouteTables", 0, "public_subnets", 0);
+            ts.writeLine();
+            auroradb.initializeTestForSubnetRouteTableAssociation("publicRouteTables", 1, "public_subnets", 1);
+            ts.writeLine();
+            auroradb.initializeTestForSubnetRouteTableAssociation("private_subnets", 0, "private_subnets", 0);
+            ts.writeLine();
+            auroradb.initializeTestForSubnetRouteTableAssociation("private_subnets", 1, "private_subnets", 1);
+            ts.writeLine();
+            auroradb.initializeTestForSecurityGroup();
+            ts.writeLine();
+            auroradb.initializeTestForRoute("privateRouteTables", 0, "natGateway1");
+            ts.writeLine();
+            auroradb.initializeTestForRoute("privateRouteTables", 1, "natGateway2");
+            ts.writeLine();
+            auroradb.initializeTestForRoute("publicRouteTables", 0, "internetGateway");
+            ts.writeLine();
+            auroradb.initializeTestForRoute("publicRouteTables", 1, "internetGateway");
+            ts.writeLine();
+            auroradb.initializeTestForEIP(apiName, '1');
+            ts.writeLine();
+            auroradb.initializeTestForEIP(apiName, '2');
+            ts.writeLine();
+            auroradb.initializeTestForNatGateway(apiName, 0, '1');
+            ts.writeLine();
+            auroradb.initializeTestForNatGateway(apiName, 1, '2');
+            ts.writeLine();
+            ts.writeLine(`const subnetRefArray = [];`);
+            ts.writeLine(`for (let subnet of private_subnets) {`);
+            ts.writeLine(`subnetRefArray.push({`);
+            ts.writeLine(`Ref: stack.getLogicalId(subnet.node.defaultChild as cdk.CfnElement),`);
+            ts.writeLine(`});`);
+            ts.writeLine();
+            auroradb.initializeTestForDBSubnetGroup(apiName);
+            ts.writeLine();
+            auroradb.ininitializeTestForRole();
+            ts.writeLine();
+            auroradb.initializeTestForCountResources("AWS::EC2::VPC", 1);
+            auroradb.initializeTestForCountResources("AWS::EC2::Subnet", 4);
+            auroradb.initializeTestForCountResources("AWS::EC2::RouteTable", 4);
+            auroradb.initializeTestForCountResources("AWS::EC2::SubnetRouteTableAssociation", 4);
+            auroradb.initializeTestForCountResources("AWS::EC2::Route", 4);
+            auroradb.initializeTestForCountResources("AWS::EC2::SecurityGroup", 1);
+            auroradb.initializeTestForCountResources("AWS::EC2::EIP", 2);
+            auroradb.initializeTestForCountResources("AWS::EC2::NatGateway", 2);
+            auroradb.initializeTestForCountResources("AWS::RDS::DBSubnetGroup", 1);
+        }, output, cloud_api_constants_1.CONSTRUCTS.auroradb);
+    });
+}

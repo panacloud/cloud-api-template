@@ -27,6 +27,10 @@ class Cdk extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.neptuneDb}`, [cloud_api_constants_1.CONSTRUCTS.neptuneDb]);
     }
+    importForAuroradbConstruct(output) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
+    }
     initializeStack(name, contents, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const classDefinition = {
