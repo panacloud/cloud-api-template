@@ -4,31 +4,18 @@ exports.lambdaHandlerForDynamodb = exports.lambdaProperiesHandlerForDynoDb = exp
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../../../constant");
 const Lambda_1 = require("../../../../Constructs/Lambda");
-const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database, apiType } = model.api;
-let mutations = {};
-let queries = {};
-if (apiType === constant_1.APITYPE.graphql) {
-    mutations = model.type.Mutation ? model.type.Mutation : {};
-    queries = model.type.Query ? model.type.Query : {};
-}
-const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
 const lambdaPropsHandlerForNeptunedb = () => {
     let props;
-    return (props = [
-        {
+    return props = [{
             name: "VPCRef",
-            type: "ec2.Vpc",
-        },
-        {
+            type: "ec2.Vpc"
+        }, {
             name: "SGRef",
-            type: "ec2.SecurityGroup",
-        },
-        {
+            type: "ec2.SecurityGroup"
+        }, {
             name: "neptuneReaderEndpoint",
-            type: "string",
-        },
-    ]);
+            type: "string"
+        }];
 };
 exports.lambdaPropsHandlerForNeptunedb = lambdaPropsHandlerForNeptunedb;
 const lambdaPropsHandlerForAuroradb = () => {
@@ -49,7 +36,7 @@ const lambdaPropsHandlerForAuroradb = () => {
     ]);
 };
 exports.lambdaPropsHandlerForAuroradb = lambdaPropsHandlerForAuroradb;
-const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
+const lambdaHandlerForAuroradb = (output, lambdaStyle, database, apiType, apiName, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if ((apiType === constant_1.APITYPE.graphql && lambdaStyle === constant_1.LAMBDASTYLE.single) ||
@@ -88,7 +75,7 @@ const lambdaHandlerForAuroradb = (output, lambdaStyle, dataBase) => {
     }
 };
 exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
-const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
+const lambdaHandlerForNeptunedb = (output, lambdaStyle, database, apiType, apiName, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if ((apiType === constant_1.APITYPE.graphql && lambdaStyle === constant_1.LAMBDASTYLE.single) ||
@@ -127,7 +114,7 @@ const lambdaHandlerForNeptunedb = (output, lambdaStyle, dataBase) => {
     }
 };
 exports.lambdaHandlerForNeptunedb = lambdaHandlerForNeptunedb;
-const lambdaProperiesHandlerForAuroraDb = (output) => {
+const lambdaProperiesHandlerForAuroraDb = (apiName, apiType, lambdaStyle, database, mutationsAndQueries) => {
     let properties = [
         {
             name: `${apiName}_lambdaFnArn`,
@@ -173,7 +160,7 @@ const lambdaProperiesHandlerForAuroraDb = (output) => {
     }
 };
 exports.lambdaProperiesHandlerForAuroraDb = lambdaProperiesHandlerForAuroraDb;
-const lambdaProperiesHandlerForNeptuneDb = (output) => {
+const lambdaProperiesHandlerForNeptuneDb = (apiName, apiType, lambdaStyle, database, mutationsAndQueries) => {
     let properties = [
         {
             name: `${apiName}_lambdaFnArn`,
@@ -206,7 +193,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
     }
     else if (lambdaStyle === constant_1.LAMBDASTYLE.multi &&
         apiType === constant_1.APITYPE.graphql &&
-        database === constant_1.DATABASE.aurora) {
+        database === constant_1.DATABASE.neptune) {
         Object.keys(mutationsAndQueries).forEach((key, index) => {
             properties[index] = {
                 name: `${apiName}_lambdaFn_${key}Arn`,
@@ -219,7 +206,7 @@ const lambdaProperiesHandlerForNeptuneDb = (output) => {
     }
 };
 exports.lambdaProperiesHandlerForNeptuneDb = lambdaProperiesHandlerForNeptuneDb;
-const lambdaProperiesHandlerForDynoDb = (output) => {
+const lambdaProperiesHandlerForDynoDb = (lambdaStyle, apiName, apiType, mutationsAndQueries) => {
     let properties = [
         {
             name: `${apiName}_lambdaFn`,
@@ -250,7 +237,7 @@ const lambdaProperiesHandlerForDynoDb = (output) => {
     }
 };
 exports.lambdaProperiesHandlerForDynoDb = lambdaProperiesHandlerForDynoDb;
-const lambdaHandlerForDynamodb = (output) => {
+const lambdaHandlerForDynamodb = (output, apiName, apiType, lambdaStyle, database, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
     if ((apiType === constant_1.APITYPE.graphql && lambdaStyle === constant_1.LAMBDASTYLE.single) ||

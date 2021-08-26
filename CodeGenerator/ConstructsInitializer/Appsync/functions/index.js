@@ -6,8 +6,7 @@ const constant_1 = require("../../../../constant");
 const Appsync_1 = require("../../../../Constructs/Appsync");
 const Cdk_1 = require("../../../../Constructs/Cdk");
 const model = require("../../../../model.json");
-const { lambdaStyle } = model.api;
-const appsyncDatasourceHandler = (apiName, output) => {
+const appsyncDatasourceHandler = (apiName, output, lambdaStyle, mutationsAndQueries) => {
     const appsync = new Appsync_1.Appsync(output);
     appsync.apiName = apiName;
     const ts = new typescript_1.TypeScriptWriter(output);
@@ -15,9 +14,6 @@ const appsyncDatasourceHandler = (apiName, output) => {
         appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle);
     }
     else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
-        const mutations = model.type.Mutation ? model.type.Mutation : {};
-        const queries = model.type.Query ? model.type.Query : {};
-        const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
         Object.keys(mutationsAndQueries).forEach((key) => {
             appsync.appsyncLambdaDataSource(output, apiName, apiName, lambdaStyle, key);
             ts.writeLine();
@@ -28,7 +24,7 @@ const appsyncDatasourceHandler = (apiName, output) => {
     }
 };
 exports.appsyncDatasourceHandler = appsyncDatasourceHandler;
-const appsyncResolverhandler = (apiName, output) => {
+const appsyncResolverhandler = (apiName, output, lambdaStyle) => {
     var _a, _b, _c, _d;
     const appsync = new Appsync_1.Appsync(output);
     appsync.apiName = apiName;

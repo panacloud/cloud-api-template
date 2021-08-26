@@ -6,34 +6,20 @@ import {
   LAMBDASTYLE,
 } from "../../../../constant";
 import { Lambda } from "../../../../Constructs/Lambda";
-const model = require("../../../../model.json");
-const { apiName, lambdaStyle, database, apiType } = model.api;
 
-let mutations = {};
-let queries = {};
-if (apiType === APITYPE.graphql) {
-  mutations = model.type.Mutation ? model.type.Mutation : {};
-  queries = model.type.Query ? model.type.Query : {};
+export const lambdaPropsHandlerForNeptunedb=()=>{
+  let props : { name: string,type:string}[]
+  return props = [{
+    name :"VPCRef",
+    type:"ec2.Vpc"
+  },{
+    name :"SGRef",
+    type:"ec2.SecurityGroup"
+  },{
+    name :"neptuneReaderEndpoint",
+    type:"string"
+  }]
 }
-const mutationsAndQueries = { ...mutations, ...queries };
-
-export const lambdaPropsHandlerForNeptunedb = () => {
-  let props: { name: string; type: string }[];
-  return (props = [
-    {
-      name: "VPCRef",
-      type: "ec2.Vpc",
-    },
-    {
-      name: "SGRef",
-      type: "ec2.SecurityGroup",
-    },
-    {
-      name: "neptuneReaderEndpoint",
-      type: "string",
-    },
-  ]);
-};
 
 export const lambdaPropsHandlerForAuroradb = () => {
   let props: { name: string; type: string }[];
@@ -56,7 +42,10 @@ export const lambdaPropsHandlerForAuroradb = () => {
 export const lambdaHandlerForAuroradb = (
   output: TextWriter,
   lambdaStyle: LAMBDASTYLE,
-  dataBase: DATABASE
+  database: DATABASE,
+  apiType:string,
+  apiName:string,
+  mutationsAndQueries:any
 ) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
@@ -124,7 +113,10 @@ export const lambdaHandlerForAuroradb = (
 export const lambdaHandlerForNeptunedb = (
   output: TextWriter,
   lambdaStyle: LAMBDASTYLE,
-  dataBase: DATABASE
+  database: DATABASE,
+  apiType:string,
+  apiName:string,
+  mutationsAndQueries:any
 ) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
@@ -186,7 +178,8 @@ export const lambdaHandlerForNeptunedb = (
   }
 };
 
-export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
+export const lambdaProperiesHandlerForAuroraDb = (apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries?:any) => {
+  
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFnArn`,
@@ -235,7 +228,9 @@ export const lambdaProperiesHandlerForAuroraDb = (output: TextWriter) => {
   }
 };
 
-export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
+
+export const lambdaProperiesHandlerForNeptuneDb = (apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries:any) => {
+  
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFnArn`,
@@ -270,7 +265,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
   } else if (
     lambdaStyle === LAMBDASTYLE.multi &&
     apiType === APITYPE.graphql &&
-    database === DATABASE.aurora
+    database === DATABASE.neptune
   ) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       properties[index] = {
@@ -284,7 +279,7 @@ export const lambdaProperiesHandlerForNeptuneDb = (output: TextWriter) => {
   }
 };
 
-export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
+export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:string,apiName:string,apiType:string,mutationsAndQueries:any) => {
   let properties: PropertyDefinition[] = [
     {
       name: `${apiName}_lambdaFn`,
@@ -316,7 +311,7 @@ export const lambdaProperiesHandlerForDynoDb = (output: TextWriter) => {
   }
 };
 
-export const lambdaHandlerForDynamodb = (output: TextWriter) => {
+export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries?:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
   if (

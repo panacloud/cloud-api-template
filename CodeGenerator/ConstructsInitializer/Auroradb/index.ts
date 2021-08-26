@@ -4,6 +4,7 @@ import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { CONSTRUCTS, DATABASE, PATH } from "../../../constant";
 import { AuroraServerless } from "../../../Constructs/AuroraServerless";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { Ec2 } from "../../../Constructs/Ec2";
 import { Iam } from "../../../Constructs/Iam";
 import {
@@ -23,14 +24,15 @@ if (database && database === DATABASE.aurora) {
       const ec2 = new Ec2(output);
       const aurora = new AuroraServerless(output);
       const iam = new Iam(output);
+      const imp = new Imports(output)
 
       const auroradbProperties: PropertyDefinition[] =
         auroradbPropertiesHandler();
-      cdk.importsForStack(output);
-      iam.importIam(output);
+      imp.importsForStack(output);
+      imp.importIam(output);
       ts.writeImports("aws-cdk-lib", ["Duration"]);
-      aurora.importRds(output);
-      ec2.importEc2(output);
+      imp.importRds(output);
+      imp.importEc2(output);
       ts.writeLine();
 
       cdk.initializeConstruct(

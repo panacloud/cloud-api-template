@@ -5,6 +5,7 @@ import { Appsync } from "../../../Constructs/Appsync";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
 import { PATH, LAMBDASTYLE, APITYPE } from "../../../constant";
+import { Imports } from "../../../Constructs/ConstructsImports";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
@@ -15,21 +16,19 @@ if (apiType === APITYPE.graphql) {
       outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-appsync.test.ts`,
     },
     (output: TextWriter) => {
-      const { apiName, lambdaStyle } = model.api;
+      const { apiName, lambdaStyle, database } = model.api;
       const ts = new TypeScriptWriter(output);
       const iam = new Iam(output);
       const appsync = new Appsync(output);
-      const cdk = new Cdk(output);
+      const imp = new Imports(output)
       const testClass = new Cdk(output);
 
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
-
-      testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
-      cdk.importForAppsyncConstruct(output);
-      cdk.importForLambdaConstruct(output);
-
+      imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+      imp.importForAppsyncConstructInTest(output)
+      imp.importForLambdaConstructInTest(output)
       testClass.initializeTest(
         "Appsync Api Constructs Test",
         () => {

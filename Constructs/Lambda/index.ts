@@ -8,26 +8,14 @@ interface Environment {
 }
 
 export class Lambda extends CodeWriter {
-  public importLambda(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
-  }
 
-  public initializeLambda(
-    apiName: string,
-    output: TextWriter,
-    lambdaStyle: string,
-    functionName?: string,
-    vpcName?: string,
-    securityGroupsName?: string,
-    environments?: Environment[],
-    vpcSubnets?: string,
-    roleName?: string
-  ) {
-    let lambdaVariable: string = `${apiName}_lambdaFn`;
-    let funcName: string = `${apiName}Lambda`;
-    let handlerName: string = "main.handler";
+  public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
+    
     const ts = new TypeScriptWriter(output);
+    let lambdaConstructName:string = `${apiName}Lambda` 
+    let lambdaVariable:string = `${apiName}_lambdaFn`
+    let funcName :string = `${apiName}Lambda`
+    let handlerName:string = "main.handler"    
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
     let securityGroups = securityGroupsName
       ? `securityGroups: [${securityGroupsName}],`
@@ -39,6 +27,13 @@ export class Lambda extends CodeWriter {
       ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
       : "";
     let role = roleName ? `role: ${roleName},` : "";
+     
+     if (lambdaStyle === LAMBDASTYLE.multi) {
+       lambdaConstructName = `${apiName}Lambda${functionName}` 
+       lambdaVariable = `${apiName}_lambdaFn_${functionName}`
+       funcName  = `${apiName}Lambda${functionName}`
+       handlerName = `${functionName}.handler`
+     }
 
     if (lambdaStyle === LAMBDASTYLE.multi) {
       lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
@@ -51,7 +46,7 @@ export class Lambda extends CodeWriter {
         name: lambdaVariable,
         typeName: "lambda.Function",
         initializer: () => {
-          ts.writeLine(`new lambda.Function(this, "${apiName}Lambda", {
+          ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",

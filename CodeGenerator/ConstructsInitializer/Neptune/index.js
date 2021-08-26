@@ -4,8 +4,8 @@ const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../../constant");
 const Cdk_1 = require("../../../Constructs/Cdk");
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const Ec2_1 = require("../../../Constructs/Ec2");
-const Iam_1 = require("../../../Constructs/Iam");
 const Neptune_1 = require("../../../Constructs/Neptune");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
@@ -17,11 +17,11 @@ if (database && database === constant_1.DATABASE.neptune) {
         const cdk = new Cdk_1.Cdk(output);
         const ec2 = new Ec2_1.Ec2(output);
         const neptune = new Neptune_1.Neptune(output);
-        const iam = new Iam_1.Iam(output);
-        cdk.importsForStack(output);
+        const imp = new ConstructsImports_1.Imports(output);
+        imp.importsForStack(output);
         ts.writeImports("aws-cdk-lib", ["Tags"]);
-        neptune.importNeptune(output);
-        ec2.importEc2(output);
+        imp.importNeptune(output);
+        imp.importEc2(output);
         ts.writeLine();
         const propertiesForNeptuneDbConstruct = [
             {

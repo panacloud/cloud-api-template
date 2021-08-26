@@ -5,10 +5,6 @@ const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../constant");
 class DynamoDB extends core_1.CodeWriter {
-    importDynamodb(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_dynamodb as dynamodb"]);
-    }
     initializeDynamodb(apiName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
@@ -34,8 +30,8 @@ class DynamoDB extends core_1.CodeWriter {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`);
         }
     }
-    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, functionName) {
-        if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
+    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, apiType, functionName) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.single || apiType === constant_1.APITYPE.rest) {
             this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
         }
         else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {

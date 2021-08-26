@@ -2,22 +2,16 @@ import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { APITYPE, LAMBDASTYLE } from "../../../../constant";
 import { DynamoDB } from "../../../../Constructs/DynamoDB";
-const model = require("../../../../model.json");
-const { lambdaStyle, apiType } = model.api;
 
-let mutations = {};
-let queries = {};
-if (apiType === APITYPE.graphql) {
-  mutations = model.type.Mutation ? model.type.Mutation : {};
-  queries = model.type.Query ? model.type.Query : {};
-}
-const mutationsAndQueries = { ...mutations, ...queries };
-
-export const dynamodbAccessHandler = (apiName: string, output: TextWriter) => {
-  const dynamoDB = new DynamoDB(output);
-  const ts = new TypeScriptWriter(output);
+export const dynamodbAccessHandler = (apiName:string,output:TextWriter,lambdaStyle:string,mutationsAndQueries:any)=>{
+  const dynamoDB = new DynamoDB(output)
+  const ts = new TypeScriptWriter(output)
   if (lambdaStyle === LAMBDASTYLE.single) {
-    dynamoDB.grantFullAccess(`${apiName}`, `${apiName}_table`, lambdaStyle);
+    dynamoDB.grantFullAccess(
+      `${apiName}`,
+      `${apiName}_table`,
+      lambdaStyle
+    );
   } else if (lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       dynamoDB.grantFullAccess(
@@ -31,8 +25,8 @@ export const dynamodbAccessHandler = (apiName: string, output: TextWriter) => {
   }
 };
 
-export const dynamodbPropsHandler = (apiName: string, output: TextWriter) => {
-  const ts = new TypeScriptWriter(output);
+export const dynamodbPropsHandler = (apiName:string,output:TextWriter,lambdaStyle:string,mutationsAndQueries:any) => {
+  const ts = new TypeScriptWriter(output)
   if (lambdaStyle && lambdaStyle === LAMBDASTYLE.single) {
     const props = {
       name: `${apiName}_lambdaFn`,

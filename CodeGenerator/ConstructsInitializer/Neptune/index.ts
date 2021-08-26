@@ -3,8 +3,8 @@ import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
 import { CONSTRUCTS, DATABASE, PATH } from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { Ec2 } from "../../../Constructs/Ec2";
-import { Iam } from "../../../Constructs/Iam";
 import { Neptune } from "../../../Constructs/Neptune";
 import { neptunePropertiesInitializer } from "./functions";
 const model = require("../../../model.json");
@@ -19,12 +19,11 @@ if (database && database === DATABASE.neptune) {
       const cdk = new Cdk(output);
       const ec2 = new Ec2(output);
       const neptune = new Neptune(output);
-      const iam = new Iam(output);
-
-      cdk.importsForStack(output);
+      const imp = new Imports(output)
+      imp.importsForStack(output);
       ts.writeImports("aws-cdk-lib", ["Tags"]);
-      neptune.importNeptune(output);
-      ec2.importEc2(output);
+      imp.importNeptune(output);
+      imp.importEc2(output);
       ts.writeLine();
 
       const propertiesForNeptuneDbConstruct: PropertyDefinition[] = [

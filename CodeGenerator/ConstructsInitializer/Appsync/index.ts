@@ -4,6 +4,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { LAMBDASTYLE, CONSTRUCTS, APITYPE, PATH } from "../../../constant";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { Iam } from "../../../Constructs/Iam";
 import { appsyncDatasourceHandler, appsyncResolverhandler } from "./functions";
 const model = require("../../../model.json");
@@ -21,7 +22,7 @@ if (apiType === APITYPE.graphql) {
       const appsync = new Appsync(output);
       const cdk = new Cdk(output);
       const iam = new Iam(output);
-
+      const imp = new Imports(output)
       const schema = fs
         .readFileSync(`../../../schema.graphql`)
         .toString("utf8");
@@ -30,9 +31,9 @@ if (apiType === APITYPE.graphql) {
       const mutationsAndQueries = { ...mutations, ...queries };
       const { apiName, lambdaStyle, database } = model.api;
 
-      cdk.importsForStack(output);
-      appsync.importAppsync(output);
-      iam.importIam(output);
+      imp.importsForStack(output);
+      imp.importAppsync(output);
+      imp.importIam(output);
 
       let ConstructProps = [
         {
@@ -42,38 +43,36 @@ if (apiType === APITYPE.graphql) {
       ];
 
       if (lambdaStyle && lambdaStyle === LAMBDASTYLE.multi) {
-        Object.keys(mutationsAndQueries).forEach(
-          (key: string, index: number) => {
-            ConstructProps[index] = {
-              name: `${apiName}_lambdaFn_${key}Arn`,
-              type: "string",
-            };
-          }
-        );
+        Object.keys(mutationsAndQueries).forEach((key: string, index: number) => {
+          ConstructProps[index] = {
+            name: `${apiName}_lambdaFn_${key}Arn`,
+            type: "string",
+          };
+        });
       }
 
-      cdk.initializeConstruct(
-        `${CONSTRUCTS.appsync}`,
-        "AppsyncProps",
-        () => {
-          ts.writeLine();
-          appsync.initializeAppsyncApi(apiName, output);
-          ts.writeLine();
-          appsync.initializeAppsyncSchema(schema, output);
-          ts.writeLine();
-          appsync.initializeApiKeyForAppsync(apiName);
-          ts.writeLine();
-          iam.serviceRoleForAppsync(output, apiName);
-          ts.writeLine();
-          iam.attachLambdaPolicyToRole(`${apiName}`);
-          ts.writeLine();
-          appsyncDatasourceHandler(apiName, output);
-          ts.writeLine();
-          appsyncResolverhandler(apiName, output);
-        },
-        output,
-        ConstructProps
-      );
-    }
-  );
+    cdk.initializeConstruct(
+      `${CONSTRUCTS.appsync}`,
+      "AppsyncProps",
+      () => {
+        ts.writeLine();
+        appsync.initializeAppsyncApi(apiName, output);
+        ts.writeLine();
+        appsync.initializeAppsyncSchema(schema, output);
+        ts.writeLine();
+        appsync.initializeApiKeyForAppsync(apiName);
+        ts.writeLine();
+        iam.serviceRoleForAppsync(output, apiName);
+        ts.writeLine();
+        iam.attachLambdaPolicyToRole(`${apiName}`);
+        ts.writeLine();
+        appsyncDatasourceHandler(apiName, output,lambdaStyle,mutationsAndQueries);
+        ts.writeLine();
+        appsyncResolverhandler(apiName, output,lambdaStyle);
+      },
+      output,
+      ConstructProps
+    );
+  }
+);
 }

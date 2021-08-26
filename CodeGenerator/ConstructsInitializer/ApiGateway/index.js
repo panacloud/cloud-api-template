@@ -5,7 +5,7 @@ const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../../constant");
 const ApiGateway_1 = require("../../../Constructs/ApiGateway");
 const Cdk_1 = require("../../../Constructs/Cdk");
-const Lambda_1 = require("../../../Constructs/Lambda");
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const model = require("../../../model.json");
 const { apiName, apiType } = model.api;
 if (apiType === constant_1.APITYPE.rest) {
@@ -14,10 +14,10 @@ if (apiType === constant_1.APITYPE.rest) {
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const cdk = new Cdk_1.Cdk(output);
-        const lambda = new Lambda_1.Lambda(output);
+        const imp = new ConstructsImports_1.Imports(output);
         const apigw = new ApiGateway_1.ApiGateway(output);
-        cdk.importsForStack(output);
-        lambda.importLambda(output);
+        imp.importsForStack(output);
+        imp.importLambda(output);
         apigw.importApiGateway(output);
         const props = [
             {

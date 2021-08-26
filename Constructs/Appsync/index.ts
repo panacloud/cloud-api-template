@@ -10,16 +10,7 @@ interface Props {
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
 
-  public importAppsync(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_appsync as appsync"]);
-  }
-
-  public initializeAppsyncApi(
-    name: string,
-    output: TextWriter,
-    authenticationType?: string
-  ) {
+  public initializeAppsyncApi(name: string,output: TextWriter,authenticationType?: string) {
     this.apiName = name;
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
@@ -61,13 +52,7 @@ export class Appsync extends CodeWriter {
       })`);
   }
 
-  public appsyncLambdaDataSource(
-    output: TextWriter,
-    dataSourceName: string,
-    serviceRole: string,
-    lambdaStyle: LAMBDASTYLE,
-    functionName?: string
-  ) {
+  public appsyncLambdaDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle:string,functionName?:string) {
     const ts = new TypeScriptWriter(output);
     let ds_initializerName = this.apiName + "dataSourceGraphql";
     let ds_variable = `ds_${dataSourceName}`;

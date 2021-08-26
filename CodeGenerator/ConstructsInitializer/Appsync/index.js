@@ -5,6 +5,7 @@ const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../../constant");
 const Appsync_1 = require("../../../Constructs/Appsync");
 const Cdk_1 = require("../../../Constructs/Cdk");
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const Iam_1 = require("../../../Constructs/Iam");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
@@ -19,6 +20,7 @@ if (apiType === constant_1.APITYPE.graphql) {
         const appsync = new Appsync_1.Appsync(output);
         const cdk = new Cdk_1.Cdk(output);
         const iam = new Iam_1.Iam(output);
+        const imp = new ConstructsImports_1.Imports(output);
         const schema = fs
             .readFileSync(`../../../schema.graphql`)
             .toString("utf8");
@@ -26,9 +28,9 @@ if (apiType === constant_1.APITYPE.graphql) {
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
         const { apiName, lambdaStyle, database } = model.api;
-        cdk.importsForStack(output);
-        appsync.importAppsync(output);
-        iam.importIam(output);
+        imp.importsForStack(output);
+        imp.importAppsync(output);
+        imp.importIam(output);
         let ConstructProps = [
             {
                 name: `${apiName}_lambdaFnArn`,
@@ -55,9 +57,9 @@ if (apiType === constant_1.APITYPE.graphql) {
             ts.writeLine();
             iam.attachLambdaPolicyToRole(`${apiName}`);
             ts.writeLine();
-            functions_1.appsyncDatasourceHandler(apiName, output);
+            functions_1.appsyncDatasourceHandler(apiName, output, lambdaStyle, mutationsAndQueries);
             ts.writeLine();
-            functions_1.appsyncResolverhandler(apiName, output);
+            functions_1.appsyncResolverhandler(apiName, output, lambdaStyle);
         }, output, ConstructProps);
     });
 }
