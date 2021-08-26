@@ -53,9 +53,9 @@ export class AuroraServerless extends CodeWriter {
    `)
   }
 
-  public initializeTestForSubnet (apiName: string, fNum: number, state: string, stateNum: string) {
+  public initializeTestForSubnet (apiName: string, cidrBlock: string, fNum: number, state: string, stateNum: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
-      CidrBlock: '10.0.0.0/18',
+      CidrBlock: '${cidrBlock}',
       VpcId: {
         Ref: stack.getLogicalId(AuroraDbConstruct_stack.vpcRef.node.defaultChild as cdk.CfnElement),
       },
@@ -142,7 +142,7 @@ export class AuroraServerless extends CodeWriter {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Route', {
       RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].routeTableId),
       DestinationCidrBlock: '0.0.0.0/0',
-      NatGatewayId: {
+      ${gatewatIdType}: {
         Ref: stack.getLogicalId(${gatewayState}[0] as cdk.CfnElement),
       },
     });`)
