@@ -27,7 +27,7 @@ if (database && database === cloud_api_constants_1.DATABASE.auroraDb) {
             ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`);
             auroradb.route_tableIdentifier('public');
             ts.writeLine();
-            ts.writeLine(`const private_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`);
+            ts.writeLine(`const private_subnets = AuroraDbConstruct_stack.vpcRef.privateSubnets;`);
             auroradb.route_tableIdentifier('private');
             ts.writeLine();
             iam.natgatewayIdentifier("1", 0);
