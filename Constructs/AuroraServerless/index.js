@@ -33,6 +33,12 @@ class AuroraServerless extends core_1.CodeWriter {
     connectionsAllowFromAnyIpv4(sourceName) {
         this.writeLine(`${sourceName}.connections.allowFromAnyIpv4(ec2.Port.tcp(3306));`);
     }
+    route_tableIdentifier(state) {
+        this.writeLine(`const ${state}RouteTables = [
+    ${state}_subnets[0].routeTable,
+    ${state}_subnets[1].routeTable,
+  ];`);
+    }
     initializeTestForEC2Vpc() {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::VPC', {
       CidrBlock: '10.0.0.0/16',
@@ -42,7 +48,7 @@ class AuroraServerless extends core_1.CodeWriter {
     });
    `);
     }
-    initializeTestForSubnet(apiName, cidrBlock, fNum, state, stateNum) {
+    initializeTestForSubnet(apiName, cidrBlock, fNum, mapPublicIpOnLaunch, state, stateNum) {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
       CidrBlock: '${cidrBlock}',
       VpcId: {
@@ -56,7 +62,7 @@ class AuroraServerless extends core_1.CodeWriter {
           },
         ],
       },
-      MapPublicIpOnLaunch: true,
+      MapPublicIpOnLaunch: ${mapPublicIpOnLaunch},
       Tags: [
         {
           Key: 'aws-cdk:subnet-name',
@@ -87,9 +93,9 @@ class AuroraServerless extends core_1.CodeWriter {
     });
   `);
     }
-    initializeTestForSubnetRouteTableAssociation(routeTableState, routeTableNum, subnet, subnetState) {
+    initializeTestForSubnetRouteTableAssociation(routeTableState, routeTableNum, routeTable, routeTableId, subnet, subnetState) {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
-      RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].routeTableId),
+      RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].${routeTable}${routeTableId}),
       SubnetId: {
         Ref: stack.getLogicalId(
           ${subnet}[${subnetState}].node.defaultChild as cdk.CfnElement
