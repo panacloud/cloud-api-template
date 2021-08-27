@@ -4,7 +4,7 @@ import {
   APITYPE,
   DATABASE,
   LAMBDASTYLE,
-} from "../../../../constant";
+} from "../../../../util/constant";
 import { Lambda } from "../../../../Constructs/Lambda";
 
 export const lambdaPropsHandlerForNeptunedb=()=>{

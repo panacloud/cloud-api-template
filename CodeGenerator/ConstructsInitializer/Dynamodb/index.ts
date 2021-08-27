@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import {APITYPE,CONSTRUCTS, DATABASE,LAMBDASTYLE,PATH} from "../../../constant";
+import {APITYPE,CONSTRUCTS, DATABASE,LAMBDASTYLE,PATH} from "../../../util/constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Imports } from "../../../Constructs/ConstructsImports";
 import { DynamoDB } from "../../../Constructs/DynamoDB";

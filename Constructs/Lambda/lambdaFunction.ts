@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { APITYPE, LAMBDASTYLE } from "../../constant";
+import { APITYPE, LAMBDASTYLE } from "../../util/constant";
 const model = require("../../model.json");
 const { apiType } = model.api;
 

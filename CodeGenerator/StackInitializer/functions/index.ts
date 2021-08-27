@@ -1,6 +1,6 @@
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { APITYPE, LAMBDASTYLE } from "../../../constant";
+import { APITYPE, LAMBDASTYLE } from "../../../util/constant";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
 
 export const lambdaEnvHandler = (

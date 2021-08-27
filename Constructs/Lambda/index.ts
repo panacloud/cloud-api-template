@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../constant";
+import { LAMBDASTYLE } from "../../util/constant";
 
 interface Environment {
   name: string;
@@ -8,14 +8,22 @@ interface Environment {
 }
 
 export class Lambda extends CodeWriter {
-
-  public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
-    
+  public initializeLambda(
+    apiName: string,
+    output: TextWriter,
+    lambdaStyle: string,
+    functionName?: string,
+    vpcName?: string,
+    securityGroupsName?: string,
+    environments?: Environment[],
+    vpcSubnets?: string,
+    roleName?: string
+  ) {
     const ts = new TypeScriptWriter(output);
-    let lambdaConstructName:string = `${apiName}Lambda` 
-    let lambdaVariable:string = `${apiName}_lambdaFn`
-    let funcName :string = `${apiName}Lambda`
-    let handlerName:string = "main.handler"    
+    let lambdaConstructName: string = `${apiName}Lambda`;
+    let lambdaVariable: string = `${apiName}_lambdaFn`;
+    let funcName: string = `${apiName}Lambda`;
+    let handlerName: string = "main.handler";
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
     let securityGroups = securityGroupsName
       ? `securityGroups: [${securityGroupsName}],`
@@ -27,13 +35,13 @@ export class Lambda extends CodeWriter {
       ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
       : "";
     let role = roleName ? `role: ${roleName},` : "";
-     
-     if (lambdaStyle === LAMBDASTYLE.multi) {
-       lambdaConstructName = `${apiName}Lambda${functionName}` 
-       lambdaVariable = `${apiName}_lambdaFn_${functionName}`
-       funcName  = `${apiName}Lambda${functionName}`
-       handlerName = `${functionName}.handler`
-     }
+
+    if (lambdaStyle === LAMBDASTYLE.multi) {
+      lambdaConstructName = `${apiName}Lambda${functionName}`;
+      lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
+      funcName = `${apiName}Lambda${functionName}`;
+      handlerName = `${functionName}.handler`;
+    }
 
     if (lambdaStyle === LAMBDASTYLE.multi) {
       lambdaVariable = `${apiName}_lambdaFn_${functionName}`;

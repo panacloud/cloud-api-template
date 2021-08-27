@@ -1,6 +1,6 @@
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../../../constant";
+import { LAMBDASTYLE } from "../../../../util/constant";
 import { Appsync } from "../../../../Constructs/Appsync";
 import { Cdk } from "../../../../Constructs/Cdk";
 const model = require("../../../../model.json");

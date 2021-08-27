@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE, CONSTRUCTS, APITYPE, PATH } from "../../../constant";
+import { LAMBDASTYLE, CONSTRUCTS, APITYPE, PATH } from "../../../util/constant";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Imports } from "../../../Constructs/ConstructsImports";

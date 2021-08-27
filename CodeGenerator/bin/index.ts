@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { PATH } from "../../constant";
+import { PATH } from "../../util/constant";
 const model = require("../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");

@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS } from "../../constant";
+import { CONSTRUCTS } from "../../util/constant";
 
 export class Imports extends CodeWriter {
   

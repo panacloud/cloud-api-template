@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../constant";
+import { LAMBDASTYLE } from "../../util/constant";
 
 interface Props {
   name: string;

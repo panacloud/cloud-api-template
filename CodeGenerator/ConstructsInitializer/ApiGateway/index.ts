@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { APITYPE, CONSTRUCTS, PATH } from "../../../constant";
+import { APITYPE, CONSTRUCTS, PATH } from "../../../util/constant";
 import { ApiGateway } from "../../../Constructs/ApiGateway";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Imports } from "../../../Constructs/ConstructsImports";
