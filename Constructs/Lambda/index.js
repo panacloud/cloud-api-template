@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lambda = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../constant");
+const constant_1 = require("../../util/constant");
 class Lambda extends core_1.CodeWriter {
     initializeLambda(apiName, output, lambdaStyle, functionName, vpcName, securityGroupsName, environments, vpcSubnets, roleName) {
         const ts = new typescript_1.TypeScriptWriter(output);

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Imports = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../constant");
+const constant_1 = require("../../util/constant");
 class Imports extends core_1.CodeWriter {
     importsForStack(output) {
         const ts = new typescript_1.TypeScriptWriter(output);

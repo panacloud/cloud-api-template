@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LambdaFunction = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../constant");
+const constant_1 = require("../../util/constant");
 const model = require("../../model.json");
 const { apiType } = model.api;
 class LambdaFunction extends core_1.CodeWriter {

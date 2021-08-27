@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.propsHandlerForDynamoDbConstruct = exports.propsHandlerForApiGatewayConstruct = exports.LambdaAccessHandler = exports.propsHandlerForAppsyncConstructNeptunedb = exports.propsHandlerForAppsyncConstructDynamodb = exports.lambdaConstructPropsHandlerAuroradb = exports.lambdaConstructPropsHandlerNeptunedb = exports.lambdaPropsHandlerDynamodb = exports.lambdaEnvHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../constant");
+const constant_1 = require("../../../util/constant");
 const DynamoDB_1 = require("../../../Constructs/DynamoDB");
 const lambdaEnvHandler = (output, apiName, lambdaStyle, mutationsAndQueries) => {
     const ts = new typescript_1.TypeScriptWriter(output);

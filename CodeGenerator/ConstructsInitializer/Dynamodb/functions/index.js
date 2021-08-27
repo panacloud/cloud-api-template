@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dynamodbPropsHandler = exports.dynamodbAccessHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../../constant");
+const constant_1 = require("../../../../util/constant");
 const DynamoDB_1 = require("../../../../Constructs/DynamoDB");
 const dynamodbAccessHandler = (apiName, output, lambdaStyle, mutationsAndQueries) => {
     const dynamoDB = new DynamoDB_1.DynamoDB(output);

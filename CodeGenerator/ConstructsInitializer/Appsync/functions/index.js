@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.appsyncResolverhandler = exports.appsyncDatasourceHandler = void 0;
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../../constant");
+const constant_1 = require("../../../../util/constant");
 const Appsync_1 = require("../../../../Constructs/Appsync");
 const Cdk_1 = require("../../../../Constructs/Cdk");
 const model = require("../../../../model.json");

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../constant");
+const constant_1 = require("../../../util/constant");
 const AuroraServerless_1 = require("../../../Constructs/AuroraServerless");
 const Cdk_1 = require("../../../Constructs/Cdk");
 const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");

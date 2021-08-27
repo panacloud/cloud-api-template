@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lambdaHandlerForDynamodb = exports.lambdaProperiesHandlerForDynoDb = exports.lambdaProperiesHandlerForNeptuneDb = exports.lambdaProperiesHandlerForAuroraDb = exports.lambdaHandlerForNeptunedb = exports.lambdaHandlerForAuroradb = exports.lambdaPropsHandlerForAuroradb = exports.lambdaPropsHandlerForNeptunedb = void 0;
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../../constant");
+const constant_1 = require("../../../../util/constant");
 const Lambda_1 = require("../../../../Constructs/Lambda");
 const lambdaPropsHandlerForNeptunedb = () => {
     let props;

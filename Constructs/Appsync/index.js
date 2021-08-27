@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Appsync = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../constant");
+const constant_1 = require("../../util/constant");
 class Appsync extends core_1.CodeWriter {
     constructor() {
         super(...arguments);
