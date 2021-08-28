@@ -3,9 +3,10 @@ import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
 import { LAMBDASTYLE, APITYPE, PATH } from "../../constant";
+import { Imports } from "../../Constructs/ConstructsImports";
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require("../../model.json");
-import _ = require("lodash");
+const _ = require("lodash");
 const { lambdaStyle, apiType } = model.api;
 
 if (apiType === APITYPE.graphql) {
@@ -15,6 +16,7 @@ if (apiType === APITYPE.graphql) {
       (output: TextWriter) => {
         const ts = new TypeScriptWriter(output);
         const lambda = new LambdaFunction(output);
+        const imp = new Imports(output)
         for (var key in model.type.Query) {
           lambda.importIndividualFunction(output, key, `./${key}`);
         }
@@ -22,13 +24,14 @@ if (apiType === APITYPE.graphql) {
         for (var key in model.type.Mutation) {
           lambda.importIndividualFunction(output, key, `./${key}`);
         }
+        imp.importAxios()
         ts.writeLine();
         ts.writeLineIndented(`
-      type Event = {
-          info: {
-            fieldName: string
-         }
-       }`);
+        type Event = {
+            info: {
+              fieldName: string
+            }
+        }`);
         ts.writeLine();
         lambda.initializeLambdaFunction(output, lambdaStyle, () => {
           for (var key in model.type.Query) {
@@ -50,9 +53,11 @@ if (apiType === APITYPE.graphql) {
     if (model.type.Mutation) {
       Object.keys(model.type.Mutation).forEach((key) => {
         Generator.generate(
-          { outputFile: `${PATH.lambda}${key}.ts` },
+          { outputFile: `${PATH.lambda}/${key}/${key}.ts`},
           (writer: TextWriter) => {
+            const imp = new Imports(writer)
             const lambda = new LambdaFunction(writer);
+            imp.importAxios()    
             lambda.initializeLambdaFunction(writer, lambdaStyle);
           }
         );
@@ -62,9 +67,11 @@ if (apiType === APITYPE.graphql) {
     if (model.type.Query) {
       Object.keys(model.type.Query).forEach((key) => {
         Generator.generate(
-          { outputFile: `${PATH.lambda}${key}.ts` },
+          { outputFile: `${PATH.lambda}/${key}/${key}.ts` },
           (writer: TextWriter) => {
             const lambda = new LambdaFunction(writer);
+            const imp = new Imports(writer)
+            imp.importAxios()    
             lambda.initializeLambdaFunction(writer, lambdaStyle);
           }
         );
@@ -81,7 +88,8 @@ if (apiType === APITYPE.graphql) {
         (output: TextWriter) => {
           const ts = new TypeScriptWriter(output);
           const lambda = new LambdaFunction(output);
-
+          const imp = new Imports(output)
+          imp.importAxios()    
           /* import all lambda files */
           Object.keys(api.paths).forEach((path) => {
             for (var methodName in api.paths[`${path}`]) {

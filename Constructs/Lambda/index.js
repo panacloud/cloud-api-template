@@ -11,22 +11,18 @@ class Lambda extends core_1.CodeWriter {
         let lambdaVariable = `${apiName}_lambdaFn`;
         let funcName = `${apiName}Lambda`;
         let handlerName = "main.handler";
+        let handlerAsset = "lambda-fns";
         let vpc = vpcName ? `vpc: ${vpcName},` : "";
-        let securityGroups = securityGroupsName
-            ? `securityGroups: [${securityGroupsName}],`
-            : "";
-        let env = environments
-            ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},`
-            : "";
-        let vpcSubnet = vpcSubnets
-            ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
-            : "";
+        let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
+        let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)}},` : "";
+        let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
         let role = roleName ? `role: ${roleName},` : "";
         if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             lambdaConstructName = `${apiName}Lambda${functionName}`;
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
             funcName = `${apiName}Lambda${functionName}`;
             handlerName = `${functionName}.handler`;
+            handlerAsset = `lambda-fns/${functionName}`;
         }
         if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
@@ -42,7 +38,8 @@ class Lambda extends core_1.CodeWriter {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",
-        code: lambda.Code.fromAsset("lambda-fns"),
+        code: lambda.Code.fromAsset("${handlerAsset}"),
+        layers:[${apiName}_lambdaLayer],
         ${role}
         ${vpc}
         ${securityGroups}
@@ -50,6 +47,18 @@ class Lambda extends core_1.CodeWriter {
         ${vpcSubnet}
         })`);
             },
+        }, "const");
+    }
+    lambdaLayer(output, apiName) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeVariableDeclaration({
+            name: `${apiName}_lambdaLayer`,
+            typeName: "lambda.LayerVersion",
+            initializer: () => {
+                ts.writeLine(`new lambda.LayerVersion(this, "${apiName}LambdaLayer", {
+          code: lambda.Code.fromAsset('lambdaLayer'),
+        })`);
+            }
         }, "const");
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {

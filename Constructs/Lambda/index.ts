@@ -10,30 +10,25 @@ interface Environment {
 export class Lambda extends CodeWriter {
 
   public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
-    
     const ts = new TypeScriptWriter(output);
     let lambdaConstructName:string = `${apiName}Lambda` 
     let lambdaVariable:string = `${apiName}_lambdaFn`
     let funcName :string = `${apiName}Lambda`
-    let handlerName:string = "main.handler"    
+    let handlerName:string = "main.handler"
+    let handlerAsset : string = "lambda-fns"    
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
-    let securityGroups = securityGroupsName
-      ? `securityGroups: [${securityGroupsName}],`
-      : "";
-    let env = environments
-      ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},`
-      : "";
-    let vpcSubnet = vpcSubnets
-      ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
-      : "";
+    let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
+    let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)}},` : "";
+    let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
     let role = roleName ? `role: ${roleName},` : "";
      
-     if (lambdaStyle === LAMBDASTYLE.multi) {
+    if (lambdaStyle === LAMBDASTYLE.multi) {
        lambdaConstructName = `${apiName}Lambda${functionName}` 
        lambdaVariable = `${apiName}_lambdaFn_${functionName}`
        funcName  = `${apiName}Lambda${functionName}`
        handlerName = `${functionName}.handler`
-     }
+       handlerAsset = `lambda-fns/${functionName}`    
+    }
 
     if (lambdaStyle === LAMBDASTYLE.multi) {
       lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
@@ -51,7 +46,8 @@ export class Lambda extends CodeWriter {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",
-        code: lambda.Code.fromAsset("lambda-fns"),
+        code: lambda.Code.fromAsset("${handlerAsset}"),
+        layers:[${apiName}_lambdaLayer],
         ${role}
         ${vpc}
         ${securityGroups}
@@ -62,6 +58,19 @@ export class Lambda extends CodeWriter {
       },
       "const"
     );
+  }
+
+  public lambdaLayer(output:TextWriter,apiName:string){
+    const ts = new TypeScriptWriter(output)
+    ts.writeVariableDeclaration({
+      name:`${apiName}_lambdaLayer`,
+      typeName:"lambda.LayerVersion",
+      initializer:()=>{
+        ts.writeLine(`new lambda.LayerVersion(this, "${apiName}LambdaLayer", {
+          code: lambda.Code.fromAsset('lambdaLayer'),
+        })`)
+      }
+    },"const")
   }
 
   public addEnvironment(
