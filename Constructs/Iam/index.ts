@@ -253,6 +253,6 @@ export class Iam extends CodeWriter {
   }
 
   public constructorIdentifier(constructor: string) {
-    `const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");` 
+    this.writeLine(`const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`)
   }
 }
