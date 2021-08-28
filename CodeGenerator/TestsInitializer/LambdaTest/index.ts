@@ -41,7 +41,7 @@ Generator.generate(
         //   cdk.importForDynamodbConstruct(output);
         // const { apiName, lambdaStyle, database ,apiType } = model.api;
         if(database === DATABASE.dynamo){
-          imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
+          imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern1');
           imp.importForDynamodbConstructInTest(output)
           ts.writeLine();  
         
@@ -90,7 +90,7 @@ Generator.generate(
         ); 
       }
        else if (database === DATABASE.neptune) {
-        imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
           imp.importForNeptuneConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
@@ -129,7 +129,7 @@ Generator.generate(
           output, 
           CONSTRUCTS.neptuneDb)
         } else if (database === DATABASE.aurora) {
-          imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
+          imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern2');
           imp.importForAuroraDbConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  

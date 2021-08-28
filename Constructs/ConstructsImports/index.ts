@@ -114,22 +114,27 @@ public importForAuroraDbConstructInTest(output: TextWriter) {
 }
 
 
-  public ImportsForTest(output: TextWriter,workingDir:string) {
+  public ImportsForTest(output: TextWriter,workingDir:string, pattern: string) {
     const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", "cdk");
-    ts.writeImports("@aws-cdk/assert", [
-      "countResources",
-      "haveResource",
-      "expect",
-      "countResourcesLike",
-    ]);
-    ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+    if(pattern === 'pattern1'){
+      ts.writeImports("aws-cdk-lib", "cdk");
+      ts.writeImports("@aws-cdk/assert", [
+        "countResources",
+        "haveResource",
+        "expect",
+        "countResourcesLike",
+      ]);
+      ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+    } else if(pattern === 'pattern2') {
+      ts.writeImports('aws-cdk-lib', 'cdk');
+      ts.writeLine(`import "@aws-cdk/assert/jest"`);
+    }
   }
 
-  public ImportsForTest2(output: TextWriter, workingDir: string) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports('aws-cdk-lib', 'cdk');
-    ts.writeLine(`import "@aws-cdk/assert/jest"`);
-  }
+  // public ImportsForTest2(output: TextWriter, workingDir: string) {
+  //   const ts = new TypeScriptWriter(output);
+  //   ts.writeImports('aws-cdk-lib', 'cdk');
+  //   ts.writeLine(`import "@aws-cdk/assert/jest"`);
+  // }
 
 }

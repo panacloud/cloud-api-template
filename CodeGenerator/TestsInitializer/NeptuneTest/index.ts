@@ -11,7 +11,7 @@ const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 
 if (database && database === DATABASE.neptune) {
-  Generator.generateFromModel(
+  Generator.generate(
     {
       outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     },
@@ -21,7 +21,7 @@ if (database && database === DATABASE.neptune) {
       const neptune = new Neptune(output);
       const imp = new Imports(output)
       const { apiName } = model.api;
-      imp.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+      imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
       imp.importForNeptuneConstruct(output)
       ts.writeLine();
       cdk.initializeTest2(
