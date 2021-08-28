@@ -7,12 +7,13 @@ const Cdk_1 = require("../../../Constructs/Cdk");
 const constant_1 = require("../../../constant");
 const Iam_1 = require("../../../Constructs/Iam");
 const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
+const functions_1 = require("./functions");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.aurora) {
     templating_1.Generator.generateFromModel({
-        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
+        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const cdk = new Cdk_1.Cdk(output);
@@ -85,12 +86,7 @@ if (database && database === constant_1.DATABASE.aurora) {
             ts.writeLine();
             auroradb.initializeTestForNatGateway(apiName, 1, '2', '2');
             ts.writeLine();
-            ts.writeLine(`const subnetRefArray = [];`);
-            ts.writeLine(`for (let subnet of private_subnets) {`);
-            ts.writeLine(`subnetRefArray.push({`);
-            ts.writeLine(`Ref: stack.getLogicalId(subnet.node.defaultChild as cdk.CfnElement),`);
-            ts.writeLine(`});`);
-            ts.writeLine(`};`);
+            (0, functions_1.subnetAuroraFunction)(output);
             ts.writeLine();
             auroradb.initializeTestForDBSubnetGroup(apiName);
             ts.writeLine();
