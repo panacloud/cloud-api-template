@@ -7,6 +7,7 @@ const Cdk_1 = require("../../../Constructs/Cdk");
 const constant_1 = require("../../../constant");
 const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const functions_1 = require("./functions");
+const Iam_1 = require("../../../Constructs/Iam");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
@@ -18,11 +19,14 @@ if (database && database === constant_1.DATABASE.neptune) {
         const cdk = new Cdk_1.Cdk(output);
         const neptune = new Neptune_1.Neptune(output);
         const imp = new ConstructsImports_1.Imports(output);
+        const iam = new Iam_1.Iam(output);
         const { apiName } = model.api;
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForNeptuneConstructInTest(output);
         ts.writeLine();
-        cdk.initializeTest2('Neptune Construct Tests', () => {
+        cdk.initializeTest('Neptune Construct Tests', () => {
+            ts.writeLine();
+            iam.constructorIdentifier(constant_1.CONSTRUCTS.neptuneDb);
             ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
             ts.writeLine(`expect(constructs).toHaveLength(5);`);
             ts.writeLine();
@@ -60,6 +64,6 @@ if (database && database === constant_1.DATABASE.neptune) {
             neptune.initializeTestForCountResources('AWS::EC2::SecurityGroupIngress', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBCluster', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1);
-        }, output, constant_1.CONSTRUCTS.neptuneDb);
+        }, output, USER_WORKING_DIRECTORY, "pattern_v2");
     });
 }
