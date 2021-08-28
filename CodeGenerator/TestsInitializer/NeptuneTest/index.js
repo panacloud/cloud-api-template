@@ -5,23 +5,24 @@ const typescript_1 = require("@yellicode/typescript");
 const Neptune_1 = require("../../../Constructs/Neptune");
 // import { Iam } from '../../../Constructs/Iam';
 const Cdk_1 = require("../../../Constructs/Cdk");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
-if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
+if (database && database === constant_1.DATABASE.neptune) {
     templating_1.Generator.generateFromModel({
-        outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-neptune.test.ts`,
+        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
-        const testClass = new Cdk_1.Cdk(output);
         const cdk = new Cdk_1.Cdk(output);
         const neptune = new Neptune_1.Neptune(output);
+        const imp = new ConstructsImports_1.Imports(output);
         const { apiName } = model.api;
-        testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest2(output, USER_WORKING_DIRECTORY);
         cdk.importForNeptuneConstruct(output);
         ts.writeLine();
-        testClass.initializeTest2('Neptune Construct Tests', () => {
+        cdk.initializeTest2('Neptune Construct Tests', () => {
             ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
             ts.writeLine(`expect(constructs).toHaveLength(5);`);
             ts.writeLine();
@@ -69,6 +70,6 @@ if (database && database === cloud_api_constants_1.DATABASE.neptuneDb) {
             neptune.initializeTestForCountResources('AWS::EC2::SecurityGroupIngress', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBCluster', 1);
             neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1);
-        }, output, cloud_api_constants_1.CONSTRUCTS.neptuneDb);
+        }, output, constant_1.CONSTRUCTS.neptuneDb);
     });
 }

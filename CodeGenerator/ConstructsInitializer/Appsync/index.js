@@ -57,9 +57,9 @@ if (apiType === constant_1.APITYPE.graphql) {
             ts.writeLine();
             iam.attachLambdaPolicyToRole(`${apiName}`);
             ts.writeLine();
-            functions_1.appsyncDatasourceHandler(apiName, output, lambdaStyle, mutationsAndQueries);
+            (0, functions_1.appsyncDatasourceHandler)(apiName, output, lambdaStyle, mutationsAndQueries);
             ts.writeLine();
-            functions_1.appsyncResolverhandler(apiName, output, lambdaStyle);
+            (0, functions_1.appsyncResolverhandler)(apiName, output, lambdaStyle);
         }, output, ConstructProps);
     });
 }

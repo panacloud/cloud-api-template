@@ -10,29 +10,29 @@ class Iam extends core_1.CodeWriter {
             ? `managedPolicies: [
       ${managedPolicies.map((v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`)}
     ],`
-            : " ";
+            : ' ';
         ts.writeVariableDeclaration({
             name: `${apiName}Lambda_serviceRole`,
-            typeName: "iam.Role",
+            typeName: 'iam.Role',
             initializer: () => {
                 ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
                 assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
                ${policies}
           });`);
             },
-        }, "const");
+        }, 'const');
     }
     serviceRoleForAppsync(output, apiName) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
             name: `${apiName}_serviceRole`,
-            typeName: "iam.Role",
+            typeName: 'iam.Role',
             initializer: () => {
                 ts.writeLine(`new iam.Role(this,'appsyncServiceRole',{
                 assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
                });`);
             },
-        }, "const");
+        }, 'const');
     }
     attachLambdaPolicyToRole(roleName) {
         this
@@ -183,32 +183,38 @@ class Iam extends core_1.CodeWriter {
     });`);
     }
     natgatewayIdentifier(natGatewayNum, subnetNum) {
-        this.writeLine(`const natGateway${natGatewayNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+        this
+            .writeLine(`const natGateway${natGatewayNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
       return elem instanceof cdk.aws_ec2.CfnNatGateway;
     });`);
     }
     eipIdentifier(epiNum, subnetNum) {
-        this.writeLine(`const eip${epiNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+        this
+            .writeLine(`const eip${epiNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
       return elem instanceof cdk.aws_ec2.CfnEIP;
     });`);
     }
     internetGatewayIdentifier() {
-        this.writeLine(`const internetGateway = AuroraDbConstruct_stack.vpcRef.node.children.filter((elem) => {
+        this
+            .writeLine(`const internetGateway = AuroraDbConstruct_stack.vpcRef.node.children.filter((elem) => {
       return elem instanceof cdk.aws_ec2.CfnInternetGateway;
     });`);
     }
     serverlessClusterIdentifier() {
-        this.writeLine(`const ServerlessCluster = AuroraDbConstruct_stack.node.children.filter((elem) => {
+        this
+            .writeLine(`const ServerlessCluster = AuroraDbConstruct_stack.node.children.filter((elem) => {
       return elem instanceof cdk.aws_rds.ServerlessCluster;
     }); `);
     }
     secretIdentifier() {
-        this.writeLine(`const secret = ServerlessCluster[0].node.children.filter((elem) => {
+        this
+            .writeLine(`const secret = ServerlessCluster[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_secretsmanager.Secret;
     });`);
     }
     secretAttachment() {
-        this.writeLine(`const secretAttachment = secret[0].node.children.filter((elem) => {
+        this
+            .writeLine(`const secretAttachment = secret[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_secretsmanager.SecretTargetAttachment;
     });`);
     }

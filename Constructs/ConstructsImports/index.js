@@ -101,5 +101,10 @@ class Imports extends core_1.CodeWriter {
         ]);
         ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
     }
+    ImportsForTest2(output, workingDir) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports('aws-cdk-lib', 'cdk');
+        ts.writeLine(`import "@aws-cdk/assert/jest"`);
+    }
 }
 exports.Imports = Imports;

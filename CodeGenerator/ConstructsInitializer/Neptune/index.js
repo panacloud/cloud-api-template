@@ -76,7 +76,7 @@ if (database && database === constant_1.DATABASE.neptune) {
             cdk.nodeAddDependency(`${apiName}_neptuneInstance`, `${apiName}_vpc`);
             cdk.nodeAddDependency(`${apiName}_neptuneInstance`, `${apiName}_neptuneSubnet`);
             ts.writeLine();
-            functions_1.neptunePropertiesInitializer(output, apiName);
+            (0, functions_1.neptunePropertiesInitializer)(output, apiName);
         }, output, undefined, propertiesForNeptuneDbConstruct);
     });
 }
