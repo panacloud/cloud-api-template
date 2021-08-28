@@ -37,11 +37,8 @@ class Lambda extends core_1.CodeWriter {
             name: lambdaVariable,
             typeName: "lambda.Function",
             initializer: () => {
-<<<<<<< HEAD
+                // ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
                 ts.writeLine(`new lambda.Function(this, "${funcName}", {
-=======
-                ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
->>>>>>> dev
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",

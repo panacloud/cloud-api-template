@@ -34,27 +34,27 @@ templating_1.Generator.generate({
             },
         ];
         lambdaPropsWithName = "handlerProps";
-        lambdaProperties = functions_1.lambdaProperiesHandlerForDynoDb(lambdaStyle, apiName, apiType, mutationsAndQueries);
+        lambdaProperties = (0, functions_1.lambdaProperiesHandlerForDynoDb)(lambdaStyle, apiName, apiType, mutationsAndQueries);
     }
     if (database === constant_1.DATABASE.neptune) {
         lambdaPropsWithName = "handlerProps";
-        lambdaProps = functions_1.lambdaPropsHandlerForNeptunedb();
-        lambdaProperties = functions_1.lambdaProperiesHandlerForNeptuneDb(apiName, apiType, lambdaStyle, database, mutationsAndQueries);
+        lambdaProps = (0, functions_1.lambdaPropsHandlerForNeptunedb)();
+        lambdaProperties = (0, functions_1.lambdaProperiesHandlerForNeptuneDb)(apiName, apiType, lambdaStyle, database, mutationsAndQueries);
     }
     if (database === constant_1.DATABASE.aurora) {
         lambdaPropsWithName = "handlerProps";
-        lambdaProps = functions_1.lambdaPropsHandlerForAuroradb();
-        lambdaProperties = functions_1.lambdaProperiesHandlerForAuroraDb(apiName, apiType, lambdaStyle, database, mutationsAndQueries);
+        lambdaProps = (0, functions_1.lambdaPropsHandlerForAuroradb)();
+        lambdaProperties = (0, functions_1.lambdaProperiesHandlerForAuroraDb)(apiName, apiType, lambdaStyle, database, mutationsAndQueries);
     }
     cdk.initializeConstruct(constant_1.CONSTRUCTS.lambda, lambdaPropsWithName, () => {
         if (database === constant_1.DATABASE.dynamo) {
-            functions_1.lambdaHandlerForDynamodb(output, apiName, apiType, lambdaStyle, database, mutationsAndQueries);
+            (0, functions_1.lambdaHandlerForDynamodb)(output, apiName, apiType, lambdaStyle, database, mutationsAndQueries);
         }
         if (database === constant_1.DATABASE.neptune) {
-            functions_1.lambdaHandlerForNeptunedb(output, lambdaStyle, database, apiType, apiName, mutationsAndQueries);
+            (0, functions_1.lambdaHandlerForNeptunedb)(output, lambdaStyle, database, apiType, apiName, mutationsAndQueries);
         }
         if (database === constant_1.DATABASE.aurora) {
-            functions_1.lambdaHandlerForAuroradb(output, lambdaStyle, database, apiType, apiName, mutationsAndQueries);
+            (0, functions_1.lambdaHandlerForAuroradb)(output, lambdaStyle, database, apiType, apiName, mutationsAndQueries);
         }
     }, output, lambdaProps, lambdaProperties);
 });
