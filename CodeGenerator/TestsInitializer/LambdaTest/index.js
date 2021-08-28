@@ -68,7 +68,7 @@ templating_1.Generator.generate({
                 iam.lambdaServiceRolePolicyTestForDynodb(1);
             }
             ts.writeLine();
-        }, output, USER_WORKING_DIRECTORY, "patter_v1");
+        }, output, USER_WORKING_DIRECTORY, "pattern_v1");
     }
     else if (database === constant_1.DATABASE.neptune) {
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
