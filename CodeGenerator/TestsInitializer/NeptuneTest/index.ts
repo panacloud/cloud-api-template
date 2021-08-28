@@ -31,6 +31,7 @@ if (database && database === DATABASE.neptune) {
         () => {
           ts.writeLine()
           iam.constructorIdentifier(CONSTRUCTS.neptuneDb)
+          ts.writeLine()
           ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
           ts.writeLine(`expect(constructs).toHaveLength(5);`);
           ts.writeLine()
