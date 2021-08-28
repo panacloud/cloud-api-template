@@ -121,7 +121,7 @@ export class Cdk extends CodeWriter {
     pattern: string
   ) {
     const ts = new TypeScriptWriter(output);
-    if (pattern === 'pattern1') {
+    if (pattern === "pattern1") {
 
       ts.writeLineIndented(`test("${description}", () => {`);
       ts.writeLine(`const app = new cdk.App()`);
@@ -136,7 +136,7 @@ export class Cdk extends CodeWriter {
       ts.writeLine();
       contents();
       ts.writeLineIndented(`})`);
-    } else if (pattern === 'pattern2') {
+    } else {
       ts.writeLineIndented(`test("${description}", () => {`);
       ts.writeLine(`const stack = new cdk.Stack();`);
     }
