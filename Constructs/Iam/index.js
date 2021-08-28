@@ -219,7 +219,7 @@ class Iam extends core_1.CodeWriter {
     });`);
     }
     constructorIdentifier(constructor) {
-        `const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`;
+        this.writeLine(`const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`);
     }
 }
 exports.Iam = Iam;
