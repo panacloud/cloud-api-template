@@ -32,7 +32,6 @@ Generator.generate(
           imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern1');
           imp.importForDynamodbConstructInTest(output)
           ts.writeLine();  
-        
         cdk.initializeTest(
           "Lambda Attach With Dynamodb Constructs Test",
           () => {
@@ -75,7 +74,7 @@ Generator.generate(
           },
           output,
           USER_WORKING_DIRECTORY,
-          "patter_v1"
+          "pattern_v1"
         ); 
       }
        else if (database === DATABASE.neptune) {
