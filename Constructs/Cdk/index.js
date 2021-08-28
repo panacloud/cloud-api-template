@@ -85,7 +85,7 @@ class Cdk extends core_1.CodeWriter {
     }
     initializeTest(description, contents, output, workingDir, pattern) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        if (pattern === 'pattern1') {
+        if (pattern === "pattern1") {
             ts.writeLineIndented(`test("${description}", () => {`);
             ts.writeLine(`const app = new cdk.App()`);
             ts.writeLine(`const stack = new ${workingDir}.${_.upperFirst(_.camelCase(workingDir))}Stack(app, "MyTestStack");`);
@@ -94,7 +94,7 @@ class Cdk extends core_1.CodeWriter {
             contents();
             ts.writeLineIndented(`})`);
         }
-        else if (pattern === 'pattern2') {
+        else {
             ts.writeLineIndented(`test("${description}", () => {`);
             ts.writeLine(`const stack = new cdk.Stack();`);
         }
