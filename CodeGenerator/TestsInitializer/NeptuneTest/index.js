@@ -20,7 +20,7 @@ if (database && database === constant_1.DATABASE.neptune) {
         const imp = new ConstructsImports_1.Imports(output);
         const { apiName } = model.api;
         imp.ImportsForTest2(output, USER_WORKING_DIRECTORY);
-        cdk.importForNeptuneConstruct(output);
+        imp.importForNeptuneConstruct(output);
         ts.writeLine();
         cdk.initializeTest2('Neptune Construct Tests', () => {
             ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
