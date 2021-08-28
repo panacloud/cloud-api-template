@@ -31,7 +31,7 @@ templating_1.Generator.generate({
     //   cdk.importForDynamodbConstruct(output);
     // const { apiName, lambdaStyle, database ,apiType } = model.api;
     if (database === constant_1.DATABASE.dynamo) {
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern1');
         imp.importForDynamodbConstructInTest(output);
         ts.writeLine();
         cdk.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {
@@ -75,7 +75,7 @@ templating_1.Generator.generate({
         }, output, USER_WORKING_DIRECTORY);
     }
     else if (database === constant_1.DATABASE.neptune) {
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForNeptuneConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
@@ -112,7 +112,7 @@ templating_1.Generator.generate({
         }, output, constant_1.CONSTRUCTS.neptuneDb);
     }
     else if (database === constant_1.DATABASE.aurora) {
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForAuroraDbConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();

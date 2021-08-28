@@ -17,7 +17,7 @@ if (((_a = model === null || model === void 0 ? void 0 : model.api) === null || 
         const testClass = new Cdk_1.Cdk(output);
         const dynodb = new DynamoDB_1.DynamoDB(output);
         const imp = new ConstructsImports_1.Imports(output);
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern1');
         ts.writeLine();
         testClass.initializeTest("Dynamodb Constructs Test", () => {
             var _a;

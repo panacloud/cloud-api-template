@@ -90,21 +90,22 @@ class Imports extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`../lib/${constant_1.CONSTRUCTS.auroradb}`, [constant_1.CONSTRUCTS.auroradb]);
     }
-    ImportsForTest(output, workingDir) {
+    ImportsForTest(output, workingDir, pattern) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", "cdk");
-        ts.writeImports("@aws-cdk/assert", [
-            "countResources",
-            "haveResource",
-            "expect",
-            "countResourcesLike",
-        ]);
-        ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
-    }
-    ImportsForTest2(output, workingDir) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports('aws-cdk-lib', 'cdk');
-        ts.writeLine(`import "@aws-cdk/assert/jest"`);
+        if (pattern === 'pattern1') {
+            ts.writeImports("aws-cdk-lib", "cdk");
+            ts.writeImports("@aws-cdk/assert", [
+                "countResources",
+                "haveResource",
+                "expect",
+                "countResourcesLike",
+            ]);
+            ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+        }
+        else if (pattern === 'pattern2') {
+            ts.writeImports('aws-cdk-lib', 'cdk');
+            ts.writeLine(`import "@aws-cdk/assert/jest"`);
+        }
     }
 }
 exports.Imports = Imports;
