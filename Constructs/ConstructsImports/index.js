@@ -55,7 +55,7 @@ class Imports extends core_1.CodeWriter {
         ts.writeImports(`./${constant_1.CONSTRUCTS.apigateway}`, [constant_1.CONSTRUCTS.apigateway]);
     }
     importAxios() {
-        this.writeLine(`const axios = require('axios)`);
+        this.writeLine(`var axios = require('axios')`);
     }
     importForDynamodbConstruct(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
