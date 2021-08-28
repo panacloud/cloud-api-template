@@ -20,7 +20,7 @@ if (database && database === constant_1.DATABASE.aurora) {
         const aurora = new AuroraServerless_1.AuroraServerless(output);
         const iam = new Iam_1.Iam(output);
         const imp = new ConstructsImports_1.Imports(output);
-        const auroradbProperties = function_1.auroradbPropertiesHandler();
+        const auroradbProperties = (0, function_1.auroradbPropertiesHandler)();
         imp.importsForStack(output);
         imp.importIam(output);
         ts.writeImports("aws-cdk-lib", ["Duration"]);
@@ -47,7 +47,7 @@ if (database && database === constant_1.DATABASE.aurora) {
             ts.writeLine();
             aurora.connectionsAllowFromAnyIpv4(`${apiName}_db`);
             ts.writeLine();
-            function_1.auroradbPropertiesInitializer(output, apiName);
+            (0, function_1.auroradbPropertiesInitializer)(output, apiName);
         }, output, undefined, auroradbProperties);
     });
 }

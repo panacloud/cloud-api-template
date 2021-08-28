@@ -82,29 +82,29 @@ templating_1.Generator.generate({
             typeName: constant_1.CONSTRUCTS.lambda,
             initializer: () => {
                 ts.writeLine(`new ${constant_1.CONSTRUCTS.lambda}(this,"${apiName}${constant_1.CONSTRUCTS.lambda}",{`);
-                database === constant_1.DATABASE.dynamo && functions_1.lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
-                database === constant_1.DATABASE.neptune && functions_1.lambdaConstructPropsHandlerNeptunedb(output, apiName);
-                database === constant_1.DATABASE.aurora && functions_1.lambdaConstructPropsHandlerAuroradb(output, apiName);
+                database === constant_1.DATABASE.dynamo && (0, functions_1.lambdaPropsHandlerDynamodb)(output, `${apiName}_table`);
+                database === constant_1.DATABASE.neptune && (0, functions_1.lambdaConstructPropsHandlerNeptunedb)(output, apiName);
+                database === constant_1.DATABASE.aurora && (0, functions_1.lambdaConstructPropsHandlerAuroradb)(output, apiName);
                 ts.writeLine("})");
             },
         }, "const");
-        database === constant_1.DATABASE.dynamo && functions_1.LambdaAccessHandler(output, apiName, lambdaStyle, apiType, mutationsAndQueries);
+        database === constant_1.DATABASE.dynamo && (0, functions_1.LambdaAccessHandler)(output, apiName, lambdaStyle, apiType, mutationsAndQueries);
         if (apiType === constant_1.APITYPE.graphql) {
             ts.writeVariableDeclaration({
                 name: `${apiName}`,
                 typeName: constant_1.CONSTRUCTS.appsync,
                 initializer: () => {
                     ts.writeLine(`new ${constant_1.CONSTRUCTS.appsync}(this,"${apiName}${constant_1.CONSTRUCTS.appsync}",{`);
-                    database === constant_1.DATABASE.dynamo && functions_1.propsHandlerForAppsyncConstructDynamodb(output, apiName, lambdaStyle, mutationsAndQueries);
-                    database === constant_1.DATABASE.neptune && functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
-                    database === constant_1.DATABASE.aurora && functions_1.propsHandlerForAppsyncConstructNeptunedb(output, apiName, lambdaStyle, mutationsAndQueries);
+                    database === constant_1.DATABASE.dynamo && (0, functions_1.propsHandlerForAppsyncConstructDynamodb)(output, apiName, lambdaStyle, mutationsAndQueries);
+                    database === constant_1.DATABASE.neptune && (0, functions_1.propsHandlerForAppsyncConstructNeptunedb)(output, apiName, lambdaStyle, mutationsAndQueries);
+                    database === constant_1.DATABASE.aurora && (0, functions_1.propsHandlerForAppsyncConstructNeptunedb)(output, apiName, lambdaStyle, mutationsAndQueries);
                     ts.writeLine("})");
                 },
             }, "const");
         }
         if (apiType === constant_1.APITYPE.rest) {
             ts.writeLine(`const ${apiName} = new ${constant_1.CONSTRUCTS.apigateway}(this,"${apiName}${constant_1.CONSTRUCTS.apigateway}",{`);
-            functions_1.propsHandlerForApiGatewayConstruct(output, apiName);
+            (0, functions_1.propsHandlerForApiGatewayConstruct)(output, apiName);
             ts.writeLine("})");
         }
     }, output);
