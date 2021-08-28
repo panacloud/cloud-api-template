@@ -2,10 +2,10 @@ import { TextWriter } from '@yellicode/core';
 import { Generator } from '@yellicode/templating';
 import { TypeScriptWriter } from '@yellicode/typescript';
 import { Neptune } from '../../../Constructs/Neptune';
-// import { Iam } from '../../../Constructs/Iam';
 import { Cdk } from '../../../Constructs/Cdk';
 import { CONSTRUCTS, DATABASE, PATH } from '../../../constant';
 import { Imports } from '../../../Constructs/ConstructsImports';
+import { isolatedFunction, subnetFunction } from './functions';
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
@@ -22,7 +22,7 @@ if (database && database === DATABASE.neptune) {
       const imp = new Imports(output)
       const { apiName } = model.api;
       imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
-      imp.importForNeptuneConstruct(output)
+      imp.importForNeptuneConstructInTest(output)
       ts.writeLine();
       cdk.initializeTest2(
         'Neptune Construct Tests',
@@ -30,11 +30,7 @@ if (database && database === DATABASE.neptune) {
           ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
           ts.writeLine(`expect(constructs).toHaveLength(5);`);
           ts.writeLine()
-          ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`);
-          ts.writeLine(`const isolatedRouteTables = [`);
-          ts.writeLine(`isolated_subnets[0].routeTable,`);
-          ts.writeLine(`isolated_subnets[1].routeTable,`);
-          ts.writeLine(`]`)
+          isolatedFunction(output)
           ts.writeLine();
           neptune.initializeTesForEC2Vpc();
           ts.writeLine();
@@ -52,15 +48,7 @@ if (database && database === DATABASE.neptune) {
           neptune.initializeTestForSecurityGroup(apiName);
           ts.writeLine();
           neptune.initializeTestForSecurityGroupIngress(apiName);
-          ts.writeLine(`const subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`);
-          ts.writeLine(`const subnetRefArray = [];`);
-          ts.writeLine(`for (let subnet of subnets) {`);
-          ts.writeLine(`subnetRefArray.push({`);
-          ts.writeLine(
-            `Ref: stack.getLogicalId(subnet.node.defaultChild as cdk.CfnElement),`
-          );
-          ts.writeLine(`});`);
-          ts.writeLine(`}`);
+          subnetFunction(output)
           ts.writeLine();
           neptune.initializeTestForDBSubnetGroup(apiName);
           ts.writeLine();

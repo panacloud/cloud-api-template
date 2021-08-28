@@ -1,10 +1,3 @@
-// import { TextWriter } from '@yellicode/core';
-// import { Generator } from '@yellicode/templating';
-// import { TypeScriptWriter } from '@yellicode/typescript';
-// import { Iam } from '../../../Constructs/Iam';
-// import { Cdk } from '../../../Constructs/Cdk';
-// import { Lambda } from '../../../Constructs/Lambda';
-// import { CONSTRUCTS, DATABASE, LAMBDA } from '../../../cloud-api-constants';
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
@@ -13,6 +6,7 @@ import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
 import { APITYPE, DATABASE, LAMBDASTYLE, PATH, CONSTRUCTS } from "../../../constant";
 import { Imports } from "../../../Constructs/ConstructsImports";
+import { lambdaWithAuroraFunction, lambdaWithNeptuneFunction } from "./functions";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
@@ -34,12 +28,6 @@ Generator.generate(
         queries = model.type.Query ? model.type.Query : {};
       }
       const mutationsAndQueries = { ...mutations, ...queries };      
-      // imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
-
-      // if (database && database === DATABASE.dynamoDb) {
-        //   testClass.ImportsForTest(output, USER_WORKING_DIRECTORY);
-        //   cdk.importForDynamodbConstruct(output);
-        // const { apiName, lambdaStyle, database ,apiType } = model.api;
         if(database === DATABASE.dynamo){
           imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern1');
           imp.importForDynamodbConstructInTest(output)
@@ -94,25 +82,9 @@ Generator.generate(
           imp.importForNeptuneConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
-        
-      // } else if (database && database === DATABASE.neptuneDb){
-      //     cdk.ImportsForTest2(output, USER_WORKING_DIRECTORY)
-      //     cdk.importForLambdaConstruct(output)
-      //     cdk.importForNeptuneConstruct(output)
-      //     ts.writeLine();
           cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
             ts.writeLine();
-            ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`)
-            ts.writeLine()
-            ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
-            ts.writeLine(`VPCRef: VpcNeptuneConstruct_stack.VPCRef,`)
-            ts.writeLine(`SGRef: VpcNeptuneConstruct_stack.SGRef,`)
-            ts.writeLine(`neptuneReaderEndpoint: VpcNeptuneConstruct_stack.neptuneReaderEndpoint,`)
-            ts.writeLine(`});`)
-            ts.writeLine()
-            ts.writeLine(`const cfn_cluster = VpcNeptuneConstruct_stack.node.children.filter(`)
-            ts.writeLine(`(elem) => elem instanceof cdk.aws_neptune.CfnDBCluster`)
-            ts.writeLine(`);`)
+            lambdaWithNeptuneFunction(output)
             ts.writeLine()
             if (apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType === APITYPE.graphql)) {
                 let funcName = `${apiName}Lambda`;
@@ -133,12 +105,8 @@ Generator.generate(
           imp.importForAuroraDbConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
-          cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
-                ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
-                ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`)
-                ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`)
-                ts.writeLine(`serviceRole: AuroraDbConstruct_stack.serviceRole,`)
-                ts.writeLine(`});`)
+          cdk.initializeTest2("Lambda Attach With Aurora Constructs Test", () => {
+              lambdaWithAuroraFunction(output)
                 ts.writeLine()
                 iam.serverlessClusterIdentifier()
                 ts.writeLine()
@@ -158,60 +126,5 @@ Generator.generate(
             }
           }, output, CONSTRUCTS.auroradb)          
         }
-      // } else if (database && database === DATABASE.auroraDb) {
-      //   testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY)
-      //   cdk.importForLambdaConstruct(output)
-      //   cdk.importForAuroradbConstruct(output)
-      //   ts.writeLine();
-      //   testClass.initializeTest2('Lambda Attach With AuororaDB Constructs Test', () => {
-      //     if(lambdaStyle === LAMBDA.single){
-      //       let funcName = `${apiName}Lambda`;
-      //       lambda.initializeTestForLambdaWithAuroradb(funcName, 'main')
-      //     } else if(lambdaStyle === LAMBDA.multiple){
-      //       Object.keys(mutationsAndQueries).forEach((key) => {
-      //         let funcName = `${apiName}Lambda${key}`;
-      //         lambda.initializeTestForLambdaWithAuroradb(funcName, key)
-      //         ts.writeLine()
-      //       })
-      //     }
-      //   }, output, CONSTRUCTS.auroradb)
-      // }
     }
   );
-
-
-
-        // ts.writeLine();
-      //   testClass.initializeTest(
-      //     'Lambda Attach With Dynamodb Constructs Test',
-      //     () => {
-      //       ts.writeLine();
-      //       iam.dynamodbConsturctIdentifier();
-      //       ts.writeLine();
-      //       iam.DynodbTableIdentifier();
-      //       ts.writeLine();
-      //       if (lambdaStyle === LAMBDA.single) {
-      //         let funcName = `${apiName}Lambda`;
-      //         lambda.initializeTestForLambdaWithDynamoDB(funcName, 'main');
-      //         ts.writeLine();
-      //       } else if (lambdaStyle === LAMBDA.multiple) {
-      //         Object.keys(mutationsAndQueries).forEach((key) => {
-      //           let funcName = `${apiName}Lambda${key}`;
-      //           lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
-      //           ts.writeLine();
-      //         });
-      //       }
-      //       iam.lambdaServiceRoleTest();
-      //       ts.writeLine();
-      //       if (lambdaStyle === LAMBDA.single) {
-      //         iam.lambdaServiceRolePolicyTestForDynodb(1);
-      //       } else if (lambdaStyle === LAMBDA.multiple) {
-      //         iam.lambdaServiceRolePolicyTestForDynodb(
-      //           Object.keys(mutationsAndQueries).length
-      //         );
-      //       }
-      //       ts.writeLine();
-      //     },
-      //     output,
-      //     USER_WORKING_DIRECTORY
-      //   );
