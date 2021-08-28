@@ -23,6 +23,6 @@ if (((_a = model === null || model === void 0 ? void 0 : model.api) === null || 
             var _a;
             ts.writeLine();
             dynodb.initializeTestForDynamodb((_a = model === null || model === void 0 ? void 0 : model.api) === null || _a === void 0 ? void 0 : _a.apiName);
-        }, output, USER_WORKING_DIRECTORY);
+        }, output, USER_WORKING_DIRECTORY, 'pattern1');
     });
 }
