@@ -116,7 +116,7 @@ templating_1.Generator.generate({
         imp.importForAuroraDbConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
-        cdk.initializeTest2("Lambda Attach With AuroraDB Constructs Test", () => {
+        cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
             ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`);
             ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`);
             ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`);
