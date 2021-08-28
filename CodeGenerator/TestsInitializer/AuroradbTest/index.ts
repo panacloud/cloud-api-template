@@ -24,7 +24,7 @@ if (database && database === DATABASE.aurora) {
     imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2')
     cdk.importForAuroradbConstruct(output)
     ts.writeLine()
-    cdk.initializeTest2("Auroradb Construct Tests", () => {
+    cdk.initializeTest3("Auroradb Construct Tests", () => {
         ts.writeLine()
         iam.constructorIdentifier(CONSTRUCTS.auroradb)
         ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`)
@@ -102,7 +102,7 @@ if (database && database === DATABASE.aurora) {
         auroradb.initializeTestForCountResources("AWS::EC2::EIP", 2)
         auroradb.initializeTestForCountResources("AWS::EC2::NatGateway", 2)
         auroradb.initializeTestForCountResources("AWS::RDS::DBSubnetGroup", 1)
-    }, output, CONSTRUCTS.auroradb)
+    }, output, USER_WORKING_DIRECTORY, "pattern_v2")
 
   });
 }

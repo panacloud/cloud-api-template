@@ -151,4 +151,35 @@ export class Cdk extends CodeWriter {
     contents();
     ts.writeLineIndented(`})`);
   }
+
+  public initializeTest3(
+    description: string,
+    contents: any,
+    output: TextWriter,
+    workingDir: string,
+    pattern: string
+  ) {
+    const ts = new TypeScriptWriter(output);
+    if(pattern === "pattern_v1"){
+      ts.writeLineIndented(`test("${description}", () => {`);
+      ts.writeLine(`const app = new cdk.App()`);
+      ts.writeLine(
+        `const stack = new ${workingDir}.${_.upperFirst(
+          _.camelCase(workingDir)
+        )}Stack(app, "MyTestStack");`
+      );
+      ts.writeLine(
+        `const actual = app.synth().getStackArtifact(stack.artifactId).template;`
+      );
+      ts.writeLine();
+      contents();
+      ts.writeLineIndented(`})`);
+    } else if(pattern === "pattern_v2"){
+    ts.writeLineIndented(`test("${description}", () => {`);
+    ts.writeLine(`const stack = new cdk.Stack();`);
+    ts.writeLine();
+    contents();
+    ts.writeLineIndented(`})`);
+  }
+  }
 }
