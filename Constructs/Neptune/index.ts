@@ -2,10 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Neptune extends CodeWriter {
-  public importNeptune(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_neptune as neptune"]);
-  }
 
   public initializeNeptuneCluster(
     apiName: string,

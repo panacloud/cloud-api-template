@@ -1,60 +1,50 @@
 {
   "templates": [
     {
-      "templateFile": "./CodeGenerator/StackInitializer/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/StackInitializer/index.js"
     },
     {
       "templateFile": "./CodeGenerator/bin/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.js"
     },
     {
       "templateFile": "./CodeGenerator/Lambda/individualFunction.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Appsync/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Appsync/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Dynamodb/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Dynamodb/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Neptune/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Neptune/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/ConstructsInitializer/ApiGateway/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/NeptuneTest/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/AuroradbTest/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./CodeGenerator/TestsInitializer/NeptuneTest/index.js"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/AuroradbTest/index.js"
     }
-
   ],
   "compileTypeScript": false
 }

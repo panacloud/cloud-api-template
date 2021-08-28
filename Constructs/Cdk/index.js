@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cdk = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
 const _ = require("lodash");
 class Cdk extends core_1.CodeWriter {
+<<<<<<< HEAD
     importsForStack(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports("aws-cdk-lib", ["Stack", "StackProps"]);
@@ -31,6 +31,8 @@ class Cdk extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`../lib/${cloud_api_constants_1.CONSTRUCTS.auroradb}`, [cloud_api_constants_1.CONSTRUCTS.auroradb]);
     }
+=======
+>>>>>>> dev
     initializeStack(name, contents, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const classDefinition = {
@@ -52,7 +54,7 @@ class Cdk extends core_1.CodeWriter {
         ts.writeLine();
         if (constructProps) {
             ts.writeInterfaceBlock({
-                name: propsName
+                name: propsName,
             }, () => {
                 constructProps === null || constructProps === void 0 ? void 0 : constructProps.forEach(({ name, type }) => {
                     ts.writeLine(`${name}: ${type}`);
@@ -93,6 +95,7 @@ class Cdk extends core_1.CodeWriter {
         contents();
         ts.writeLineIndented(`})`);
     }
+<<<<<<< HEAD
     initializeTest2(description, contents, output, constructor) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeLineIndented(`test("${description}", () => {`);
@@ -118,5 +121,7 @@ class Cdk extends core_1.CodeWriter {
         ts.writeImports("aws-cdk-lib", "cdk");
         ts.writeLine(`import "@aws-cdk/assert/jest"`);
     }
+=======
+>>>>>>> dev
 }
 exports.Cdk = Cdk;

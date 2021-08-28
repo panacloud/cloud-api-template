@@ -1,28 +1,18 @@
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { DATABASE, LAMBDA } from "../../../../cloud-api-constants";
+import { APITYPE, LAMBDASTYLE } from "../../../../constant";
 import { DynamoDB } from "../../../../Constructs/DynamoDB";
-const model = require("../../../../model.json");
-const {  lambdaStyle } = model.api;
 
-const mutations = model.type.Mutation ? model.type.Mutation : {};
-const queries = model.type.Query ? model.type.Query : {};
-
-const mutationsAndQueries = {
-  ...mutations,
-  ...queries,
-};
-
-export const dynamodbAccessHandler = (apiName:string,output:TextWriter)=>{
+export const dynamodbAccessHandler = (apiName:string,output:TextWriter,lambdaStyle:string,mutationsAndQueries:any)=>{
   const dynamoDB = new DynamoDB(output)
   const ts = new TypeScriptWriter(output)
-  if (lambdaStyle === LAMBDA.single) {
+  if (lambdaStyle === LAMBDASTYLE.single) {
     dynamoDB.grantFullAccess(
       `${apiName}`,
       `${apiName}_table`,
       lambdaStyle
     );
-  } else if (lambdaStyle === LAMBDA.multiple) {
+  } else if (lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       dynamoDB.grantFullAccess(
         `${apiName}`,
@@ -33,24 +23,24 @@ export const dynamodbAccessHandler = (apiName:string,output:TextWriter)=>{
       ts.writeLine();
     });
   }
-}
+};
 
-export const dynamodbPropsHandler = (apiName:string,output:TextWriter) => {
+export const dynamodbPropsHandler = (apiName:string,output:TextWriter,lambdaStyle:string,mutationsAndQueries:any) => {
   const ts = new TypeScriptWriter(output)
-  if (lambdaStyle && lambdaStyle === LAMBDA.single) {
+  if (lambdaStyle && lambdaStyle === LAMBDASTYLE.single) {
     const props = {
       name: `${apiName}_lambdaFn`,
       type: "lambda.Function",
-    }
+    };
   }
 
-  if (lambdaStyle && lambdaStyle === LAMBDA.multiple) {
+  if (lambdaStyle && lambdaStyle === LAMBDASTYLE.multi) {
     Object.keys(mutationsAndQueries).forEach((key, index) => {
       const props = {
         name: `${apiName}_lambdaFn_${key}`,
         type: "lambda.Function",
       };
-      ts.writeLine(`${props}`)
+      ts.writeLine(`${props}`);
     });
   }
 };

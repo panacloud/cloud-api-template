@@ -4,26 +4,27 @@ import { TypeScriptWriter } from '@yellicode/typescript';
 import { Neptune } from '../../../Constructs/Neptune';
 // import { Iam } from '../../../Constructs/Iam';
 import { Cdk } from '../../../Constructs/Cdk';
-import { CONSTRUCTS, DATABASE } from '../../../cloud-api-constants';
+import { CONSTRUCTS, DATABASE, PATH } from '../../../constant';
+import { Imports } from '../../../Constructs/ConstructsImports';
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 
-if (database && database === DATABASE.neptuneDb) {
+if (database && database === DATABASE.neptune) {
   Generator.generateFromModel(
     {
-      outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-neptune.test.ts`,
+      outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     },
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
-      const testClass = new Cdk(output);
       const cdk = new Cdk(output);
       const neptune = new Neptune(output);
+      const imp = new Imports(output)
       const { apiName } = model.api;
-      testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+      imp.ImportsForTest2(output, USER_WORKING_DIRECTORY);
       cdk.importForNeptuneConstruct(output)
       ts.writeLine();
-      testClass.initializeTest2(
+      cdk.initializeTest2(
         'Neptune Construct Tests',
         () => {
           ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);

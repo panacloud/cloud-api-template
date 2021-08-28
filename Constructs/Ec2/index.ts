@@ -2,10 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Ec2 extends CodeWriter {
-  public importEc2(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_ec2 as ec2"]);
-  }
 
   public initializeVpc(
     apiName: string,

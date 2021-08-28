@@ -3,23 +3,24 @@ import { Generator } from '@yellicode/templating';
 import { TypeScriptWriter } from '@yellicode/typescript';
 import { AuroraServerless } from '../../../Constructs/AuroraServerless';
 import { Cdk } from '../../../Constructs/Cdk';
-import { CONSTRUCTS, DATABASE } from '../../../cloud-api-constants';
+import { CONSTRUCTS, DATABASE, PATH } from '../../../constant';
 import { Iam } from '../../../Constructs/Iam';
+import { Imports } from '../../../Constructs/ConstructsImports';
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 
-if (database && database === DATABASE.auroraDb) {
+if (database && database === DATABASE.aurora) {
   Generator.generateFromModel({
-    outputFile: `../../../../../test/${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
+    outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
   }, (output: TextWriter) => {
     const ts = new TypeScriptWriter(output);
-    const testClass = new Cdk(output);
     const cdk = new Cdk(output);
     const iam = new Iam(output);
     const auroradb = new AuroraServerless(output);
+    const imp = new Imports(output)
     const { apiName } = model.api;
-    testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY)
+    imp.ImportsForTest2(output, USER_WORKING_DIRECTORY)
     cdk.importForAuroradbConstruct(output)
     ts.writeLine()
     cdk.initializeTest2("Auroradb Construct Tests", () => {

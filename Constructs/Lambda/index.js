@@ -3,23 +3,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lambda = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 class Lambda extends core_1.CodeWriter {
-    importLambda(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_lambda as lambda"]);
-    }
     initializeLambda(apiName, output, lambdaStyle, functionName, vpcName, securityGroupsName, environments, vpcSubnets, roleName) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        let lambdaConstructName = `${apiName}Lambda`;
         let lambdaVariable = `${apiName}_lambdaFn`;
         let funcName = `${apiName}Lambda`;
         let handlerName = "main.handler";
-        const ts = new typescript_1.TypeScriptWriter(output);
         let vpc = vpcName ? `vpc: ${vpcName},` : "";
-        let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
-        let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},` : "";
-        let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
+        let securityGroups = securityGroupsName
+            ? `securityGroups: [${securityGroupsName}],`
+            : "";
+        let env = environments
+            ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)},},`
+            : "";
+        let vpcSubnet = vpcSubnets
+            ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+            : "";
         let role = roleName ? `role: ${roleName},` : "";
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
+            lambdaConstructName = `${apiName}Lambda${functionName}`;
+            lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
+            funcName = `${apiName}Lambda${functionName}`;
+            handlerName = `${functionName}.handler`;
+        }
+        if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
             funcName = `${apiName}Lambda${functionName}`;
             handlerName = `${functionName}.handler`;
@@ -28,7 +37,11 @@ class Lambda extends core_1.CodeWriter {
             name: lambdaVariable,
             typeName: "lambda.Function",
             initializer: () => {
+<<<<<<< HEAD
                 ts.writeLine(`new lambda.Function(this, "${funcName}", {
+=======
+                ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
+>>>>>>> dev
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",
@@ -43,10 +56,10 @@ class Lambda extends core_1.CodeWriter {
         }, "const");
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
             this.writeLine(`${lambda}_lambdaFn.addEnvironment("${envName}", ${value});`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             this.writeLine(`${lambda}_lambdaFn_${functionName}.addEnvironment("${envName}", ${value});`);
         }
     }

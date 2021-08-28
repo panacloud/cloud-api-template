@@ -3,12 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DynamoDB = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../cloud-api-constants");
+const constant_1 = require("../../constant");
 class DynamoDB extends core_1.CodeWriter {
-    importDynamodb(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_dynamodb as dynamodb"]);
-    }
     initializeDynamodb(apiName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
@@ -27,18 +23,18 @@ class DynamoDB extends core_1.CodeWriter {
         }, "const");
     }
     grantFullAccess(lambda, tableName, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn);`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             this.writeLine(`${tableName}.grantFullAccess(props!.${lambda}_lambdaFn_${functionName});`);
         }
     }
-    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, functionName) {
-        if (lambdaStyle === cloud_api_constants_1.LAMBDA.single) {
+    dbConstructLambdaAccess(apiName, dbConstructName, lambdaConstructName, lambdaStyle, apiType, functionName) {
+        if (lambdaStyle === constant_1.LAMBDASTYLE.single || apiType === constant_1.APITYPE.rest) {
             this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn);`);
         }
-        else if (lambdaStyle === cloud_api_constants_1.LAMBDA.multiple) {
+        else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             this.writeLine(`${dbConstructName}.table.grantFullAccess(${lambdaConstructName}.${apiName}_lambdaFn_${functionName});`);
         }
     }

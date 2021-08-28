@@ -2,10 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class AuroraServerless extends CodeWriter {
-  public importRds(output: TextWriter) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports("aws-cdk-lib", ["aws_rds as rds"]);
-  }
 
   public initializeAuroraCluster(
     apiName: string,

@@ -4,10 +4,6 @@ exports.AuroraServerless = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 class AuroraServerless extends core_1.CodeWriter {
-    importRds(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_rds as rds"]);
-    }
     initializeAuroraCluster(apiName, vpcName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({

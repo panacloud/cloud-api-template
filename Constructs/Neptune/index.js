@@ -4,10 +4,6 @@ exports.Neptune = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 class Neptune extends core_1.CodeWriter {
-    importNeptune(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports("aws-cdk-lib", ["aws_neptune as neptune"]);
-    }
     initializeNeptuneCluster(apiName, neptuneSubnetName, securityGroupName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({

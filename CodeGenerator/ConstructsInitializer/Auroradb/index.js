@@ -2,30 +2,32 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const cloud_api_constants_1 = require("../../../cloud-api-constants");
+const constant_1 = require("../../../constant");
 const AuroraServerless_1 = require("../../../Constructs/AuroraServerless");
 const Cdk_1 = require("../../../Constructs/Cdk");
+const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
 const Ec2_1 = require("../../../Constructs/Ec2");
 const Iam_1 = require("../../../Constructs/Iam");
 const function_1 = require("./function");
 const model = require("../../../model.json");
 const { database } = model.api;
-if (database && database === cloud_api_constants_1.DATABASE.auroraDb) {
-    templating_1.Generator.generateFromModel({ outputFile: `../../../../../lib/${cloud_api_constants_1.CONSTRUCTS.auroradb}/index.ts`, }, (output, model) => {
+if (database && database === constant_1.DATABASE.aurora) {
+    templating_1.Generator.generate({ outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
-        const { apiName, lambdaStyle, database } = model.api;
+        const { apiName } = model.api;
         const cdk = new Cdk_1.Cdk(output);
         const ec2 = new Ec2_1.Ec2(output);
         const aurora = new AuroraServerless_1.AuroraServerless(output);
         const iam = new Iam_1.Iam(output);
+        const imp = new ConstructsImports_1.Imports(output);
         const auroradbProperties = function_1.auroradbPropertiesHandler();
-        cdk.importsForStack(output);
-        iam.importIam(output);
+        imp.importsForStack(output);
+        imp.importIam(output);
         ts.writeImports("aws-cdk-lib", ["Duration"]);
-        aurora.importRds(output);
-        ec2.importEc2(output);
+        imp.importRds(output);
+        imp.importEc2(output);
         ts.writeLine();
-        cdk.initializeConstruct(cloud_api_constants_1.CONSTRUCTS.auroradb, undefined, () => {
+        cdk.initializeConstruct(constant_1.CONSTRUCTS.auroradb, undefined, () => {
             ec2.initializeVpc(apiName, output);
             ts.writeLine();
             aurora.initializeAuroraCluster(apiName, `${apiName}_vpc`, output);

@@ -1,33 +1,36 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { PropertyDefinition, TypeScriptWriter } from "@yellicode/typescript";
-import { CONSTRUCTS, DATABASE, LAMBDA } from "../../../cloud-api-constants";
+import {APITYPE,CONSTRUCTS, DATABASE,LAMBDASTYLE,PATH} from "../../../constant";
 import { Cdk } from "../../../Constructs/Cdk";
+import { Imports } from "../../../Constructs/ConstructsImports";
 import { DynamoDB } from "../../../Constructs/DynamoDB";
+import { dynamodbAccessHandler } from "./functions";
 const model = require("../../../model.json");
 const { database } = model.api;
 
-if (database && database === DATABASE.dynamoDb) {
-  Generator.generateFromModel(
+if (database && database === DATABASE.dynamo) {
+  Generator.generate(
     {
-      outputFile: `../../../../../lib/${CONSTRUCTS.dynamodb}/index.ts`,
+      outputFile: `${PATH.construct}${CONSTRUCTS.dynamodb}/index.ts`,
     },
-    (output: TextWriter, model: any) => {
+    (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);
-      const {apiName} = model.api;
+      const { apiName } = model.api;
       const cdk = new Cdk(output);
+      const imp = new Imports(output)
       const dynamoDB = new DynamoDB(output);
-      cdk.importsForStack(output);
-      dynamoDB.importDynamodb(output);
+      imp.importsForStack(output);
+      imp.importDynamodb(output);
       ts.writeLine();
-      
+
       const properties: PropertyDefinition[] = [
         {
           name: "table",
           typeName: "dynamodb.Table",
           accessModifier: "public",
           isReadonly: true,
-        }
+        },
       ];
 
       cdk.initializeConstruct(
@@ -37,6 +40,7 @@ if (database && database === DATABASE.dynamoDb) {
           dynamoDB.initializeDynamodb(apiName, output);
           ts.writeLine();
           ts.writeLine(`this.table = ${apiName}_table`)
+          ts.writeLine();
         },
         output,
         undefined,
