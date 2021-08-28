@@ -23,7 +23,7 @@ if (apiType === constant_1.APITYPE.graphql) {
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern1');
         imp.importForAppsyncConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         testClass.initializeTest("Appsync Api Constructs Test", () => {

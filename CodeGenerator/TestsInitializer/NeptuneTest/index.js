@@ -11,15 +11,15 @@ const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.neptune) {
-    templating_1.Generator.generateFromModel({
-        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
+    templating_1.Generator.generate({
+        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-neptunedb.test.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const cdk = new Cdk_1.Cdk(output);
         const neptune = new Neptune_1.Neptune(output);
         const imp = new ConstructsImports_1.Imports(output);
         const { apiName } = model.api;
-        imp.ImportsForTest2(output, USER_WORKING_DIRECTORY);
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForNeptuneConstruct(output);
         ts.writeLine();
         cdk.initializeTest2('Neptune Construct Tests', () => {
