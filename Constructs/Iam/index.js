@@ -218,5 +218,8 @@ class Iam extends core_1.CodeWriter {
       return elem instanceof cdk.aws_secretsmanager.SecretTargetAttachment;
     });`);
     }
+    constructorIdentifier(constructor) {
+        `const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`;
+    }
 }
 exports.Iam = Iam;
