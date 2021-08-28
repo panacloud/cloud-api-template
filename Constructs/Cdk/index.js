@@ -83,43 +83,6 @@ class Cdk extends core_1.CodeWriter {
     tagAdd(source, name, value) {
         this.writeLine(`Tags.of(${source}).add("${name}", "${value}");`);
     }
-    // public initializeTest(
-    //   description: string,
-    //   contents: any,
-    //   output: TextWriter,
-    //   workingDir: string
-    // ) {
-    //   const ts = new TypeScriptWriter(output);
-    //   ts.writeLineIndented(`test("${description}", () => {`);
-    //   ts.writeLine(`const app = new cdk.App()`);
-    //   ts.writeLine(
-    //     `const stack = new ${workingDir}.${_.upperFirst(
-    //       _.camelCase(workingDir)
-    //     )}Stack(app, "MyTestStack");`
-    //   );
-    //   ts.writeLine(
-    //     `const actual = app.synth().getStackArtifact(stack.artifactId).template;`
-    //   );
-    //   ts.writeLine();
-    //   contents();
-    //   ts.writeLineIndented(`})`);
-    // }
-    // public initializeTest2(
-    //   description: string,
-    //   contents: any,
-    //   output: TextWriter,
-    //   constructor: string
-    // ) {
-    //   const ts = new TypeScriptWriter(output);
-    //   ts.writeLineIndented(`test("${description}", () => {`);
-    //   ts.writeLine(`const stack = new cdk.Stack();`);
-    //   ts.writeLine(
-    //     `const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`
-    //   );
-    //   ts.writeLine();
-    //   contents();
-    //   ts.writeLineIndented(`})`);
-    // }
     initializeTest(description, contents, output, workingDir, pattern) {
         const ts = new typescript_1.TypeScriptWriter(output);
         if (pattern === "pattern_v1") {
