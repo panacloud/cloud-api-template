@@ -133,19 +133,19 @@ Generator.generate(
           imp.importForAuroraDbConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
-          cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
-            //     ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
-            //     ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`)
-            //     ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`)
-            //     ts.writeLine(`serviceRole: AuroraDbConstruct_stack.serviceRole,`)
-            //     ts.writeLine(`});`)
-            //     ts.writeLine()
-            //     iam.serverlessClusterIdentifier()
-            //     ts.writeLine()
-            //     iam.secretIdentifier()
-            //     ts.writeLine()
-            //     iam.secretAttachment()
-            //     ts.writeLine()
+          cdk.initializeTest2("Lambda Attach With AuroraDB Constructs Test", () => {
+                ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
+                ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`)
+                ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`)
+                ts.writeLine(`serviceRole: AuroraDbConstruct_stack.serviceRole,`)
+                ts.writeLine(`});`)
+                ts.writeLine()
+                iam.serverlessClusterIdentifier()
+                ts.writeLine()
+                iam.secretIdentifier()
+                ts.writeLine()
+                iam.secretAttachment()
+                ts.writeLine()
             if (apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType === APITYPE.graphql)) {
               let funcName = `${apiName}Lambda`;
               lambda.initializeTestForLambdaWithAuroradb(funcName, 'main')

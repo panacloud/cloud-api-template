@@ -40,10 +40,12 @@
       "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/NeptuneTest/index.js"
+      "templateFile": "./CodeGenerator/TestsInitializer/NeptuneTest/index.js",
+      "modelFile": "model.json"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/AuroradbTest/index.js"
+      "templateFile": "./CodeGenerator/TestsInitializer/AuroradbTest/index.js",
+      "modelFile": "model.json"
     }
   ],
   "compileTypeScript": false

@@ -22,7 +22,7 @@ if (database && database === DATABASE.neptune) {
       const imp = new Imports(output)
       const { apiName } = model.api;
       imp.ImportsForTest2(output, USER_WORKING_DIRECTORY);
-      cdk.importForNeptuneConstruct(output)
+      imp.importForNeptuneConstruct(output)
       ts.writeLine();
       cdk.initializeTest2(
         'Neptune Construct Tests',
