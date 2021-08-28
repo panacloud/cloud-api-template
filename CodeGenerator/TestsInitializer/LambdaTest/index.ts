@@ -86,7 +86,8 @@ Generator.generate(
             ts.writeLine();
           },
           output,
-          USER_WORKING_DIRECTORY
+          USER_WORKING_DIRECTORY,
+          'pattern1'
         ); 
       }
        else if (database === DATABASE.neptune) {
@@ -100,8 +101,9 @@ Generator.generate(
       //     cdk.importForLambdaConstruct(output)
       //     cdk.importForNeptuneConstruct(output)
       //     ts.writeLine();
-          cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
+          cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
             ts.writeLine();
+            iam.constructorIdentifier(CONSTRUCTS.neptuneDb)
             ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`)
             ts.writeLine()
             ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
@@ -127,13 +129,16 @@ Generator.generate(
               }
           }, 
           output, 
-          CONSTRUCTS.neptuneDb)
+          USER_WORKING_DIRECTORY,
+          'pattern2')
         } else if (database === DATABASE.aurora) {
           imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern2');
           imp.importForAuroraDbConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
-          cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
+          cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
+            ts.writeLine()
+            iam.constructorIdentifier(CONSTRUCTS.auroradb)
                 ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`)
                 ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`)
                 ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`)
@@ -156,7 +161,9 @@ Generator.generate(
                 ts.writeLine()                 
               })
             }
-          }, output, CONSTRUCTS.auroradb)          
+          }, output, 
+          USER_WORKING_DIRECTORY,
+          'pattern2')          
         }
       // } else if (database && database === DATABASE.auroraDb) {
       //   testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY)

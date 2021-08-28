@@ -28,7 +28,8 @@ if (model?.api?.database === DATABASE.dynamo) {
           dynodb.initializeTestForDynamodb(model?.api?.apiName);
         },
         output,
-        USER_WORKING_DIRECTORY
+        USER_WORKING_DIRECTORY,
+        'pattern1'
       );
     }
   );

@@ -130,11 +130,4 @@ public importForAuroraDbConstructInTest(output: TextWriter) {
       ts.writeLine(`import "@aws-cdk/assert/jest"`);
     }
   }
-
-  // public ImportsForTest2(output: TextWriter, workingDir: string) {
-  //   const ts = new TypeScriptWriter(output);
-  //   ts.writeImports('aws-cdk-lib', 'cdk');
-  //   ts.writeLine(`import "@aws-cdk/assert/jest"`);
-  // }
-
 }

@@ -251,4 +251,8 @@ export class Iam extends CodeWriter {
       return elem instanceof cdk.aws_secretsmanager.SecretTargetAttachment;
     });`);
   }
+
+  public constructorIdentifier(constructor: string) {
+    `const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");` 
+  }
 }
