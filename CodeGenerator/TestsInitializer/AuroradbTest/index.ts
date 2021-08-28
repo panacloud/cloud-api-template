@@ -12,7 +12,7 @@ const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 
 if (database && database === DATABASE.aurora) {
-  Generator.generateFromModel({
+  Generator.generate({
     outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
   }, (output: TextWriter) => {
     const ts = new TypeScriptWriter(output);
@@ -26,6 +26,7 @@ if (database && database === DATABASE.aurora) {
     ts.writeLine()
     cdk.initializeTest2("Auroradb Construct Tests", () => {
         ts.writeLine()
+        iam.constructorIdentifier(CONSTRUCTS.auroradb)
         ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`)
         auroradb.route_tableIdentifier('public')
         ts.writeLine()
