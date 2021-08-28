@@ -26,7 +26,7 @@ if (apiType === APITYPE.graphql) {
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};
       const mutationsAndQueries = { ...mutations, ...queries };
-      imp.ImportsForTest(output, USER_WORKING_DIRECTORY);
+      imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern1');
       imp.importForAppsyncConstructInTest(output)
       imp.importForLambdaConstructInTest(output)
       testClass.initializeTest(
