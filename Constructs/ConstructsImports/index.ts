@@ -66,6 +66,10 @@ export class Imports extends CodeWriter {
     ts.writeImports(`./${CONSTRUCTS.apigateway}`, [CONSTRUCTS.apigateway]);
   }
 
+  public importAxios(){
+    this.writeLine(`const axios = require('axios)`)
+  }
+
   public importForDynamodbConstruct(output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     ts.writeImports(`./${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
