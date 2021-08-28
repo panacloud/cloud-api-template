@@ -68,14 +68,16 @@ templating_1.Generator.generate({
                 iam.lambdaServiceRolePolicyTestForDynodb(1);
             }
             ts.writeLine();
-        }, output, USER_WORKING_DIRECTORY);
+        }, output, USER_WORKING_DIRECTORY, "patter_v1");
     }
     else if (database === constant_1.DATABASE.neptune) {
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForNeptuneConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
-        cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
+        cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
+            ts.writeLine();
+            iam.constructorIdentifier(constant_1.CONSTRUCTS.neptuneDb);
             ts.writeLine();
             (0, functions_1.lambdaWithNeptuneFunction)(output);
             ts.writeLine();
@@ -90,14 +92,17 @@ templating_1.Generator.generate({
                     ts.writeLine();
                 });
             }
-        }, output, constant_1.CONSTRUCTS.neptuneDb);
+        }, output, USER_WORKING_DIRECTORY, "pattern_v2");
     }
     else if (database === constant_1.DATABASE.aurora) {
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForAuroraDbConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
-        cdk.initializeTest2("Lambda Attach With Aurora Constructs Test", () => {
+        cdk.initializeTest("Lambda Attach With Aurora Constructs Test", () => {
+            ts.writeLine();
+            iam.constructorIdentifier(constant_1.CONSTRUCTS.auroradb);
+            ts.writeLine();
             (0, functions_1.lambdaWithAuroraFunction)(output);
             ts.writeLine();
             iam.serverlessClusterIdentifier();
@@ -117,6 +122,6 @@ templating_1.Generator.generate({
                     ts.writeLine();
                 });
             }
-        }, output, constant_1.CONSTRUCTS.auroradb);
+        }, output, USER_WORKING_DIRECTORY, "pattern_v2");
     }
 });
