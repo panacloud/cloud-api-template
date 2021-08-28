@@ -109,8 +109,7 @@ if (apiType === APITYPE.graphql) {
           }
         },
         output,
-        USER_WORKING_DIRECTORY,
-        'pattern1'
+        USER_WORKING_DIRECTORY
       );
     }
   );
