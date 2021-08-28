@@ -12,7 +12,7 @@ const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.aurora) {
-    templating_1.Generator.generateFromModel({
+    templating_1.Generator.generate({
         outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -26,6 +26,7 @@ if (database && database === constant_1.DATABASE.aurora) {
         ts.writeLine();
         cdk.initializeTest2("Auroradb Construct Tests", () => {
             ts.writeLine();
+            iam.constructorIdentifier(constant_1.CONSTRUCTS.auroradb);
             ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`);
             auroradb.route_tableIdentifier('public');
             ts.writeLine();
