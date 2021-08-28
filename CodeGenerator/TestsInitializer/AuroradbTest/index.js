@@ -11,8 +11,8 @@ const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.aurora) {
-    templating_1.Generator.generate({
-        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
+    templating_1.Generator.generateFromModel({
+        outputFile: `${constant_1.PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
     }, (output) => {
         const ts = new typescript_1.TypeScriptWriter(output);
         const cdk = new Cdk_1.Cdk(output);
@@ -23,9 +23,7 @@ if (database && database === constant_1.DATABASE.aurora) {
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         cdk.importForAuroradbConstruct(output);
         ts.writeLine();
-        cdk.initializeTest("Auroradb Construct Tests", () => {
-            ts.writeLine();
-            iam.constructorIdentifier(constant_1.CONSTRUCTS.auroradb);
+        cdk.initializeTest2("Auroradb Construct Tests", () => {
             ts.writeLine();
             ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`);
             auroradb.route_tableIdentifier('public');
@@ -107,6 +105,6 @@ if (database && database === constant_1.DATABASE.aurora) {
             auroradb.initializeTestForCountResources("AWS::EC2::EIP", 2);
             auroradb.initializeTestForCountResources("AWS::EC2::NatGateway", 2);
             auroradb.initializeTestForCountResources("AWS::RDS::DBSubnetGroup", 1);
-        }, output, USER_WORKING_DIRECTORY, 'pattern2');
+        }, output, constant_1.CONSTRUCTS.auroradb);
     });
 }
