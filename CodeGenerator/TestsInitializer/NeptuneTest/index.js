@@ -27,6 +27,7 @@ if (database && database === constant_1.DATABASE.neptune) {
         cdk.initializeTest('Neptune Construct Tests', () => {
             ts.writeLine();
             iam.constructorIdentifier(constant_1.CONSTRUCTS.neptuneDb);
+            ts.writeLine();
             ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
             ts.writeLine(`expect(constructs).toHaveLength(5);`);
             ts.writeLine();
