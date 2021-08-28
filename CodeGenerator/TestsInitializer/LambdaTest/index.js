@@ -72,7 +72,7 @@ templating_1.Generator.generate({
                 iam.lambdaServiceRolePolicyTestForDynodb(1);
             }
             ts.writeLine();
-        }, output, USER_WORKING_DIRECTORY, 'pattern1');
+        }, output, USER_WORKING_DIRECTORY);
     }
     else if (database === constant_1.DATABASE.neptune) {
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
@@ -84,9 +84,8 @@ templating_1.Generator.generate({
         //     cdk.importForLambdaConstruct(output)
         //     cdk.importForNeptuneConstruct(output)
         //     ts.writeLine();
-        cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
+        cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
             ts.writeLine();
-            iam.constructorIdentifier(constant_1.CONSTRUCTS.neptuneDb);
             ts.writeLine(`const isolated_subnets = VpcNeptuneConstruct_stack.VPCRef.isolatedSubnets;`);
             ts.writeLine();
             ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`);
@@ -110,16 +109,14 @@ templating_1.Generator.generate({
                     ts.writeLine();
                 });
             }
-        }, output, USER_WORKING_DIRECTORY, 'pattern2');
+        }, output, constant_1.CONSTRUCTS.neptuneDb);
     }
     else if (database === constant_1.DATABASE.aurora) {
         imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
         imp.importForAuroraDbConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
-        cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
-            ts.writeLine();
-            iam.constructorIdentifier(constant_1.CONSTRUCTS.auroradb);
+        cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
             ts.writeLine(`const LambdaConstruct_stack = new LambdaConstruct(stack, 'LambdaConstructTest', {`);
             ts.writeLine(`vpcRef: AuroraDbConstruct_stack.vpcRef,`);
             ts.writeLine(`secretRef: AuroraDbConstruct_stack.secretRef,`);
@@ -143,7 +140,7 @@ templating_1.Generator.generate({
                     ts.writeLine();
                 });
             }
-        }, output, USER_WORKING_DIRECTORY, 'pattern2');
+        }, output, constant_1.CONSTRUCTS.auroradb);
     }
     // } else if (database && database === DATABASE.auroraDb) {
     //   testClass.ImportsForTest2(output, USER_WORKING_DIRECTORY)
