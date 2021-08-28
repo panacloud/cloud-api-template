@@ -116,7 +116,7 @@ public importForAuroraDbConstructInTest(output: TextWriter) {
 
   public ImportsForTest(output: TextWriter,workingDir:string, pattern: string) {
     const ts = new TypeScriptWriter(output);
-    if(pattern === 'pattern1'){
+    if (pattern === 'pattern1') {
       ts.writeImports("aws-cdk-lib", "cdk");
       ts.writeImports("@aws-cdk/assert", [
         "countResources",
