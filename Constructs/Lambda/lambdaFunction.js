@@ -22,7 +22,7 @@ class LambdaFunction extends core_1.CodeWriter {
             }
             else if (lambdaStyle === constant_1.LAMBDASTYLE.single) {
                 ts.writeLine(`exports.handler = async (event:Event) => {`);
-                ts.writeLine(`const data = await axios.post(http://sandbox:8080, event)`);
+                ts.writeLine(`const data = await axios.post('http://sandbox:8080', event)`);
                 ts.writeLine();
                 ts.writeLine(`switch (event.info.fieldName) {`);
                 ts.writeLine();
@@ -35,7 +35,7 @@ class LambdaFunction extends core_1.CodeWriter {
         else {
             /* rest api */
             ts.writeLine(`exports.handler = async (event: any) => {`);
-            ts.writeLine(`const data = await axios.post(http://sandbox:8080, event)`);
+            ts.writeLine(`const data = await axios.post('http://sandbox:8080', event)`);
             ts.writeLine(`try {`);
             ts.writeLine();
             ts.writeLine("const method = event.httpMethod;");
