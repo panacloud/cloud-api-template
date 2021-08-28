@@ -13,7 +13,7 @@ const { database } = model.api;
 if (database && database === DATABASE.neptune) {
   Generator.generate(
     {
-      outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
+      outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-neptunedb.test.ts`,
     },
     (output: TextWriter) => {
       const ts = new TypeScriptWriter(output);

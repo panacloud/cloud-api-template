@@ -11,8 +11,8 @@ const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 
 if (database && database === DATABASE.aurora) {
-  Generator.generateFromModel({
-    outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-lambda.test.ts`,
+  Generator.generate({
+    outputFile: `${PATH.test}${USER_WORKING_DIRECTORY}-auroradb.test.ts`,
   }, (output: TextWriter) => {
     const ts = new TypeScriptWriter(output);
     const cdk = new Cdk(output);
@@ -20,7 +20,7 @@ if (database && database === DATABASE.aurora) {
     const auroradb = new AuroraServerless(output);
     const imp = new Imports(output)
     const { apiName } = model.api;
-    imp.ImportsForTest2(output, USER_WORKING_DIRECTORY)
+    imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2')
     cdk.importForAuroradbConstruct(output)
     ts.writeLine()
     cdk.initializeTest2("Auroradb Construct Tests", () => {
