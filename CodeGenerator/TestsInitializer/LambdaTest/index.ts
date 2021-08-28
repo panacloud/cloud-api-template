@@ -74,7 +74,8 @@ Generator.generate(
             ts.writeLine();
           },
           output,
-          USER_WORKING_DIRECTORY
+          USER_WORKING_DIRECTORY,
+          "patter_v1"
         ); 
       }
        else if (database === DATABASE.neptune) {
@@ -82,7 +83,9 @@ Generator.generate(
           imp.importForNeptuneConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
-          cdk.initializeTest2("Lambda Attach With NeptuneDB Constructs Test", () => {
+          cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
+            ts.writeLine()
+            iam.constructorIdentifier(CONSTRUCTS.neptuneDb)
             ts.writeLine();
             lambdaWithNeptuneFunction(output)
             ts.writeLine()
@@ -99,13 +102,17 @@ Generator.generate(
               }
           }, 
           output, 
-          CONSTRUCTS.neptuneDb)
+          USER_WORKING_DIRECTORY,
+          "pattern_v2")
         } else if (database === DATABASE.aurora) {
           imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern2');
           imp.importForAuroraDbConstructInTest(output)
           imp.importForLambdaConstructInTest(output)
           ts.writeLine();  
-          cdk.initializeTest2("Lambda Attach With Aurora Constructs Test", () => {
+          cdk.initializeTest("Lambda Attach With Aurora Constructs Test", () => {
+            ts.writeLine()
+            iam.constructorIdentifier(CONSTRUCTS.auroradb)
+              ts.writeLine()
               lambdaWithAuroraFunction(output)
                 ts.writeLine()
                 iam.serverlessClusterIdentifier()
@@ -124,7 +131,7 @@ Generator.generate(
                 ts.writeLine()                 
               })
             }
-          }, output, CONSTRUCTS.auroradb)          
+          }, output, USER_WORKING_DIRECTORY, "pattern_v2")          
         }
     }
   );

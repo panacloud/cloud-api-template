@@ -24,7 +24,7 @@ if (database && database === DATABASE.aurora) {
     imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2')
     cdk.importForAuroradbConstruct(output)
     ts.writeLine()
-    cdk.initializeTest3("Auroradb Construct Tests", () => {
+    cdk.initializeTest("Auroradb Construct Tests", () => {
         ts.writeLine()
         iam.constructorIdentifier(CONSTRUCTS.auroradb)
         ts.writeLine(`const public_subnets = AuroraDbConstruct_stack.vpcRef.publicSubnets;`)

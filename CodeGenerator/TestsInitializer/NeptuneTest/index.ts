@@ -6,6 +6,7 @@ import { Cdk } from '../../../Constructs/Cdk';
 import { CONSTRUCTS, DATABASE, PATH } from '../../../constant';
 import { Imports } from '../../../Constructs/ConstructsImports';
 import { isolatedFunction, subnetFunction } from './functions';
+import { Iam } from '../../../Constructs/Iam';
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
@@ -20,13 +21,16 @@ if (database && database === DATABASE.neptune) {
       const cdk = new Cdk(output);
       const neptune = new Neptune(output);
       const imp = new Imports(output)
+      const iam = new Iam(output)
       const { apiName } = model.api;
       imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
       imp.importForNeptuneConstructInTest(output)
       ts.writeLine();
-      cdk.initializeTest2(
+      cdk.initializeTest(
         'Neptune Construct Tests',
         () => {
+          ts.writeLine()
+          iam.constructorIdentifier(CONSTRUCTS.neptuneDb)
           ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
           ts.writeLine(`expect(constructs).toHaveLength(5);`);
           ts.writeLine()
@@ -66,7 +70,8 @@ if (database && database === DATABASE.neptune) {
           neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1)
         },
         output,
-        CONSTRUCTS.neptuneDb
+        USER_WORKING_DIRECTORY,
+        "pattern_v2"
       );
     }
   );
