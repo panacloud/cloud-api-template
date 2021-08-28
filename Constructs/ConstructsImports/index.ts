@@ -67,7 +67,7 @@ export class Imports extends CodeWriter {
   }
 
   public importAxios(){
-    this.writeLine(`const axios = require('axios)`)
+    this.writeLine(`var axios = require('axios')`)
   }
 
   public importForDynamodbConstruct(output: TextWriter) {

@@ -17,9 +17,9 @@ export class LambdaFunction extends CodeWriter {
         ts.writeLineIndented(`
       var AWS = require('aws-sdk');
       
-      exports.handler = async() => {
+      exports.handler = async(event:any) => {
         // write your code here
-        const data = await axios.post(http://sandbox:8080, event)
+        const data = await axios.post('http://sandbox:8080', event)
       }
       `);
       } else if (lambdaStyle === LAMBDASTYLE.single) {
