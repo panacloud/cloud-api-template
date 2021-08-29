@@ -18,7 +18,7 @@ if (model?.api?.database === DATABASE.dynamo) {
       const testClass = new Cdk(output);
       const dynodb = new DynamoDB(output);
       const imp = new Imports(output)
-      imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
+      imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern1');
       ts.writeLine();
 
       testClass.initializeTest(
@@ -28,7 +28,8 @@ if (model?.api?.database === DATABASE.dynamo) {
           dynodb.initializeTestForDynamodb(model?.api?.apiName);
         },
         output,
-        USER_WORKING_DIRECTORY
+        USER_WORKING_DIRECTORY,
+        "pattern_v1"
       );
     }
   );

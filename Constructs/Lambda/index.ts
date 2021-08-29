@@ -41,7 +41,8 @@ export class Lambda extends CodeWriter {
         name: lambdaVariable,
         typeName: "lambda.Function",
         initializer: () => {
-          ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
+          // ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
+          ts.writeLine(`new lambda.Function(this, "${funcName}", {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
         handler: "${handlerName}",
@@ -111,4 +112,56 @@ export class Lambda extends CodeWriter {
       })
     );`);
   }
+  
+public initializeTestForLambdaWithNeptune(funcName: string, handlerName: string) {
+  this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
+    FunctionName: '${funcName}',
+    Handler: '${handlerName}.handler',
+    Runtime: 'nodejs12.x',
+    Environment: {
+      Variables: {
+        NEPTUNE_ENDPOINT: {
+          'Fn::GetAtt': [
+            stack.getLogicalId(cfn_cluster[0] as cdk.CfnElement),
+            'ReadEndpoint',
+          ],
+        },
+      },
+    },
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          'Fn::GetAtt': [
+            stack.getLogicalId(VpcNeptuneConstruct_stack.SGRef.node.defaultChild as cdk.CfnElement),
+            'GroupId',
+          ],
+        },
+      ],
+      SubnetIds: [
+        {
+          Ref: stack.getLogicalId(isolated_subnets[0].node.defaultChild as cdk.CfnElement),
+        },
+        {
+          Ref: stack.getLogicalId(isolated_subnets[1].node.defaultChild as cdk.CfnElement),
+        },
+      ],
+    },
+  });
+`)
+}
+
+public initializeTestForLambdaWithAuroradb(funcName: string, handlerName: string) {
+  this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
+    FunctionName: '${funcName}',
+    Handler: '${handlerName}.handler',
+    Runtime: 'nodejs12.x',
+    Environment: {
+      Variables: {
+        INSTANCE_CREDENTIALS: {
+          Ref: stack.getLogicalId(secretAttachment[0].node.defaultChild as cdk.CfnElement),
+        },
+      },
+    },
+  });`)
+}
 }

@@ -1,8 +1,7 @@
-import { CodeWriter, TextWriter } from "@yellicode/core";
-import { TypeScriptWriter } from "@yellicode/typescript";
+import { CodeWriter, TextWriter } from '@yellicode/core';
+import { TypeScriptWriter } from '@yellicode/typescript';
 
 export class Iam extends CodeWriter {
-
   public serviceRoleForLambda(
     apiName: string,
     output: TextWriter,
@@ -15,12 +14,12 @@ export class Iam extends CodeWriter {
         (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`
       )}
     ],`
-      : " ";
+      : ' ';
 
     ts.writeVariableDeclaration(
       {
         name: `${apiName}Lambda_serviceRole`,
-        typeName: "iam.Role",
+        typeName: 'iam.Role',
         initializer: () => {
           ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
                 assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -28,7 +27,7 @@ export class Iam extends CodeWriter {
           });`);
         },
       },
-      "const"
+      'const'
     );
   }
 
@@ -37,14 +36,14 @@ export class Iam extends CodeWriter {
     ts.writeVariableDeclaration(
       {
         name: `${apiName}_serviceRole`,
-        typeName: "iam.Role",
+        typeName: 'iam.Role',
         initializer: () => {
           ts.writeLine(`new iam.Role(this,'appsyncServiceRole',{
                 assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
                });`);
         },
       },
-      "const"
+      'const'
     );
   }
 
@@ -209,5 +208,51 @@ export class Iam extends CodeWriter {
       .writeLine(`const db_table = dbConstruct[0].node.children.filter((elem) => {
       return elem instanceof cdk.aws_dynamodb.Table;
     });`);
+  }
+
+  public natgatewayIdentifier(natGatewayNum: string, subnetNum: number) {
+    this
+      .writeLine(`const natGateway${natGatewayNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnNatGateway;
+    });`);
+  }
+
+  public eipIdentifier(epiNum: string, subnetNum: number) {
+    this
+      .writeLine(`const eip${epiNum} = public_subnets[${subnetNum}].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnEIP;
+    });`);
+  }
+
+  public internetGatewayIdentifier() {
+    this
+      .writeLine(`const internetGateway = AuroraDbConstruct_stack.vpcRef.node.children.filter((elem) => {
+      return elem instanceof cdk.aws_ec2.CfnInternetGateway;
+    });`);
+  }
+
+  public serverlessClusterIdentifier() {
+    this
+      .writeLine(`const ServerlessCluster = AuroraDbConstruct_stack.node.children.filter((elem) => {
+      return elem instanceof cdk.aws_rds.ServerlessCluster;
+    }); `);
+  }
+
+  public secretIdentifier() {
+    this
+      .writeLine(`const secret = ServerlessCluster[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_secretsmanager.Secret;
+    });`);
+  }
+
+  public secretAttachment() {
+    this
+      .writeLine(`const secretAttachment = secret[0].node.children.filter((elem) => {
+      return elem instanceof cdk.aws_secretsmanager.SecretTargetAttachment;
+    });`);
+  }
+
+  public constructorIdentifier(constructor: string) {
+    this.writeLine(`const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`)
   }
 }
