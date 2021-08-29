@@ -49,7 +49,7 @@ export const lambdaHandlerForAuroradb = (
 ) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
-
+  lambda.lambdaLayer(output,apiName)
   if (
     (apiType === APITYPE.graphql && lambdaStyle === LAMBDASTYLE.single) ||
     apiType === APITYPE.rest
@@ -120,6 +120,7 @@ export const lambdaHandlerForNeptunedb = (
 ) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
+  lambda.lambdaLayer(output,apiName)
   if (
     (apiType === APITYPE.graphql && lambdaStyle === LAMBDASTYLE.single) ||
     apiType === APITYPE.rest
@@ -314,6 +315,7 @@ export const lambdaProperiesHandlerForDynoDb = (lambdaStyle:string,apiName:strin
 export const lambdaHandlerForDynamodb = (output: TextWriter,apiName:string,apiType:string,lambdaStyle:string,database:DATABASE,mutationsAndQueries?:any) => {
   const lambda = new Lambda(output);
   const ts = new TypeScriptWriter(output);
+  lambda.lambdaLayer(output,apiName)
   if (
     (apiType === APITYPE.graphql && lambdaStyle === LAMBDASTYLE.single) ||
     apiType === APITYPE.rest

@@ -34,10 +34,16 @@
       "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js"
     },
     {
+      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.js"
+    },
+    {
       "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.js"
+      "templateFile": "./CodeGenerator/TestsInitializer/NeptuneTest/index.js"
+    },
+    {
+      "templateFile": "./CodeGenerator/TestsInitializer/AuroradbTest/index.js"
     }
   ],
   "compileTypeScript": false

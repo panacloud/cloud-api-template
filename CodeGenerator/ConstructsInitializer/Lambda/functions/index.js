@@ -39,6 +39,7 @@ exports.lambdaPropsHandlerForAuroradb = lambdaPropsHandlerForAuroradb;
 const lambdaHandlerForAuroradb = (output, lambdaStyle, database, apiType, apiName, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
+    lambda.lambdaLayer(output, apiName);
     if ((apiType === constant_1.APITYPE.graphql && lambdaStyle === constant_1.LAMBDASTYLE.single) ||
         apiType === constant_1.APITYPE.rest) {
         if (database === constant_1.DATABASE.aurora) {
@@ -78,6 +79,7 @@ exports.lambdaHandlerForAuroradb = lambdaHandlerForAuroradb;
 const lambdaHandlerForNeptunedb = (output, lambdaStyle, database, apiType, apiName, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
+    lambda.lambdaLayer(output, apiName);
     if ((apiType === constant_1.APITYPE.graphql && lambdaStyle === constant_1.LAMBDASTYLE.single) ||
         apiType === constant_1.APITYPE.rest) {
         if (database === constant_1.DATABASE.neptune) {
@@ -240,6 +242,7 @@ exports.lambdaProperiesHandlerForDynoDb = lambdaProperiesHandlerForDynoDb;
 const lambdaHandlerForDynamodb = (output, apiName, apiType, lambdaStyle, database, mutationsAndQueries) => {
     const lambda = new Lambda_1.Lambda(output);
     const ts = new typescript_1.TypeScriptWriter(output);
+    lambda.lambdaLayer(output, apiName);
     if ((apiType === constant_1.APITYPE.graphql && lambdaStyle === constant_1.LAMBDASTYLE.single) ||
         apiType === constant_1.APITYPE.rest) {
         if (database === constant_1.DATABASE.dynamo) {

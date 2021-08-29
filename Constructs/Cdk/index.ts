@@ -1,23 +1,52 @@
-import { CodeWriter, TextWriter } from "@yellicode/core";
+import { CodeWriter, TextWriter } from '@yellicode/core';
 import {
   ClassDefinition,
   PropertyDefinition,
   TypeScriptWriter,
-} from "@yellicode/typescript";
-import { CONSTRUCTS } from "../../util/constant";
-const _ = require("lodash");
+} from '@yellicode/typescript';
+import { CONSTRUCTS } from '../../constant';
+const _ = require('lodash');
 
 interface consturctProps {
   name: string;
   type: string;
 }
 export class Cdk extends CodeWriter {
+  public importsForStack(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports('aws-cdk-lib', ['Stack', 'StackProps']);
+    ts.writeImports('constructs', ['Construct']);
+  }
+  public importForAppsyncConstruct(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports(`../lib/${CONSTRUCTS.appsync}`, [CONSTRUCTS.appsync]);
+  }
+
+  public importForDynamodbConstruct(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports(`../lib/${CONSTRUCTS.dynamodb}`, [CONSTRUCTS.dynamodb]);
+  }
+
+  public importForLambdaConstruct(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports(`../lib/${CONSTRUCTS.lambda}`, [CONSTRUCTS.lambda]);
+  }
+
+  public importForNeptuneConstruct(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports(`../lib/${CONSTRUCTS.neptuneDb}`, [CONSTRUCTS.neptuneDb]);
+  }
+
+  public importForAuroradbConstruct(output: TextWriter) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeImports(`../lib/${CONSTRUCTS.auroradb}`, [CONSTRUCTS.auroradb]);
+  }
 
   public initializeStack(name: string, contents: any, output: TextWriter) {
     const ts = new TypeScriptWriter(output);
     const classDefinition: ClassDefinition = {
       name: `${_.upperFirst(_.camelCase(name))}Stack`,
-      extends: ["Stack"],
+      extends: ['Stack'],
       export: true,
     };
     ts.writeClassBlock(classDefinition, () => {
@@ -32,7 +61,7 @@ export class Cdk extends CodeWriter {
 
   public initializeConstruct(
     constructName: string,
-    propsName: string = "StackProps",
+    propsName: string = 'StackProps',
     contents: any,
     output: TextWriter,
     constructProps?: consturctProps[],
@@ -55,7 +84,7 @@ export class Cdk extends CodeWriter {
     }
     const classDefinition: ClassDefinition = {
       name: `${_.upperFirst(_.camelCase(constructName))}`,
-      extends: ["Construct"],
+      extends: ['Construct'],
       export: true,
     };
 
@@ -63,7 +92,7 @@ export class Cdk extends CodeWriter {
       properties?.forEach(({ accessModifier, isReadonly, name, typeName }) => {
         ts.writeLineIndented(
           `${accessModifier}${
-            isReadonly ? ` readonly ` : ""
+            isReadonly ? ` readonly ` : ''
           } ${name} : ${typeName}`
         );
       });
@@ -83,27 +112,35 @@ export class Cdk extends CodeWriter {
   public tagAdd(source: string, name: string, value: string) {
     this.writeLine(`Tags.of(${source}).add("${name}", "${value}");`);
   }
-
+  
   public initializeTest(
     description: string,
     contents: any,
     output: TextWriter,
-    workingDir: string
+    workingDir: string,
+    pattern: string
   ) {
     const ts = new TypeScriptWriter(output);
+    if(pattern === "pattern_v1"){
+      ts.writeLineIndented(`test("${description}", () => {`);
+      ts.writeLine(`const app = new cdk.App()`);
+      ts.writeLine(
+        `const stack = new ${workingDir}.${_.upperFirst(
+          _.camelCase(workingDir)
+        )}Stack(app, "MyTestStack");`
+      );
+      ts.writeLine(
+        `const actual = app.synth().getStackArtifact(stack.artifactId).template;`
+      );
+      ts.writeLine();
+      contents();
+      ts.writeLineIndented(`})`);
+    } else if(pattern === "pattern_v2"){
     ts.writeLineIndented(`test("${description}", () => {`);
-    ts.writeLine(`const app = new cdk.App()`);
-    ts.writeLine(
-      `const stack = new ${workingDir}.${_.upperFirst(
-        _.camelCase(workingDir)
-      )}Stack(app, "MyTestStack");`
-    );
-    ts.writeLine(
-      `const actual = app.synth().getStackArtifact(stack.artifactId).template;`
-    );
+    ts.writeLine(`const stack = new cdk.Stack();`);
     ts.writeLine();
     contents();
     ts.writeLineIndented(`})`);
   }
-
+  }
 }

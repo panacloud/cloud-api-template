@@ -4,8 +4,9 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Lambda } from "../../../Constructs/Lambda";
-import { APITYPE, DATABASE, LAMBDASTYLE, PATH } from "../../../util/constant";
+import { APITYPE, DATABASE, LAMBDASTYLE, PATH, CONSTRUCTS } from "../../../constant";
 import { Imports } from "../../../Constructs/ConstructsImports";
+import { lambdaWithAuroraFunction, lambdaWithNeptuneFunction } from "./functions";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
@@ -18,8 +19,8 @@ Generator.generate(
       const cdk = new Cdk(output);
       const iam = new Iam(output);
       const lambda = new Lambda(output);
+      const { apiName, lambdaStyle, database, apiType } = model.api;
       const imp = new Imports(output)
-      const { apiName, lambdaStyle,database ,apiType} = model.api;
       let mutations = {};
       let queries = {};
       if (apiType === APITYPE.graphql) {
@@ -27,56 +28,109 @@ Generator.generate(
         queries = model.type.Query ? model.type.Query : {};
       }
       const mutationsAndQueries = { ...mutations, ...queries };      
-      imp.ImportsForTest(output,USER_WORKING_DIRECTORY);
-      if(database === DATABASE.dynamo){
-        imp.importForDynamodbConstructInTest(output)
-        ts.writeLine();  
-      }
-      cdk.initializeTest(
-        "Lambda Attach With Dynamodb Constructs Test",
-        () => {
-          ts.writeLine();
-          if(database === DATABASE.dynamo){
-            if(apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType ===APITYPE.graphql)){
-              let funcName = `${apiName}Lambda`;
-              iam.dynamodbConsturctIdentifier()
-              ts.writeLine();
-              iam.DynodbTableIdentifier();
-              ts.writeLine();  
-              lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
-              ts.writeLine();
-            }else if (lambdaStyle === LAMBDASTYLE.multi) {
+        if(database === DATABASE.dynamo){
+          imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern1');
+          imp.importForDynamodbConstructInTest(output)
+          ts.writeLine();  
+        cdk.initializeTest(
+          "Lambda Attach With Dynamodb Constructs Test",
+          () => {
+            ts.writeLine();
+            if(database === DATABASE.dynamo){
+              if (apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType ===APITYPE.graphql)) {
+                let funcName = `${apiName}Lambda`;
                 iam.dynamodbConsturctIdentifier()
                 ts.writeLine();
                 iam.DynodbTableIdentifier();
                 ts.writeLine();  
+                lambda.initializeTestForLambdaWithDynamoDB(funcName, "main");
+                ts.writeLine();
+              } else if (lambdaStyle === LAMBDASTYLE.multi) {
+                  iam.dynamodbConsturctIdentifier()
+                  ts.writeLine();
+                  iam.DynodbTableIdentifier();
+                  ts.writeLine();  
+                  Object.keys(mutationsAndQueries).forEach((key) => {
+                    let funcName = `${apiName}Lambda${key}`;
+                    lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
+                    ts.writeLine();
+                  });
+              }
+            }
+            iam.lambdaServiceRoleTest();
+            ts.writeLine();
+            if(apiType === APITYPE.graphql){
+              if (lambdaStyle === LAMBDASTYLE.single && database === DATABASE.dynamo) {
+                iam.lambdaServiceRolePolicyTestForDynodb(1);
+              } else if (lambdaStyle === LAMBDASTYLE.multi && database === DATABASE.dynamo) {
+                iam.lambdaServiceRolePolicyTestForDynodb(
+                  Object.keys(mutationsAndQueries).length
+                );
+              }  
+            } else if(apiType===APITYPE.rest && database === DATABASE.dynamo){
+              iam.lambdaServiceRolePolicyTestForDynodb(1);
+            }
+            ts.writeLine();
+          },
+          output,
+          USER_WORKING_DIRECTORY,
+          "pattern_v1"
+        ); 
+      }
+       else if (database === DATABASE.neptune) {
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
+          imp.importForNeptuneConstructInTest(output)
+          imp.importForLambdaConstructInTest(output)
+          ts.writeLine();  
+          cdk.initializeTest("Lambda Attach With NeptuneDB Constructs Test", () => {
+            ts.writeLine()
+            iam.constructorIdentifier(CONSTRUCTS.neptuneDb)
+            ts.writeLine();
+            lambdaWithNeptuneFunction(output)
+            ts.writeLine()
+            if (apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType === APITYPE.graphql)) {
+                let funcName = `${apiName}Lambda`;
+                lambda.initializeTestForLambdaWithNeptune(funcName, 'main')
+              } else if (lambdaStyle === LAMBDASTYLE.multi) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
                   let funcName = `${apiName}Lambda${key}`;
-                  lambda.initializeTestForLambdaWithDynamoDB(funcName, key);
-                  ts.writeLine();
-                });
-            }
-          }
-          
-          iam.lambdaServiceRoleTest();
-          ts.writeLine();
+                  lambda.initializeTestForLambdaWithNeptune(funcName, key)
+                  ts.writeLine()                 
+                })
 
-          if(apiType === APITYPE.graphql){
-            if (lambdaStyle === LAMBDASTYLE.single && database === DATABASE.dynamo) {
-              iam.lambdaServiceRolePolicyTestForDynodb(1);
-            } else if (lambdaStyle === LAMBDASTYLE.multi && database === DATABASE.dynamo) {
-              iam.lambdaServiceRolePolicyTestForDynodb(
-                Object.keys(mutationsAndQueries).length
-              );
-            }  
-          } else if(apiType===APITYPE.rest && database === DATABASE.dynamo){
-            iam.lambdaServiceRolePolicyTestForDynodb(1);
-          }
-          ts.writeLine();
-        },
-        output,
-        USER_WORKING_DIRECTORY
-      );
+              }
+          }, 
+          output, 
+          USER_WORKING_DIRECTORY,
+          "pattern_v2")
+        } else if (database === DATABASE.aurora) {
+          imp.ImportsForTest(output,USER_WORKING_DIRECTORY, 'pattern2');
+          imp.importForAuroraDbConstructInTest(output)
+          imp.importForLambdaConstructInTest(output)
+          ts.writeLine();  
+          cdk.initializeTest("Lambda Attach With Aurora Constructs Test", () => {
+            ts.writeLine()
+            iam.constructorIdentifier(CONSTRUCTS.auroradb)
+              ts.writeLine()
+              lambdaWithAuroraFunction(output)
+                ts.writeLine()
+                iam.serverlessClusterIdentifier()
+                ts.writeLine()
+                iam.secretIdentifier()
+                ts.writeLine()
+                iam.secretAttachment()
+                ts.writeLine()
+            if (apiType === APITYPE.rest || (lambdaStyle === LAMBDASTYLE.single && apiType === APITYPE.graphql)) {
+              let funcName = `${apiName}Lambda`;
+              lambda.initializeTestForLambdaWithAuroradb(funcName, 'main')
+            } else if (lambdaStyle === LAMBDASTYLE.multi) {
+              Object.keys(mutationsAndQueries).forEach((key) => {
+                let funcName = `${apiName}Lambda${key}`;
+                lambda.initializeTestForLambdaWithAuroradb(funcName, key)
+                ts.writeLine()                 
+              })
+            }
+          }, output, USER_WORKING_DIRECTORY, "pattern_v2")          
+        }
     }
   );
-
