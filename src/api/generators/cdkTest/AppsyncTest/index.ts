@@ -4,7 +4,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { Appsync } from "../../../Constructs/Appsync";
 import { Iam } from "../../../Constructs/Iam";
 import { Cdk } from "../../../Constructs/Cdk";
-import { PATH, LAMBDASTYLE, APITYPE } from "../../../util/constant";
+import { PATH, LAMBDASTYLE, APITYPE } from "../../../utils/constant";
 import { Imports } from "../../../Constructs/ConstructsImports";
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;

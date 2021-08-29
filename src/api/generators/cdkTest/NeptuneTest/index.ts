@@ -1,7 +1,7 @@
 import { TextWriter } from '@yellicode/core';
 import { Generator } from '@yellicode/templating';
 import { TypeScriptWriter } from '@yellicode/typescript';
-import { Neptune } from '../../../Constructs/Neptune';
+import { Neptune } from '../../../lib/Neptune';
 import { Cdk } from '../../../Constructs/Cdk';
 import { CONSTRUCTS, DATABASE, PATH } from '../../../constant';
 import { Imports } from '../../../Constructs/ConstructsImports';

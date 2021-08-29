@@ -5,7 +5,7 @@ import { CONSTRUCTS, DATABASE, PATH } from "../../../util/constant";
 import { Cdk } from "../../../Constructs/Cdk";
 import { Imports } from "../../../Constructs/ConstructsImports";
 import { Ec2 } from "../../../Constructs/Ec2";
-import { Neptune } from "../../../Constructs/Neptune";
+import { Neptune } from "../../../src/api/lib/Neptune";
 import { neptunePropertiesInitializer } from "./functions";
 const model = require("../../../model.json");
 const { database } = model.api;
