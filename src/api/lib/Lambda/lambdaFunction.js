@@ -4,7 +4,7 @@ exports.LambdaFunction = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../utils/constant");
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const { apiType } = model.api;
 class LambdaFunction extends core_1.CodeWriter {
     initializeLambdaFunction(output, lambdaStyle, content) {
