@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
-const constant_1 = require("../../../util/constant");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
+const constant_1 = require("../../../utils/constant");
+const Cdk_1 = require("../../../lib/Cdk");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
 templating_1.Generator.generate({

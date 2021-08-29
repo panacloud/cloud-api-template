@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
-const constant_1 = require("../../constant");
-const ConstructsImports_1 = require("../../Constructs/ConstructsImports");
+const lambdaFunction_1 = require("../../lib/Lambda/lambdaFunction");
+const constant_1 = require("../../utils/constant");
+const ConstructsImports_1 = require("../../lib/ConstructsImports");
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require("../../model.json");
 const _ = require("lodash");
@@ -16,10 +16,10 @@ if (apiType === constant_1.APITYPE.graphql) {
             const lambda = new lambdaFunction_1.LambdaFunction(output);
             const imp = new ConstructsImports_1.Imports(output);
             for (var key in model.type.Query) {
-                lambda.importIndividualFunction(output, key, `./${key}`);
+                imp.importIndividualLambdaFunction(output, key, `./${key}`);
             }
             for (var key in model.type.Mutation) {
-                lambda.importIndividualFunction(output, key, `./${key}`);
+                imp.importIndividualLambdaFunction(output, key, `./${key}`);
             }
             imp.importAxios();
             ts.writeLine();
@@ -84,7 +84,7 @@ else {
                 Object.keys(api.paths).forEach((path) => {
                     for (var methodName in api.paths[`${path}`]) {
                         let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`];
-                        lambda.importIndividualFunction(output, lambdaFunctionFile, `./${lambdaFunctionFile}`);
+                        imp.importIndividualLambdaFunction(output, lambdaFunctionFile, `./${lambdaFunctionFile}`);
                     }
                 });
                 ts.writeLine();

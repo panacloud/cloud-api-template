@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../util/constant");
-const ApiGateway_1 = require("../../../Constructs/ApiGateway");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
+const constant_1 = require("../../../utils/constant");
+const ApiGateway_1 = require("../../../lib/ApiGateway");
+const Cdk_1 = require("../../../lib/Cdk");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const model = require("../../../model.json");
 const { apiName, apiType } = model.api;
 if (apiType === constant_1.APITYPE.rest) {

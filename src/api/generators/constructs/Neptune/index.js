@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../util/constant");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
-const Ec2_1 = require("../../../Constructs/Ec2");
-const Neptune_1 = require("../../../Constructs/Neptune");
+const constant_1 = require("../../../utils/constant");
+const Cdk_1 = require("../../../lib/Cdk");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
+const Ec2_1 = require("../../../lib/Ec2");
+const Neptune_1 = require("../../../lib/Neptune");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
 const { database } = model.api;

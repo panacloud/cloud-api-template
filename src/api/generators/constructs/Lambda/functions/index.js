@@ -2,20 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lambdaHandlerForDynamodb = exports.lambdaProperiesHandlerForDynoDb = exports.lambdaProperiesHandlerForNeptuneDb = exports.lambdaProperiesHandlerForAuroraDb = exports.lambdaHandlerForNeptunedb = exports.lambdaHandlerForAuroradb = exports.lambdaPropsHandlerForAuroradb = exports.lambdaPropsHandlerForNeptunedb = void 0;
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../../util/constant");
-const Lambda_1 = require("../../../../Constructs/Lambda");
+const constant_1 = require("../../../../utils/constant");
+const Lambda_1 = require("../../../../lib/Lambda");
 const lambdaPropsHandlerForNeptunedb = () => {
     let props;
-    return props = [{
+    return (props = [
+        {
             name: "VPCRef",
-            type: "ec2.Vpc"
-        }, {
+            type: "ec2.Vpc",
+        },
+        {
             name: "SGRef",
-            type: "ec2.SecurityGroup"
-        }, {
+            type: "ec2.SecurityGroup",
+        },
+        {
             name: "neptuneReaderEndpoint",
-            type: "string"
-        }];
+            type: "string",
+        },
+    ]);
 };
 exports.lambdaPropsHandlerForNeptunedb = lambdaPropsHandlerForNeptunedb;
 const lambdaPropsHandlerForAuroradb = () => {

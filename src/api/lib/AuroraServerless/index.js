@@ -90,7 +90,8 @@ class AuroraServerless extends core_1.CodeWriter {
   `);
     }
     initializeTestForSubnetRouteTableAssociation(routeTableState, routeTableNum, routeTable, routeTableId, subnet, subnetState) {
-        this.writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
+        this
+            .writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
       RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].${routeTable}${routeTableId}),
       SubnetId: {
         Ref: stack.getLogicalId(
@@ -188,7 +189,8 @@ class AuroraServerless extends core_1.CodeWriter {
     });`);
     }
     initializeTestForVPCGatewayAttachment() {
-        this.writeLine(`expect(stack).toHaveResource('AWS::EC2::VPCGatewayAttachment', {
+        this
+            .writeLine(`expect(stack).toHaveResource('AWS::EC2::VPCGatewayAttachment', {
       VpcId: {
         Ref: stack.getLogicalId(AuroraDbConstruct_stack.vpcRef.node.defaultChild as cdk.CfnElement),
       },

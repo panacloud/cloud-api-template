@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Imports = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../util/constant");
+const constant_1 = require("../../utils/constant");
 class Imports extends core_1.CodeWriter {
     importsForStack(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -54,6 +54,10 @@ class Imports extends core_1.CodeWriter {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeImports(`./${constant_1.CONSTRUCTS.apigateway}`, [constant_1.CONSTRUCTS.apigateway]);
     }
+    importIndividualLambdaFunction(output, name, path) {
+        const ts = new typescript_1.TypeScriptWriter(output);
+        ts.writeImports(`./${path}`, [name]);
+    }
     importAxios() {
         this.writeLine(`var axios = require('axios')`);
     }
@@ -95,7 +99,7 @@ class Imports extends core_1.CodeWriter {
     }
     ImportsForTest(output, workingDir, pattern) {
         const ts = new typescript_1.TypeScriptWriter(output);
-        if (pattern === 'pattern1') {
+        if (pattern === "pattern1") {
             ts.writeImports("aws-cdk-lib", "cdk");
             ts.writeImports("@aws-cdk/assert", [
                 "countResources",
@@ -105,8 +109,8 @@ class Imports extends core_1.CodeWriter {
             ]);
             ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
         }
-        else if (pattern === 'pattern2') {
-            ts.writeImports('aws-cdk-lib', 'cdk');
+        else if (pattern === "pattern2") {
+            ts.writeImports("aws-cdk-lib", "cdk");
             ts.writeLine(`import "@aws-cdk/assert/jest"`);
         }
     }

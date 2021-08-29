@@ -93,37 +93,6 @@ class Neptune extends core_1.CodeWriter {
       ],
     });`);
     }
-    // public initializeTestForSubnet2(apiName: string) {
-    //   this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
-    //     CidrBlock: '10.0.0.0/24',
-    //     VpcId: {
-    //       Ref: stack.getLogicalId(vpc.VPCRef.node.defaultChild as cdk.CfnElement),
-    //     },
-    //     AvailabilityZone: {
-    //       'Fn::Select': [
-    //         1,
-    //         {
-    //           'Fn::GetAZs': '',
-    //         },
-    //       ],
-    //     },
-    //     MapPublicIpOnLaunch: false,
-    //     Tags: [
-    //       {
-    //         Key: 'aws-cdk:subnet-name',
-    //         Value: 'Ingress',
-    //       },
-    //       {
-    //         Key: 'aws-cdk:subnet-type',
-    //         Value: 'Isolated',
-    //       },
-    //       {
-    //         Key: 'Name',
-    //         Value: 'Default/VpcNeptuneConstructTest/${apiName}/IngressSubnet2',
-    //       },
-    //     ],
-    //   });`);
-    // }
     initiaizeTestForRouteTable(apiName, subnetNum) {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::RouteTable', {
       VpcId: {
@@ -148,17 +117,6 @@ class Neptune extends core_1.CodeWriter {
       },
     });`);
     }
-    // public initializeTestForvSubnetRouteTableAssociation() {
-    //   this
-    //     .writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
-    //     RouteTableId: stack.resolve(isolatedRouteTables[1].routeTableId),
-    //     SubnetId: {
-    //       Ref: stack.getLogicalId(
-    //         isolated_subnets[1].node.defaultChild as cdk.CfnElement
-    //       ),
-    //     },
-    //   });`);
-    // }
     initializeTestForSecurityGroup(apiName) {
         this.writeLine(`expect(stack).toHaveResource('AWS::EC2::SecurityGroup', {
     GroupDescription: '${apiName} security group',

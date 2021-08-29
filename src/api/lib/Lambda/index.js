@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lambda = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../util/constant");
+const constant_1 = require("../../utils/constant");
 class Lambda extends core_1.CodeWriter {
     initializeLambda(apiName, output, lambdaStyle, functionName, vpcName, securityGroupsName, environments, vpcSubnets, roleName) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -13,9 +13,15 @@ class Lambda extends core_1.CodeWriter {
         let handlerName = "main.handler";
         let handlerAsset = "lambda-fns";
         let vpc = vpcName ? `vpc: ${vpcName},` : "";
-        let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
-        let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)}},` : "";
-        let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
+        let securityGroups = securityGroupsName
+            ? `securityGroups: [${securityGroupsName}],`
+            : "";
+        let env = environments
+            ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)}},`
+            : "";
+        let vpcSubnet = vpcSubnets
+            ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+            : "";
         let role = roleName ? `role: ${roleName},` : "";
         if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
             lambdaConstructName = `${apiName}Lambda${functionName}`;
@@ -33,7 +39,6 @@ class Lambda extends core_1.CodeWriter {
             name: lambdaVariable,
             typeName: "lambda.Function",
             initializer: () => {
-                // ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
                 ts.writeLine(`new lambda.Function(this, "${funcName}", {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
@@ -58,7 +63,7 @@ class Lambda extends core_1.CodeWriter {
                 ts.writeLine(`new lambda.LayerVersion(this, "${apiName}LambdaLayer", {
           code: lambda.Code.fromAsset('lambdaLayer'),
         })`);
-            }
+            },
         }, "const");
     }
     addEnvironment(lambda, envName, value, lambdaStyle, functionName) {

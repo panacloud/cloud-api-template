@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../util/constant");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
-const DynamoDB_1 = require("../../../Constructs/DynamoDB");
+const constant_1 = require("../../../utils/constant");
+const Cdk_1 = require("../../../lib/Cdk");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
+const DynamoDB_1 = require("../../../lib/DynamoDB");
 const model = require("../../../model.json");
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.dynamo) {

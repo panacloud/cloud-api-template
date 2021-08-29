@@ -10,29 +10,29 @@ class Iam extends core_1.CodeWriter {
             ? `managedPolicies: [
       ${managedPolicies.map((v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`)}
     ],`
-            : ' ';
+            : " ";
         ts.writeVariableDeclaration({
             name: `${apiName}Lambda_serviceRole`,
-            typeName: 'iam.Role',
+            typeName: "iam.Role",
             initializer: () => {
                 ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
                 assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
                ${policies}
           });`);
             },
-        }, 'const');
+        }, "const");
     }
     serviceRoleForAppsync(output, apiName) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeVariableDeclaration({
             name: `${apiName}_serviceRole`,
-            typeName: 'iam.Role',
+            typeName: "iam.Role",
             initializer: () => {
                 ts.writeLine(`new iam.Role(this,'appsyncServiceRole',{
                 assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
                });`);
             },
-        }, 'const');
+        }, "const");
     }
     attachLambdaPolicyToRole(roleName) {
         this
