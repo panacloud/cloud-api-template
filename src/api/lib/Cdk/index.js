@@ -62,7 +62,7 @@ class Cdk extends core_1.CodeWriter {
         if (pattern === "pattern_v1") {
             ts.writeLineIndented(`test("${description}", () => {`);
             ts.writeLine(`const app = new cdk.App()`);
-            ts.writeLine(`const stack = new ${workingDir}.${_.upperFirst(_.camelCase(workingDir))}Stack(app, "MyTestStack");`);
+            ts.writeLine(`const stack = new ${_.upperFirst(_.camelCase(workingDir))}.${_.upperFirst(_.camelCase(workingDir))}Stack(app, "MyTestStack");`);
             ts.writeLine(`const actual = app.synth().getStackArtifact(stack.artifactId).template;`);
             ts.writeLine();
             contents();
