@@ -1,15 +1,49 @@
 {
   "templates": [
     {
-      "templateFile": "./codeGenerator/class/index.js",
-      "modelFile": "model.json"
+      "templateFile": "./src/api/generators/stack/index.js"
     },
     {
-      "templateFile": "./codeGenerator/lambda/initializeLambdaFunction.js",
-      "modelFile": "model.json"
+      "templateFile": "./src/api/generators/bin/index.js"
     },
     {
-      "templateFile": "./codeGenerator/lambda/individualFunction.js"
+      "templateFile": "./src/api/generators/lambda/initializeLambdaFunction.js"
+    },
+    {
+      "templateFile": "./src/api/generators/lambda/individualFunction.js"
+    },
+    {
+      "templateFile": "./src/api/generators/constructs/Appsync/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/constructs/Lambda/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/constructs/DynamoDB/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/constructs/Neptune/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/constructs/AuroraServerless/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/constructs/ApiGateway/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/cdkTests/Appsync/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/cdkTests/Lambda/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/cdkTests/DynamoDB/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/cdkTests/Neptune/index.js"
+    },
+    {
+      "templateFile": "./src/api/generators/cdkTests/AuroraServerless/index.js"
     }
   ],
   "compileTypeScript": false
