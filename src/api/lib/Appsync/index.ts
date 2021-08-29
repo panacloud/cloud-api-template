@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../util/constant";
+import { LAMBDASTYLE } from "../../utils/constant";
 
 interface Props {
   name: string;
@@ -10,7 +10,11 @@ interface Props {
 export class Appsync extends CodeWriter {
   public apiName: string = "appsync_api";
 
-  public initializeAppsyncApi(name: string,output: TextWriter,authenticationType?: string) {
+  public initializeAppsyncApi(
+    name: string,
+    output: TextWriter,
+    authenticationType?: string
+  ) {
     this.apiName = name;
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(
@@ -52,7 +56,13 @@ export class Appsync extends CodeWriter {
       })`);
   }
 
-  public appsyncLambdaDataSource(output: TextWriter,dataSourceName: string,serviceRole: string,lambdaStyle:string,functionName?:string) {
+  public appsyncLambdaDataSource(
+    output: TextWriter,
+    dataSourceName: string,
+    serviceRole: string,
+    lambdaStyle: string,
+    functionName?: string
+  ) {
     const ts = new TypeScriptWriter(output);
     let ds_initializerName = this.apiName + "dataSourceGraphql";
     let ds_variable = `ds_${dataSourceName}`;

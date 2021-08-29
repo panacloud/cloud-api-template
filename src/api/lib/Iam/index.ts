@@ -1,5 +1,5 @@
-import { CodeWriter, TextWriter } from '@yellicode/core';
-import { TypeScriptWriter } from '@yellicode/typescript';
+import { CodeWriter, TextWriter } from "@yellicode/core";
+import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Iam extends CodeWriter {
   public serviceRoleForLambda(
@@ -14,12 +14,12 @@ export class Iam extends CodeWriter {
         (v) => `iam.ManagedPolicy.fromAwsManagedPolicyName("${v}")`
       )}
     ],`
-      : ' ';
+      : " ";
 
     ts.writeVariableDeclaration(
       {
         name: `${apiName}Lambda_serviceRole`,
-        typeName: 'iam.Role',
+        typeName: "iam.Role",
         initializer: () => {
           ts.writeLine(`new iam.Role(this,'lambdaServiceRole',{
                 assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -27,7 +27,7 @@ export class Iam extends CodeWriter {
           });`);
         },
       },
-      'const'
+      "const"
     );
   }
 
@@ -36,14 +36,14 @@ export class Iam extends CodeWriter {
     ts.writeVariableDeclaration(
       {
         name: `${apiName}_serviceRole`,
-        typeName: 'iam.Role',
+        typeName: "iam.Role",
         initializer: () => {
           ts.writeLine(`new iam.Role(this,'appsyncServiceRole',{
                 assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
                });`);
         },
       },
-      'const'
+      "const"
     );
   }
 
@@ -253,6 +253,8 @@ export class Iam extends CodeWriter {
   }
 
   public constructorIdentifier(constructor: string) {
-    this.writeLine(`const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`)
+    this.writeLine(
+      `const ${constructor}_stack = new ${constructor}(stack, "${constructor}Test");`
+    );
   }
 }

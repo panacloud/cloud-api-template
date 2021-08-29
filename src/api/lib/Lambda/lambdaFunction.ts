@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { APITYPE, LAMBDASTYLE } from "../../util/constant";
+import { APITYPE, LAMBDASTYLE } from "../../utils/constant";
 const model = require("../../model.json");
 const { apiType } = model.api;
 
@@ -24,8 +24,10 @@ export class LambdaFunction extends CodeWriter {
       `);
       } else if (lambdaStyle === LAMBDASTYLE.single) {
         ts.writeLine(`exports.handler = async (event:Event) => {`);
-        ts.writeLine(`const data = await axios.post('http://sandbox:8080', event)`)
-        ts.writeLine()
+        ts.writeLine(
+          `const data = await axios.post('http://sandbox:8080', event)`
+        );
+        ts.writeLine();
         ts.writeLine(`switch (event.info.fieldName) {`);
         ts.writeLine();
         content();
@@ -36,7 +38,9 @@ export class LambdaFunction extends CodeWriter {
     } else {
       /* rest api */
       ts.writeLine(`exports.handler = async (event: any) => {`);
-      ts.writeLine(`const data = await axios.post('http://sandbox:8080', event)`)
+      ts.writeLine(
+        `const data = await axios.post('http://sandbox:8080', event)`
+      );
       ts.writeLine(`try {`);
       ts.writeLine();
       ts.writeLine("const method = event.httpMethod;");
@@ -52,14 +56,6 @@ export class LambdaFunction extends CodeWriter {
       ts.writeLine(`}`);
       ts.writeLine(`}`);
     }
-  }
-  public importIndividualFunction(
-    output: TextWriter,
-    name: string,
-    path: string
-  ) {
-    const ts = new TypeScriptWriter(output);
-    ts.writeImports(path, [name]);
   }
 
   public helloWorldFunction(name: string) {

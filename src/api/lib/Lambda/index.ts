@@ -1,6 +1,6 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LAMBDASTYLE } from "../../util/constant";
+import { LAMBDASTYLE } from "../../utils/constant";
 
 interface Environment {
   name: string;
@@ -8,26 +8,41 @@ interface Environment {
 }
 
 export class Lambda extends CodeWriter {
-
-  public initializeLambda(apiName: string,output: TextWriter,lambdaStyle: string,functionName?: string,vpcName?: string,securityGroupsName?: string,environments?: Environment[],vpcSubnets?: string,roleName?: string) {
+  public initializeLambda(
+    apiName: string,
+    output: TextWriter,
+    lambdaStyle: string,
+    functionName?: string,
+    vpcName?: string,
+    securityGroupsName?: string,
+    environments?: Environment[],
+    vpcSubnets?: string,
+    roleName?: string
+  ) {
     const ts = new TypeScriptWriter(output);
-    let lambdaConstructName:string = `${apiName}Lambda` 
-    let lambdaVariable:string = `${apiName}_lambdaFn`
-    let funcName :string = `${apiName}Lambda`
-    let handlerName:string = "main.handler"
-    let handlerAsset : string = "lambda-fns"    
+    let lambdaConstructName: string = `${apiName}Lambda`;
+    let lambdaVariable: string = `${apiName}_lambdaFn`;
+    let funcName: string = `${apiName}Lambda`;
+    let handlerName: string = "main.handler";
+    let handlerAsset: string = "lambda-fns";
     let vpc = vpcName ? `vpc: ${vpcName},` : "";
-    let securityGroups = securityGroupsName ? `securityGroups: [${securityGroupsName}],` : "";
-    let env = environments ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)}},` : "";
-    let vpcSubnet = vpcSubnets ? `vpcSubnets: { subnetType: ${vpcSubnets} },` : "";
+    let securityGroups = securityGroupsName
+      ? `securityGroups: [${securityGroupsName}],`
+      : "";
+    let env = environments
+      ? `environment: {${environments.map((v) => `${v.name}: ${v.value}`)}},`
+      : "";
+    let vpcSubnet = vpcSubnets
+      ? `vpcSubnets: { subnetType: ${vpcSubnets} },`
+      : "";
     let role = roleName ? `role: ${roleName},` : "";
-     
+
     if (lambdaStyle === LAMBDASTYLE.multi) {
-       lambdaConstructName = `${apiName}Lambda${functionName}` 
-       lambdaVariable = `${apiName}_lambdaFn_${functionName}`
-       funcName  = `${apiName}Lambda${functionName}`
-       handlerName = `${functionName}.handler`
-       handlerAsset = `lambda-fns/${functionName}`    
+      lambdaConstructName = `${apiName}Lambda${functionName}`;
+      lambdaVariable = `${apiName}_lambdaFn_${functionName}`;
+      funcName = `${apiName}Lambda${functionName}`;
+      handlerName = `${functionName}.handler`;
+      handlerAsset = `lambda-fns/${functionName}`;
     }
 
     if (lambdaStyle === LAMBDASTYLE.multi) {
@@ -41,7 +56,6 @@ export class Lambda extends CodeWriter {
         name: lambdaVariable,
         typeName: "lambda.Function",
         initializer: () => {
-          // ts.writeLine(`new lambda.Function(this,"${lambdaConstructName}", {
           ts.writeLine(`new lambda.Function(this, "${funcName}", {
         functionName: "${funcName}",
         runtime: lambda.Runtime.NODEJS_12_X,
@@ -60,17 +74,20 @@ export class Lambda extends CodeWriter {
     );
   }
 
-  public lambdaLayer(output:TextWriter,apiName:string){
-    const ts = new TypeScriptWriter(output)
-    ts.writeVariableDeclaration({
-      name:`${apiName}_lambdaLayer`,
-      typeName:"lambda.LayerVersion",
-      initializer:()=>{
-        ts.writeLine(`new lambda.LayerVersion(this, "${apiName}LambdaLayer", {
+  public lambdaLayer(output: TextWriter, apiName: string) {
+    const ts = new TypeScriptWriter(output);
+    ts.writeVariableDeclaration(
+      {
+        name: `${apiName}_lambdaLayer`,
+        typeName: "lambda.LayerVersion",
+        initializer: () => {
+          ts.writeLine(`new lambda.LayerVersion(this, "${apiName}LambdaLayer", {
           code: lambda.Code.fromAsset('lambdaLayer'),
-        })`)
-      }
-    },"const")
+        })`);
+        },
+      },
+      "const"
+    );
   }
 
   public addEnvironment(
@@ -112,9 +129,12 @@ export class Lambda extends CodeWriter {
       })
     );`);
   }
-  
-public initializeTestForLambdaWithNeptune(funcName: string, handlerName: string) {
-  this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
+
+  public initializeTestForLambdaWithNeptune(
+    funcName: string,
+    handlerName: string
+  ) {
+    this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: '${funcName}',
     Handler: '${handlerName}.handler',
     Runtime: 'nodejs12.x',
@@ -147,11 +167,14 @@ public initializeTestForLambdaWithNeptune(funcName: string, handlerName: string)
       ],
     },
   });
-`)
-}
+`);
+  }
 
-public initializeTestForLambdaWithAuroradb(funcName: string, handlerName: string) {
-  this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
+  public initializeTestForLambdaWithAuroradb(
+    funcName: string,
+    handlerName: string
+  ) {
+    this.writeLine(`expect(stack).toHaveResource('AWS::Lambda::Function', {
     FunctionName: '${funcName}',
     Handler: '${handlerName}.handler',
     Runtime: 'nodejs12.x',
@@ -162,6 +185,6 @@ public initializeTestForLambdaWithAuroradb(funcName: string, handlerName: string
         },
       },
     },
-  });`)
-}
+  });`);
+  }
 }

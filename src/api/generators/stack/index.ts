@@ -1,10 +1,16 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import {CONSTRUCTS,DATABASE,APITYPE,PATH,LAMBDASTYLE} from "../../util/constant";
-import { apiManager } from "../../Constructs/ApiManager";
-import { Cdk } from "../../Constructs/Cdk";
-import { Imports } from "../../Constructs/ConstructsImports";
+import {
+  CONSTRUCTS,
+  DATABASE,
+  APITYPE,
+  PATH,
+  LAMBDASTYLE,
+} from "../../utils/constant";
+import { apiManager } from "../../lib/ApiManager";
+import { Cdk } from "../../lib/Cdk";
+import { Imports } from "../../lib/ConstructsImports";
 import {
   propsHandlerForAppsyncConstructDynamodb,
   propsHandlerForAppsyncConstructNeptunedb,
@@ -73,22 +79,32 @@ Generator.generate(
           );
           ts.writeLine();
         } else if (database == DATABASE.neptune) {
-          ts.writeVariableDeclaration({
-            name:`${apiName}_neptunedb`,
-            typeName:CONSTRUCTS.neptuneDb,
-            initializer:()=>{
-              ts.writeLine(`new ${CONSTRUCTS.neptuneDb}(this,"${apiName}${CONSTRUCTS.neptuneDb}")`)
-            }},
-           "const")
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}_neptunedb`,
+              typeName: CONSTRUCTS.neptuneDb,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.neptuneDb}(this,"${apiName}${CONSTRUCTS.neptuneDb}")`
+                );
+              },
+            },
+            "const"
+          );
           ts.writeLine();
         } else if (database == DATABASE.aurora) {
-          ts.writeVariableDeclaration({
-            name:`${apiName}_auroradb`,
-            typeName:CONSTRUCTS.auroradb,
-            initializer:()=>{
-              ts.writeLine(`new ${CONSTRUCTS.auroradb}(this,"${CONSTRUCTS.auroradb}");`)
-            }
-          },"const")
+          ts.writeVariableDeclaration(
+            {
+              name: `${apiName}_auroradb`,
+              typeName: CONSTRUCTS.auroradb,
+              initializer: () => {
+                ts.writeLine(
+                  `new ${CONSTRUCTS.auroradb}(this,"${CONSTRUCTS.auroradb}");`
+                );
+              },
+            },
+            "const"
+          );
           ts.writeLine();
         }
 
@@ -100,16 +116,26 @@ Generator.generate(
               ts.writeLine(
                 `new ${CONSTRUCTS.lambda}(this,"${apiName}${CONSTRUCTS.lambda}",{`
               );
-              database === DATABASE.dynamo && lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
-              database === DATABASE.neptune && lambdaConstructPropsHandlerNeptunedb(output, apiName);
-              database === DATABASE.aurora && lambdaConstructPropsHandlerAuroradb(output, apiName);
-            ts.writeLine("})");
+              database === DATABASE.dynamo &&
+                lambdaPropsHandlerDynamodb(output, `${apiName}_table`);
+              database === DATABASE.neptune &&
+                lambdaConstructPropsHandlerNeptunedb(output, apiName);
+              database === DATABASE.aurora &&
+                lambdaConstructPropsHandlerAuroradb(output, apiName);
+              ts.writeLine("})");
             },
           },
           "const"
         );
-        
-        database === DATABASE.dynamo && LambdaAccessHandler( output, apiName, lambdaStyle ,apiType, mutationsAndQueries)
+
+        database === DATABASE.dynamo &&
+          LambdaAccessHandler(
+            output,
+            apiName,
+            lambdaStyle,
+            apiType,
+            mutationsAndQueries
+          );
 
         if (apiType === APITYPE.graphql) {
           ts.writeVariableDeclaration(
@@ -120,9 +146,27 @@ Generator.generate(
                 ts.writeLine(
                   `new ${CONSTRUCTS.appsync}(this,"${apiName}${CONSTRUCTS.appsync}",{`
                 );
-                database === DATABASE.dynamo && propsHandlerForAppsyncConstructDynamodb(output,apiName,lambdaStyle,mutationsAndQueries);
-                database === DATABASE.neptune && propsHandlerForAppsyncConstructNeptunedb(output,apiName,lambdaStyle,mutationsAndQueries);
-                database === DATABASE.aurora &&  propsHandlerForAppsyncConstructNeptunedb(output,apiName,lambdaStyle,mutationsAndQueries);
+                database === DATABASE.dynamo &&
+                  propsHandlerForAppsyncConstructDynamodb(
+                    output,
+                    apiName,
+                    lambdaStyle,
+                    mutationsAndQueries
+                  );
+                database === DATABASE.neptune &&
+                  propsHandlerForAppsyncConstructNeptunedb(
+                    output,
+                    apiName,
+                    lambdaStyle,
+                    mutationsAndQueries
+                  );
+                database === DATABASE.aurora &&
+                  propsHandlerForAppsyncConstructNeptunedb(
+                    output,
+                    apiName,
+                    lambdaStyle,
+                    mutationsAndQueries
+                  );
                 ts.writeLine("})");
               },
             },

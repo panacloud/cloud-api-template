@@ -1,9 +1,9 @@
 import { TextWriter } from "@yellicode/core";
 import { Generator } from "@yellicode/templating";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { LambdaFunction } from "../../Constructs/Lambda/lambdaFunction";
-import { LAMBDASTYLE, APITYPE, PATH } from "../../constant";
-import { Imports } from "../../Constructs/ConstructsImports";
+import { LambdaFunction } from "../../lib/Lambda/lambdaFunction";
+import { LAMBDASTYLE, APITYPE, PATH } from "../../utils/constant";
+import { Imports } from "../../lib/ConstructsImports";
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require("../../model.json");
 const _ = require("lodash");
@@ -16,15 +16,15 @@ if (apiType === APITYPE.graphql) {
       (output: TextWriter) => {
         const ts = new TypeScriptWriter(output);
         const lambda = new LambdaFunction(output);
-        const imp = new Imports(output)
+        const imp = new Imports(output);
         for (var key in model.type.Query) {
-          lambda.importIndividualFunction(output, key, `./${key}`);
+          imp.importIndividualLambdaFunction(output, key, `./${key}`);
         }
 
         for (var key in model.type.Mutation) {
-          lambda.importIndividualFunction(output, key, `./${key}`);
+          imp.importIndividualLambdaFunction(output, key, `./${key}`);
         }
-        imp.importAxios()
+        imp.importAxios();
         ts.writeLine();
         ts.writeLineIndented(`
         type Event = {
@@ -53,11 +53,11 @@ if (apiType === APITYPE.graphql) {
     if (model.type.Mutation) {
       Object.keys(model.type.Mutation).forEach((key) => {
         Generator.generate(
-          { outputFile: `${PATH.lambda}/${key}/${key}.ts`},
+          { outputFile: `${PATH.lambda}/${key}/${key}.ts` },
           (writer: TextWriter) => {
-            const imp = new Imports(writer)
+            const imp = new Imports(writer);
             const lambda = new LambdaFunction(writer);
-            imp.importAxios()    
+            imp.importAxios();
             lambda.initializeLambdaFunction(writer, lambdaStyle);
           }
         );
@@ -70,8 +70,8 @@ if (apiType === APITYPE.graphql) {
           { outputFile: `${PATH.lambda}/${key}/${key}.ts` },
           (writer: TextWriter) => {
             const lambda = new LambdaFunction(writer);
-            const imp = new Imports(writer)
-            imp.importAxios()    
+            const imp = new Imports(writer);
+            imp.importAxios();
             lambda.initializeLambdaFunction(writer, lambdaStyle);
           }
         );
@@ -88,14 +88,14 @@ if (apiType === APITYPE.graphql) {
         (output: TextWriter) => {
           const ts = new TypeScriptWriter(output);
           const lambda = new LambdaFunction(output);
-          const imp = new Imports(output)
-          imp.importAxios()    
+          const imp = new Imports(output);
+          imp.importAxios();
           /* import all lambda files */
           Object.keys(api.paths).forEach((path) => {
             for (var methodName in api.paths[`${path}`]) {
               let lambdaFunctionFile =
                 api.paths[`${path}`][`${methodName}`][`operationId`];
-              lambda.importIndividualFunction(
+              imp.importIndividualLambdaFunction(
                 output,
                 lambdaFunctionFile,
                 `./${lambdaFunctionFile}`

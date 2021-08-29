@@ -2,7 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Neptune extends CodeWriter {
-
   public initializeNeptuneCluster(
     apiName: string,
     neptuneSubnetName: string,
@@ -80,7 +79,6 @@ export class Neptune extends CodeWriter {
     this.writeLine(`${depended}.addDependsOn(${sourceName})`);
   }
 
-
   public initializeTesForEC2Vpc() {
     this.writeLine(
       `expect(stack).toHaveResource('AWS::EC2::VPC', {
@@ -92,7 +90,12 @@ export class Neptune extends CodeWriter {
     );
   }
 
-  public initializeTestForSubnet(apiName: string, fnNum: number, subnetNum: string, cidr: string) {
+  public initializeTestForSubnet(
+    apiName: string,
+    fnNum: number,
+    subnetNum: string,
+    cidr: string
+  ) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
       CidrBlock: '10.0.${cidr}.0/24',
       VpcId: {
@@ -123,38 +126,6 @@ export class Neptune extends CodeWriter {
       ],
     });`);
   }
-  
-  // public initializeTestForSubnet2(apiName: string) {
-  //   this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
-  //     CidrBlock: '10.0.0.0/24',
-  //     VpcId: {
-  //       Ref: stack.getLogicalId(vpc.VPCRef.node.defaultChild as cdk.CfnElement),
-  //     },
-  //     AvailabilityZone: {
-  //       'Fn::Select': [
-  //         1,
-  //         {
-  //           'Fn::GetAZs': '',
-  //         },
-  //       ],
-  //     },
-  //     MapPublicIpOnLaunch: false,
-  //     Tags: [
-  //       {
-  //         Key: 'aws-cdk:subnet-name',
-  //         Value: 'Ingress',
-  //       },
-  //       {
-  //         Key: 'aws-cdk:subnet-type',
-  //         Value: 'Isolated',
-  //       },
-  //       {
-  //         Key: 'Name',
-  //         Value: 'Default/VpcNeptuneConstructTest/${apiName}/IngressSubnet2',
-  //       },
-  //     ],
-  //   });`);
-  // }
 
   public initiaizeTestForRouteTable(apiName: string, subnetNum: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::RouteTable', {
@@ -170,7 +141,9 @@ export class Neptune extends CodeWriter {
     });`);
   }
 
-  public initializeTestForSubnetRouteTableAssociation(isolatedRouteTablesNum: number) {
+  public initializeTestForSubnetRouteTableAssociation(
+    isolatedRouteTablesNum: number
+  ) {
     this
       .writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
       RouteTableId: stack.resolve(isolatedRouteTables[0].routeTableId),
@@ -181,18 +154,6 @@ export class Neptune extends CodeWriter {
       },
     });`);
   }
-
-  // public initializeTestForvSubnetRouteTableAssociation() {
-  //   this
-  //     .writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
-  //     RouteTableId: stack.resolve(isolatedRouteTables[1].routeTableId),
-  //     SubnetId: {
-  //       Ref: stack.getLogicalId(
-  //         isolated_subnets[1].node.defaultChild as cdk.CfnElement
-  //       ),
-  //     },
-  //   });`);
-  // }
 
   public initializeTestForSecurityGroup(apiName: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::SecurityGroup', {
@@ -280,6 +241,6 @@ export class Neptune extends CodeWriter {
   }
 
   public initializeTestForCountResources(service: string, count: number) {
-    this.writeLine(`expect(stack).toCountResources('${service}', ${count});`)
+    this.writeLine(`expect(stack).toCountResources('${service}', ${count});`);
   }
 }

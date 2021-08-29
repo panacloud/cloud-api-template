@@ -1,7 +1,7 @@
 import { TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
-import { APITYPE, LAMBDASTYLE } from "../../../util/constant";
-import { DynamoDB } from "../../../Constructs/DynamoDB";
+import { APITYPE, LAMBDASTYLE } from "../../../utils/constant";
+import { DynamoDB } from "../../../lib/DynamoDB";
 
 export const lambdaEnvHandler = (
   output: TextWriter,
@@ -107,12 +107,12 @@ export const LambdaAccessHandler = (
   output: TextWriter,
   apiName: string,
   lambdaStyle: LAMBDASTYLE,
-  apiType:string,
+  apiType: string,
   mutationsAndQueries: any
 ) => {
   const dynamodb = new DynamoDB(output);
-  const ts = new TypeScriptWriter(output)
-  if (lambdaStyle === LAMBDASTYLE.single || apiType === APITYPE.rest){
+  const ts = new TypeScriptWriter(output);
+  if (lambdaStyle === LAMBDASTYLE.single || apiType === APITYPE.rest) {
     dynamodb.dbConstructLambdaAccess(
       apiName,
       `${apiName}_table`,
@@ -120,7 +120,7 @@ export const LambdaAccessHandler = (
       lambdaStyle,
       apiType
     );
-    ts.writeLine()
+    ts.writeLine();
   } else if (lambdaStyle === LAMBDASTYLE.multi && apiType === APITYPE.graphql) {
     Object.keys(mutationsAndQueries).forEach((key) => {
       dynamodb.dbConstructLambdaAccess(
@@ -132,7 +132,7 @@ export const LambdaAccessHandler = (
         key
       );
     });
-    ts.writeLine()
+    ts.writeLine();
   }
 };
 

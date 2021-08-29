@@ -2,7 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class AuroraServerless extends CodeWriter {
-
   public initializeAuroraCluster(
     apiName: string,
     vpcName: string,
@@ -39,24 +38,31 @@ export class AuroraServerless extends CodeWriter {
     );
   }
 
-public route_tableIdentifier(state: string) {
-  this.writeLine(`const ${state}RouteTables = [
+  public route_tableIdentifier(state: string) {
+    this.writeLine(`const ${state}RouteTables = [
     ${state}_subnets[0].routeTable,
     ${state}_subnets[1].routeTable,
-  ];`)
-}
+  ];`);
+  }
 
-  public initializeTestForEC2Vpc () {
+  public initializeTestForEC2Vpc() {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::VPC', {
       CidrBlock: '10.0.0.0/16',
       EnableDnsHostnames: true,
       EnableDnsSupport: true,
       InstanceTenancy: 'default',
     });
-   `)
+   `);
   }
 
-  public initializeTestForSubnet (apiName: string, cidrBlock: string, fNum: number, mapPublicIpOnLaunch: boolean,  state: string, stateNum: string) {
+  public initializeTestForSubnet(
+    apiName: string,
+    cidrBlock: string,
+    fNum: number,
+    mapPublicIpOnLaunch: boolean,
+    state: string,
+    stateNum: string
+  ) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Subnet', {
       CidrBlock: '${cidrBlock}',
       VpcId: {
@@ -85,10 +91,14 @@ public route_tableIdentifier(state: string) {
           Value: 'Default/AuroraDbConstructTest/${apiName}Vpc/${state}Subnet${stateNum}',
         },
       ],
-    });`)
+    });`);
   }
 
-  public initializeTestForRouteTable(apiName: string, state: string, stateNum: string) {
+  public initializeTestForRouteTable(
+    apiName: string,
+    state: string,
+    stateNum: string
+  ) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::RouteTable', {
       VpcId: {
         Ref: stack.getLogicalId(AuroraDbConstruct_stack.vpcRef.node.defaultChild as cdk.CfnElement),
@@ -100,19 +110,26 @@ public route_tableIdentifier(state: string) {
         },
       ],
     });
-  `)
+  `);
   }
 
-   
-  public initializeTestForSubnetRouteTableAssociation(routeTableState: string, routeTableNum: number,routeTable: string, routeTableId: string, subnet: string, subnetState: number) {
-    this.writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
+  public initializeTestForSubnetRouteTableAssociation(
+    routeTableState: string,
+    routeTableNum: number,
+    routeTable: string,
+    routeTableId: string,
+    subnet: string,
+    subnetState: number
+  ) {
+    this
+      .writeLine(`expect(stack).toHaveResource('AWS::EC2::SubnetRouteTableAssociation', {
       RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].${routeTable}${routeTableId}),
       SubnetId: {
         Ref: stack.getLogicalId(
           ${subnet}[${subnetState}].node.defaultChild as cdk.CfnElement
         ),
       },
-    });`)
+    });`);
   }
 
   public initializeTestForSecurityGroup() {
@@ -138,20 +155,25 @@ public route_tableIdentifier(state: string) {
         Ref: stack.getLogicalId(AuroraDbConstruct_stack.vpcRef.node.defaultChild as cdk.CfnElement),
       },
     });
-  `)
+  `);
   }
 
-  public initializeTestForRoute(routeTableState: string, routeTableNum: number, gatewatIdType:string , gatewayState: string) {
+  public initializeTestForRoute(
+    routeTableState: string,
+    routeTableNum: number,
+    gatewatIdType: string,
+    gatewayState: string
+  ) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::Route', {
       RouteTableId: stack.resolve(${routeTableState}[${routeTableNum}].routeTableId),
       DestinationCidrBlock: '0.0.0.0/0',
       ${gatewatIdType}: {
         Ref: stack.getLogicalId(${gatewayState}[0] as cdk.CfnElement),
       },
-    });`)
+    });`);
   }
 
-  public initializeTestForEIP(apiName: string, stateNum: string) {  
+  public initializeTestForEIP(apiName: string, stateNum: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::EIP', {
       Domain: 'vpc',
       Tags: [
@@ -160,10 +182,15 @@ public route_tableIdentifier(state: string) {
           Value: 'Default/AuroraDbConstructTest/${apiName}Vpc/PublicSubnet${stateNum}',
         },
       ],
-    });`)
+    });`);
   }
 
-  public initializeTestForNatGateway(apiName: string, subentNum: number, eipNum: string, stateNum: string) {
+  public initializeTestForNatGateway(
+    apiName: string,
+    subentNum: number,
+    eipNum: string,
+    stateNum: string
+  ) {
     this.writeLine(`expect(stack).toHaveResource('AWS::EC2::NatGateway', {
       SubnetId: {
         Ref: stack.getLogicalId(
@@ -182,14 +209,14 @@ public route_tableIdentifier(state: string) {
           Value: 'Default/AuroraDbConstructTest/${apiName}Vpc/PublicSubnet${stateNum}',
         },
       ],
-    });`)
+    });`);
   }
 
   public initializeTestForDBSubnetGroup(apiName: string) {
     this.writeLine(`expect(stack).toHaveResource('AWS::RDS::DBSubnetGroup', {
       DBSubnetGroupDescription: 'Subnets for ${apiName}DB database',
       SubnetIds: subnetRefArray,
-    });`)
+    });`);
   }
 
   public ininitializeTestForRole() {
@@ -206,11 +233,12 @@ public route_tableIdentifier(state: string) {
         ],
         Version: '2012-10-17',
       },
-    });`)
+    });`);
   }
 
   public initializeTestForVPCGatewayAttachment() {
-    this.writeLine(`expect(stack).toHaveResource('AWS::EC2::VPCGatewayAttachment', {
+    this
+      .writeLine(`expect(stack).toHaveResource('AWS::EC2::VPCGatewayAttachment', {
       VpcId: {
         Ref: stack.getLogicalId(AuroraDbConstruct_stack.vpcRef.node.defaultChild as cdk.CfnElement),
       },
@@ -218,9 +246,10 @@ public route_tableIdentifier(state: string) {
         Ref: stack.getLogicalId(internetGateway[0] as cdk.CfnElement),
       },
     });
-  `)}
+  `);
+  }
 
   public initializeTestForCountResources(service: string, count: number) {
-    this.writeLine(`expect(stack).toCountResources('${service}', ${count});`)
+    this.writeLine(`expect(stack).toCountResources('${service}', ${count});`);
   }
 }

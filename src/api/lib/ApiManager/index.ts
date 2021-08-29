@@ -2,7 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class apiManager extends CodeWriter {
-  
   public apiManagerInitializer(output: TextWriter, name: string) {
     const ts = new TypeScriptWriter(output);
     ts.writeVariableDeclaration(

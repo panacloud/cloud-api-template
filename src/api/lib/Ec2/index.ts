@@ -2,7 +2,6 @@ import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 
 export class Ec2 extends CodeWriter {
-
   public initializeVpc(
     apiName: string,
     output: TextWriter,
