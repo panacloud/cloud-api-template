@@ -3,7 +3,7 @@ import { TypeScriptWriter } from "@yellicode/typescript";
 import { LAMBDASTYLE } from "../../../../utils/constant";
 import { Appsync } from "../../../../lib/Appsync";
 import { Cdk } from "../../../../lib/Cdk";
-const model = require("../../../../model.json");
+const model = require("../../../../../../model.json");
 
 export const appsyncDatasourceHandler = (
   apiName: string,

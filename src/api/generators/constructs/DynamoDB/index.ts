@@ -12,7 +12,7 @@ import { Cdk } from "../../../lib/Cdk";
 import { Imports } from "../../../lib/ConstructsImports";
 import { DynamoDB } from "../../../lib/DynamoDB";
 import { dynamodbAccessHandler } from "./functions";
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { database } = model.api;
 
 if (database && database === DATABASE.dynamo) {

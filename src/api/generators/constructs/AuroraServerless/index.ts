@@ -11,7 +11,7 @@ import {
   auroradbPropertiesHandler,
   auroradbPropertiesInitializer,
 } from "./function";
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { database } = model.api;
 
 if (database && database === DATABASE.aurora) {

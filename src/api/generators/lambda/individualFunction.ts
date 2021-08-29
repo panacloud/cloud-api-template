@@ -3,7 +3,7 @@ import { Generator } from "@yellicode/templating";
 import { LambdaFunction } from "../../lib/Lambda/lambdaFunction";
 import { APITYPE, LAMBDASTYLE, PATH } from "../../utils/constant";
 const SwaggerParser = require("@apidevtools/swagger-parser");
-const model = require(`../../model.json`);
+const model = require(`../../../../model.json`);
 const { lambdaStyle, apiType } = model.api;
 
 if (apiType === APITYPE.graphql) {

@@ -16,7 +16,7 @@ import {
   lambdaWithAuroraFunction,
   lambdaWithNeptuneFunction,
 } from "./functions";
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
 Generator.generate(

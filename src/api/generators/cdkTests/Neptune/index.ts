@@ -7,7 +7,7 @@ import { CONSTRUCTS, DATABASE, PATH } from "../../../utils/constant";
 import { Imports } from "../../../lib/ConstructsImports";
 import { isolatedFunction, subnetFunction } from "./functions";
 import { Iam } from "../../../lib/Iam";
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 

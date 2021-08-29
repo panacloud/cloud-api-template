@@ -21,11 +21,11 @@ export enum SAASTYPE {
 }
 
 export enum PATH {
-  bin = "../../../bin/",
-  lib = "../../../lib/",
-  construct = "../../../../lib/",
-  lambda = "../../../lambda-fns/",
-  test = "../../../../test/"
+  bin = "../../../../../bin/",
+  lib = "../../../../../lib/",
+  construct = "../../../../../../lib/",
+  lambda = "../../../../../lambda-fns/",
+  test = "../../../../../../test/",
 }
 
 export enum CONSTRUCTS {

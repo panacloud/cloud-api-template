@@ -20,7 +20,7 @@ import {
   lambdaPropsHandlerForAuroradb,
   lambdaPropsHandlerForNeptunedb,
 } from "./functions";
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 
 Generator.generate(
   {

@@ -12,7 +12,7 @@ import { Cdk } from "../../../lib/Cdk";
 import { Imports } from "../../../lib/ConstructsImports";
 import { Iam } from "../../../lib/Iam";
 import { appsyncDatasourceHandler, appsyncResolverhandler } from "./functions";
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
 const fs = require("fs");
@@ -29,7 +29,7 @@ if (apiType === APITYPE.graphql) {
       const iam = new Iam(output);
       const imp = new Imports(output);
       const schema = fs
-        .readFileSync(`../../../schema.graphql`)
+        .readFileSync(`../../../../../schema.graphql`)
         .toString("utf8");
       const mutations = model.type.Mutation ? model.type.Mutation : {};
       const queries = model.type.Query ? model.type.Query : {};

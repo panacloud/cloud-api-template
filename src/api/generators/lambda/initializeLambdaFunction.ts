@@ -5,7 +5,7 @@ import { LambdaFunction } from "../../lib/Lambda/lambdaFunction";
 import { LAMBDASTYLE, APITYPE, PATH } from "../../utils/constant";
 import { Imports } from "../../lib/ConstructsImports";
 const SwaggerParser = require("@apidevtools/swagger-parser");
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const _ = require("lodash");
 const { lambdaStyle, apiType } = model.api;
 

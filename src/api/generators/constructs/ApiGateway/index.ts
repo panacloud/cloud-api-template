@@ -5,7 +5,7 @@ import { APITYPE, CONSTRUCTS, PATH } from "../../../utils/constant";
 import { ApiGateway } from "../../../lib/ApiGateway";
 import { Cdk } from "../../../lib/Cdk";
 import { Imports } from "../../../lib/ConstructsImports";
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { apiName, apiType } = model.api;
 
 if (apiType === APITYPE.rest) {

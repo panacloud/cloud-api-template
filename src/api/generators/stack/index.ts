@@ -20,7 +20,7 @@ import {
   lambdaPropsHandlerDynamodb,
   LambdaAccessHandler,
 } from "./functions";
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");
 

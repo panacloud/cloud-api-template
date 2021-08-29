@@ -7,7 +7,7 @@ import { CONSTRUCTS, DATABASE, PATH } from "../../../utils/constant";
 import { Iam } from "../../../lib/Iam";
 import { Imports } from "../../../lib/ConstructsImports";
 import { subnetAuroraFunction } from "./functions";
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 

@@ -6,7 +6,7 @@ import { Iam } from "../../../lib/Iam";
 import { Cdk } from "../../../lib/Cdk";
 import { PATH, LAMBDASTYLE, APITYPE } from "../../../utils/constant";
 import { Imports } from "../../../lib/ConstructsImports";
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
 

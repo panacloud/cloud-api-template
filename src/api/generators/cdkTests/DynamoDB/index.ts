@@ -5,7 +5,7 @@ import { Cdk } from "../../../lib/Cdk";
 import { DynamoDB } from "../../../lib/DynamoDB";
 import { DATABASE, PATH } from "../../../utils/constant";
 import { Imports } from "../../../lib/ConstructsImports";
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 
 if (model?.api?.database === DATABASE.dynamo) {

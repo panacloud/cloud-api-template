@@ -7,7 +7,7 @@ import { Imports } from "../../../lib/ConstructsImports";
 import { Ec2 } from "../../../lib/Ec2";
 import { Neptune } from "../../../lib/Neptune";
 import { neptunePropertiesInitializer } from "./functions";
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { database } = model.api;
 
 if (database && database === DATABASE.neptune) {
