@@ -4,6 +4,7 @@ exports.Imports = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../utils/constant");
+const _ = require("lodash");
 class Imports extends core_1.CodeWriter {
     importsForStack(output) {
         const ts = new typescript_1.TypeScriptWriter(output);
@@ -107,7 +108,7 @@ class Imports extends core_1.CodeWriter {
                 "expect",
                 "countResourcesLike",
             ]);
-            ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+            ts.writeImports(`../lib/${workingDir}-stack`, _.upperFirst(_.camelCase(workingDir)));
         }
         else if (pattern === "pattern2") {
             ts.writeImports("aws-cdk-lib", "cdk");
