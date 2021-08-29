@@ -1,49 +1,49 @@
 {
   "templates": [
     {
-      "templateFile": "./CodeGenerator/StackInitializer/index.js"
+      "templateFile": "./src/api/generators/stack/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/bin/index.js"
+      "templateFile": "./src/api/generators/bin/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/Lambda/initializeLambdaFunction.js"
+      "templateFile": "./src/api/generators/lambda/initializeLambdaFunction.js"
     },
     {
-      "templateFile": "./CodeGenerator/Lambda/individualFunction.js"
+      "templateFile": "./src/api/generators/lambda/individualFunction.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Appsync/index.js"
+      "templateFile": "./src/api/generators/constructs/Appsync/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Lambda/index.js"
+      "templateFile": "./src/api/generators/constructs/Lambda/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Dynamodb/index.js"
+      "templateFile": "./src/api/generators/constructs/DynamoDB/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Neptune/index.js"
+      "templateFile": "./src/api/generators/constructs/Neptune/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/Auroradb/index.js"
+      "templateFile": "./src/api/generators/constructs/AuroraServerless/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/ConstructsInitializer/ApiGateway/index.js"
+      "templateFile": "./src/api/generators/constructs/ApiGateway/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/AppsyncTest/index.js"
+      "templateFile": "./src/api/generators/cdkTests/Appsync/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/LambdaTest/index.js"
+      "templateFile": "./src/api/generators/cdkTests/Lambda/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/DynamodbTest/index.js"
+      "templateFile": "./src/api/generators/cdkTests/DynamoDB/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/NeptuneTest/index.js"
+      "templateFile": "./src/api/generators/cdkTests/Neptune/index.js"
     },
     {
-      "templateFile": "./CodeGenerator/TestsInitializer/AuroradbTest/index.js"
+      "templateFile": "./src/api/generators/cdkTests/AuroraServerless/index.js"
     }
   ],
   "compileTypeScript": false
