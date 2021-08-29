@@ -1,6 +1,7 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { CONSTRUCTS } from "../../utils/constant";
+const _ = require("lodash")
 
 export class Imports extends CodeWriter {
   public importsForStack(output: TextWriter) {
@@ -137,7 +138,7 @@ export class Imports extends CodeWriter {
         "expect",
         "countResourcesLike",
       ]);
-      ts.writeImports(`../lib/${workingDir}-stack`, workingDir);
+      ts.writeImports(`../lib/${workingDir}-stack`, _.upperFirst(_.camelCase(workingDir)))
     } else if (pattern === "pattern2") {
       ts.writeImports("aws-cdk-lib", "cdk");
       ts.writeLine(`import "@aws-cdk/assert/jest"`);
