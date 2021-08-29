@@ -7,7 +7,7 @@ const ApiManager_1 = require("../../lib/ApiManager");
 const Cdk_1 = require("../../lib/Cdk");
 const ConstructsImports_1 = require("../../lib/ConstructsImports");
 const functions_1 = require("./functions");
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");
 templating_1.Generator.generate({

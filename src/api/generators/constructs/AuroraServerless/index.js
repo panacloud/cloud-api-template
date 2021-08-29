@@ -9,7 +9,7 @@ const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const Ec2_1 = require("../../../lib/Ec2");
 const Iam_1 = require("../../../lib/Iam");
 const function_1 = require("./function");
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.aurora) {
     templating_1.Generator.generate({ outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.auroradb}/index.ts` }, (output) => {

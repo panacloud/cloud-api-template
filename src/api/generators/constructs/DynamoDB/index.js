@@ -6,7 +6,7 @@ const constant_1 = require("../../../utils/constant");
 const Cdk_1 = require("../../../lib/Cdk");
 const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const DynamoDB_1 = require("../../../lib/DynamoDB");
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.dynamo) {
     templating_1.Generator.generate({

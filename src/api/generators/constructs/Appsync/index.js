@@ -8,7 +8,7 @@ const Cdk_1 = require("../../../lib/Cdk");
 const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const Iam_1 = require("../../../lib/Iam");
 const functions_1 = require("./functions");
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
 const fs = require("fs");
@@ -22,7 +22,7 @@ if (apiType === constant_1.APITYPE.graphql) {
         const iam = new Iam_1.Iam(output);
         const imp = new ConstructsImports_1.Imports(output);
         const schema = fs
-            .readFileSync(`../../../schema.graphql`)
+            .readFileSync(`../../../../../schema.graphql`)
             .toString("utf8");
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};

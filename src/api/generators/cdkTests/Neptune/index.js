@@ -8,7 +8,7 @@ const constant_1 = require("../../../utils/constant");
 const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const functions_1 = require("./functions");
 const Iam_1 = require("../../../lib/Iam");
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.neptune) {

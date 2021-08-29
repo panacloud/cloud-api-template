@@ -5,7 +5,7 @@ const templating_1 = require("@yellicode/templating");
 const lambdaFunction_1 = require("../../lib/Lambda/lambdaFunction");
 const constant_1 = require("../../utils/constant");
 const SwaggerParser = require("@apidevtools/swagger-parser");
-const model = require(`../../model.json`);
+const model = require(`../../../../model.json`);
 const { lambdaStyle, apiType } = model.api;
 if (apiType === constant_1.APITYPE.graphql) {
     if (lambdaStyle === constant_1.LAMBDASTYLE.single) {

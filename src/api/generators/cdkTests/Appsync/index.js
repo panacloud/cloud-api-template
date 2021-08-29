@@ -7,7 +7,7 @@ const Iam_1 = require("../../../lib/Iam");
 const Cdk_1 = require("../../../lib/Cdk");
 const constant_1 = require("../../../utils/constant");
 const ConstructsImports_1 = require("../../../lib/ConstructsImports");
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
 if (apiType === constant_1.APITYPE.graphql) {

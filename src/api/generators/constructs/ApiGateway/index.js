@@ -6,7 +6,7 @@ const constant_1 = require("../../../utils/constant");
 const ApiGateway_1 = require("../../../lib/ApiGateway");
 const Cdk_1 = require("../../../lib/Cdk");
 const ConstructsImports_1 = require("../../../lib/ConstructsImports");
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { apiName, apiType } = model.api;
 if (apiType === constant_1.APITYPE.rest) {
     templating_1.Generator.generate({

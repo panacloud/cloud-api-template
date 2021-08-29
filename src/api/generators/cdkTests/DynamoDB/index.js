@@ -7,7 +7,7 @@ const Cdk_1 = require("../../../lib/Cdk");
 const DynamoDB_1 = require("../../../lib/DynamoDB");
 const constant_1 = require("../../../utils/constant");
 const ConstructsImports_1 = require("../../../lib/ConstructsImports");
-const model = require(`../../../model.json`);
+const model = require(`../../../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 if (((_a = model === null || model === void 0 ? void 0 : model.api) === null || _a === void 0 ? void 0 : _a.database) === constant_1.DATABASE.dynamo) {
     templating_1.Generator.generate({

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
 const constant_1 = require("../../utils/constant");
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;
 const _ = require("lodash");
 templating_1.Generator.generate({

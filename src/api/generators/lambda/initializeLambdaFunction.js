@@ -6,7 +6,7 @@ const lambdaFunction_1 = require("../../lib/Lambda/lambdaFunction");
 const constant_1 = require("../../utils/constant");
 const ConstructsImports_1 = require("../../lib/ConstructsImports");
 const SwaggerParser = require("@apidevtools/swagger-parser");
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const _ = require("lodash");
 const { lambdaStyle, apiType } = model.api;
 if (apiType === constant_1.APITYPE.graphql) {

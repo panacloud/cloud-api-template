@@ -8,7 +8,7 @@ const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const Ec2_1 = require("../../../lib/Ec2");
 const Neptune_1 = require("../../../lib/Neptune");
 const functions_1 = require("./functions");
-const model = require("../../../model.json");
+const model = require("../../../../../model.json");
 const { database } = model.api;
 if (database && database === constant_1.DATABASE.neptune) {
     templating_1.Generator.generate({ outputFile: `${constant_1.PATH.construct}${constant_1.CONSTRUCTS.neptuneDb}/index.ts` }, (output) => {

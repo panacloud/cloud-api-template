@@ -25,11 +25,11 @@ var SAASTYPE;
 })(SAASTYPE = exports.SAASTYPE || (exports.SAASTYPE = {}));
 var PATH;
 (function (PATH) {
-    PATH["bin"] = "../../../bin/";
-    PATH["lib"] = "../../../lib/";
-    PATH["construct"] = "../../../../lib/";
-    PATH["lambda"] = "../../../lambda-fns/";
-    PATH["test"] = "../../../../test/";
+    PATH["bin"] = "../../../../../bin/";
+    PATH["lib"] = "../../../../../lib/";
+    PATH["construct"] = "../../../../../../lib/";
+    PATH["lambda"] = "../../../../../lambda-fns/";
+    PATH["test"] = "../../../../../../test/";
 })(PATH = exports.PATH || (exports.PATH = {}));
 var CONSTRUCTS;
 (function (CONSTRUCTS) {
