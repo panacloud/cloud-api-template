@@ -95,9 +95,9 @@ export class Cdk extends CodeWriter {
       ts.writeLineIndented(`test("${description}", () => {`);
       ts.writeLine(`const app = new cdk.App()`);
       ts.writeLine(
-        `const stack = new ${workingDir}.${_.upperFirst(
+        `const stack = new ${_.upperFirst(
           _.camelCase(workingDir)
-        )}Stack(app, "MyTestStack");`
+        )}.${_.upperFirst(_.camelCase(workingDir))}Stack(app, "MyTestStack");`
       );
       ts.writeLine(
         `const actual = app.synth().getStackArtifact(stack.artifactId).template;`
