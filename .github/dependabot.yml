@@ -4,7 +4,11 @@ updates:
     directory: "/src/api/utils/package-template/stack"
     schedule:
       interval: "weekly"
+      reviewers: 
+        - "Muh-Hasan"
   - package-ecosystem: "npm"
     directory: "/src/api/utils/package-template/lambdaLayer"
     schedule:
       interval: "weekly"
+      reviewers: 
+        - "Muh-Hasan"
