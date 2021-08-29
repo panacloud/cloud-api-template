@@ -1,7 +1,7 @@
 import { CodeWriter, TextWriter } from "@yellicode/core";
 import { TypeScriptWriter } from "@yellicode/typescript";
 import { APITYPE, LAMBDASTYLE } from "../../utils/constant";
-const model = require("../../model.json");
+const model = require("../../../../model.json");
 const { apiType } = model.api;
 
 export class LambdaFunction extends CodeWriter {
