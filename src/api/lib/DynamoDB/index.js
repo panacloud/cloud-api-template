@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DynamoDB = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../util/constant");
+const constant_1 = require("../../utils/constant");
 class DynamoDB extends core_1.CodeWriter {
     initializeDynamodb(apiName, output) {
         const ts = new typescript_1.TypeScriptWriter(output);

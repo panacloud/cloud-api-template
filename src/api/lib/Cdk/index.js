@@ -3,39 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cdk = void 0;
 const core_1 = require("@yellicode/core");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../constant");
-const _ = require('lodash');
+const _ = require("lodash");
 class Cdk extends core_1.CodeWriter {
-    importsForStack(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports('aws-cdk-lib', ['Stack', 'StackProps']);
-        ts.writeImports('constructs', ['Construct']);
-    }
-    importForAppsyncConstruct(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.appsync}`, [constant_1.CONSTRUCTS.appsync]);
-    }
-    importForDynamodbConstruct(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.dynamodb}`, [constant_1.CONSTRUCTS.dynamodb]);
-    }
-    importForLambdaConstruct(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.lambda}`, [constant_1.CONSTRUCTS.lambda]);
-    }
-    importForNeptuneConstruct(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.neptuneDb}`, [constant_1.CONSTRUCTS.neptuneDb]);
-    }
-    importForAuroradbConstruct(output) {
-        const ts = new typescript_1.TypeScriptWriter(output);
-        ts.writeImports(`../lib/${constant_1.CONSTRUCTS.auroradb}`, [constant_1.CONSTRUCTS.auroradb]);
-    }
     initializeStack(name, contents, output) {
         const ts = new typescript_1.TypeScriptWriter(output);
         const classDefinition = {
             name: `${_.upperFirst(_.camelCase(name))}Stack`,
-            extends: ['Stack'],
+            extends: ["Stack"],
             export: true,
         };
         ts.writeClassBlock(classDefinition, () => {
@@ -47,7 +21,7 @@ class Cdk extends core_1.CodeWriter {
             ts.writeLineIndented(`}`);
         });
     }
-    initializeConstruct(constructName, propsName = 'StackProps', contents, output, constructProps, properties) {
+    initializeConstruct(constructName, propsName = "StackProps", contents, output, constructProps, properties) {
         const ts = new typescript_1.TypeScriptWriter(output);
         ts.writeLine();
         if (constructProps) {
@@ -62,12 +36,12 @@ class Cdk extends core_1.CodeWriter {
         }
         const classDefinition = {
             name: `${_.upperFirst(_.camelCase(constructName))}`,
-            extends: ['Construct'],
+            extends: ["Construct"],
             export: true,
         };
         ts.writeClassBlock(classDefinition, () => {
             properties === null || properties === void 0 ? void 0 : properties.forEach(({ accessModifier, isReadonly, name, typeName }) => {
-                ts.writeLineIndented(`${accessModifier}${isReadonly ? ` readonly ` : ''} ${name} : ${typeName}`);
+                ts.writeLineIndented(`${accessModifier}${isReadonly ? ` readonly ` : ""} ${name} : ${typeName}`);
             });
             ts.writeLineIndented(` 
       constructor(scope: Construct, id: string, props?: ${propsName}) {

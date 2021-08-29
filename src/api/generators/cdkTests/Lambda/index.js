@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const Iam_1 = require("../../../Constructs/Iam");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const Lambda_1 = require("../../../Constructs/Lambda");
-const constant_1 = require("../../../util/constant");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
+const Iam_1 = require("../../../lib/Iam");
+const Cdk_1 = require("../../../lib/Cdk");
+const Lambda_1 = require("../../../lib/Lambda");
+const constant_1 = require("../../../utils/constant");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const functions_1 = require("./functions");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
@@ -27,13 +27,15 @@ templating_1.Generator.generate({
     }
     const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
     if (database === constant_1.DATABASE.dynamo) {
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern1');
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, "pattern1");
         imp.importForDynamodbConstructInTest(output);
         ts.writeLine();
         cdk.initializeTest("Lambda Attach With Dynamodb Constructs Test", () => {
             ts.writeLine();
             if (database === constant_1.DATABASE.dynamo) {
-                if (apiType === constant_1.APITYPE.rest || (lambdaStyle === constant_1.LAMBDASTYLE.single && apiType === constant_1.APITYPE.graphql)) {
+                if (apiType === constant_1.APITYPE.rest ||
+                    (lambdaStyle === constant_1.LAMBDASTYLE.single &&
+                        apiType === constant_1.APITYPE.graphql)) {
                     let funcName = `${apiName}Lambda`;
                     iam.dynamodbConsturctIdentifier();
                     ts.writeLine();
@@ -57,10 +59,12 @@ templating_1.Generator.generate({
             iam.lambdaServiceRoleTest();
             ts.writeLine();
             if (apiType === constant_1.APITYPE.graphql) {
-                if (lambdaStyle === constant_1.LAMBDASTYLE.single && database === constant_1.DATABASE.dynamo) {
+                if (lambdaStyle === constant_1.LAMBDASTYLE.single &&
+                    database === constant_1.DATABASE.dynamo) {
                     iam.lambdaServiceRolePolicyTestForDynodb(1);
                 }
-                else if (lambdaStyle === constant_1.LAMBDASTYLE.multi && database === constant_1.DATABASE.dynamo) {
+                else if (lambdaStyle === constant_1.LAMBDASTYLE.multi &&
+                    database === constant_1.DATABASE.dynamo) {
                     iam.lambdaServiceRolePolicyTestForDynodb(Object.keys(mutationsAndQueries).length);
                 }
             }
@@ -71,7 +75,7 @@ templating_1.Generator.generate({
         }, output, USER_WORKING_DIRECTORY, "pattern_v1");
     }
     else if (database === constant_1.DATABASE.neptune) {
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, "pattern2");
         imp.importForNeptuneConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
@@ -81,9 +85,10 @@ templating_1.Generator.generate({
             ts.writeLine();
             (0, functions_1.lambdaWithNeptuneFunction)(output);
             ts.writeLine();
-            if (apiType === constant_1.APITYPE.rest || (lambdaStyle === constant_1.LAMBDASTYLE.single && apiType === constant_1.APITYPE.graphql)) {
+            if (apiType === constant_1.APITYPE.rest ||
+                (lambdaStyle === constant_1.LAMBDASTYLE.single && apiType === constant_1.APITYPE.graphql)) {
                 let funcName = `${apiName}Lambda`;
-                lambda.initializeTestForLambdaWithNeptune(funcName, 'main');
+                lambda.initializeTestForLambdaWithNeptune(funcName, "main");
             }
             else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                 Object.keys(mutationsAndQueries).forEach((key) => {
@@ -95,7 +100,7 @@ templating_1.Generator.generate({
         }, output, USER_WORKING_DIRECTORY, "pattern_v2");
     }
     else if (database === constant_1.DATABASE.aurora) {
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, "pattern2");
         imp.importForAuroraDbConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         ts.writeLine();
@@ -111,9 +116,10 @@ templating_1.Generator.generate({
             ts.writeLine();
             iam.secretAttachment();
             ts.writeLine();
-            if (apiType === constant_1.APITYPE.rest || (lambdaStyle === constant_1.LAMBDASTYLE.single && apiType === constant_1.APITYPE.graphql)) {
+            if (apiType === constant_1.APITYPE.rest ||
+                (lambdaStyle === constant_1.LAMBDASTYLE.single && apiType === constant_1.APITYPE.graphql)) {
                 let funcName = `${apiName}Lambda`;
-                lambda.initializeTestForLambdaWithAuroradb(funcName, 'main');
+                lambda.initializeTestForLambdaWithAuroradb(funcName, "main");
             }
             else if (lambdaStyle === constant_1.LAMBDASTYLE.multi) {
                 Object.keys(mutationsAndQueries).forEach((key) => {

@@ -2,8 +2,8 @@
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
-const lambdaFunction_1 = require("../../Constructs/Lambda/lambdaFunction");
-const constant_1 = require("../../util/constant");
+const lambdaFunction_1 = require("../../lib/Lambda/lambdaFunction");
+const constant_1 = require("../../utils/constant");
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const model = require(`../../model.json`);
 const { lambdaStyle, apiType } = model.api;

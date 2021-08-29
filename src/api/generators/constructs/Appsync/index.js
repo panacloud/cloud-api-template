@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const constant_1 = require("../../../util/constant");
-const Appsync_1 = require("../../../Constructs/Appsync");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
-const Iam_1 = require("../../../Constructs/Iam");
+const constant_1 = require("../../../utils/constant");
+const Appsync_1 = require("../../../lib/Appsync");
+const Cdk_1 = require("../../../lib/Cdk");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
+const Iam_1 = require("../../../lib/Iam");
 const functions_1 = require("./functions");
 const model = require("../../../model.json");
 const { USER_WORKING_DIRECTORY } = model;

@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const Neptune_1 = require("../../../Constructs/Neptune");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const constant_1 = require("../../../constant");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
+const Neptune_1 = require("../../../lib/Neptune");
+const Cdk_1 = require("../../../lib/Cdk");
+const constant_1 = require("../../../utils/constant");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const functions_1 = require("./functions");
-const Iam_1 = require("../../../Constructs/Iam");
+const Iam_1 = require("../../../lib/Iam");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { database } = model.api;
@@ -21,10 +21,10 @@ if (database && database === constant_1.DATABASE.neptune) {
         const imp = new ConstructsImports_1.Imports(output);
         const iam = new Iam_1.Iam(output);
         const { apiName } = model.api;
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern2');
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, "pattern2");
         imp.importForNeptuneConstructInTest(output);
         ts.writeLine();
-        cdk.initializeTest('Neptune Construct Tests', () => {
+        cdk.initializeTest("Neptune Construct Tests", () => {
             ts.writeLine();
             iam.constructorIdentifier(constant_1.CONSTRUCTS.neptuneDb);
             ts.writeLine(`const constructs = VpcNeptuneConstruct_stack.node.children;`);
@@ -34,13 +34,13 @@ if (database && database === constant_1.DATABASE.neptune) {
             ts.writeLine();
             neptune.initializeTesForEC2Vpc();
             ts.writeLine();
-            neptune.initializeTestForSubnet(apiName, 0, '1', '0');
+            neptune.initializeTestForSubnet(apiName, 0, "1", "0");
             ts.writeLine();
-            neptune.initializeTestForSubnet(apiName, 1, '2', '1');
+            neptune.initializeTestForSubnet(apiName, 1, "2", "1");
             ts.writeLine();
-            neptune.initiaizeTestForRouteTable(apiName, '1');
+            neptune.initiaizeTestForRouteTable(apiName, "1");
             ts.writeLine();
-            neptune.initiaizeTestForRouteTable(apiName, '2');
+            neptune.initiaizeTestForRouteTable(apiName, "2");
             neptune.initializeTestForSubnetRouteTableAssociation(1);
             ts.writeLine();
             neptune.initializeTestForSubnetRouteTableAssociation(2);
@@ -56,14 +56,14 @@ if (database && database === constant_1.DATABASE.neptune) {
             ts.writeLine();
             neptune.initializeTestForDBInstance(apiName);
             ts.writeLine();
-            neptune.initializeTestForCountResources('AWS::EC2::VPC', 1);
-            neptune.initializeTestForCountResources('AWS::EC2::Subnet', 2);
-            neptune.initializeTestForCountResources('AWS::EC2::RouteTable', 2);
-            neptune.initializeTestForCountResources('AWS::EC2::SubnetRouteTableAssociation', 2);
-            neptune.initializeTestForCountResources('AWS::EC2::SecurityGroup', 1);
-            neptune.initializeTestForCountResources('AWS::EC2::SecurityGroupIngress', 1);
-            neptune.initializeTestForCountResources('AWS::Neptune::DBCluster', 1);
-            neptune.initializeTestForCountResources('AWS::Neptune::DBInstance', 1);
+            neptune.initializeTestForCountResources("AWS::EC2::VPC", 1);
+            neptune.initializeTestForCountResources("AWS::EC2::Subnet", 2);
+            neptune.initializeTestForCountResources("AWS::EC2::RouteTable", 2);
+            neptune.initializeTestForCountResources("AWS::EC2::SubnetRouteTableAssociation", 2);
+            neptune.initializeTestForCountResources("AWS::EC2::SecurityGroup", 1);
+            neptune.initializeTestForCountResources("AWS::EC2::SecurityGroupIngress", 1);
+            neptune.initializeTestForCountResources("AWS::Neptune::DBCluster", 1);
+            neptune.initializeTestForCountResources("AWS::Neptune::DBInstance", 1);
         }, output, USER_WORKING_DIRECTORY, "pattern_v2");
     });
 }

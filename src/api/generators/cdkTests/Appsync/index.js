@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templating_1 = require("@yellicode/templating");
 const typescript_1 = require("@yellicode/typescript");
-const Appsync_1 = require("../../../Constructs/Appsync");
-const Iam_1 = require("../../../Constructs/Iam");
-const Cdk_1 = require("../../../Constructs/Cdk");
-const constant_1 = require("../../../util/constant");
-const ConstructsImports_1 = require("../../../Constructs/ConstructsImports");
+const Appsync_1 = require("../../../lib/Appsync");
+const Iam_1 = require("../../../lib/Iam");
+const Cdk_1 = require("../../../lib/Cdk");
+const constant_1 = require("../../../utils/constant");
+const ConstructsImports_1 = require("../../../lib/ConstructsImports");
 const model = require(`../../../model.json`);
 const { USER_WORKING_DIRECTORY } = model;
 const { apiType } = model.api;
@@ -23,7 +23,7 @@ if (apiType === constant_1.APITYPE.graphql) {
         const mutations = model.type.Mutation ? model.type.Mutation : {};
         const queries = model.type.Query ? model.type.Query : {};
         const mutationsAndQueries = Object.assign(Object.assign({}, mutations), queries);
-        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, 'pattern1');
+        imp.ImportsForTest(output, USER_WORKING_DIRECTORY, "pattern1");
         imp.importForAppsyncConstructInTest(output);
         imp.importForLambdaConstructInTest(output);
         testClass.initializeTest("Appsync Api Constructs Test", () => {
