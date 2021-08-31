@@ -84,7 +84,7 @@ else {
                 Object.keys(api.paths).forEach((path) => {
                     for (var methodName in api.paths[`${path}`]) {
                         let lambdaFunctionFile = api.paths[`${path}`][`${methodName}`][`operationId`];
-                        imp.importIndividualLambdaFunction(output, lambdaFunctionFile, `./${lambdaFunctionFile}`);
+                        imp.importIndividualLambdaFunction(output, lambdaFunctionFile, `${lambdaFunctionFile}`);
                     }
                 });
                 ts.writeLine();
