@@ -98,7 +98,7 @@ if (apiType === APITYPE.graphql) {
               imp.importIndividualLambdaFunction(
                 output,
                 lambdaFunctionFile,
-                `./${lambdaFunctionFile}`
+                `${lambdaFunctionFile}`
               );
             }
           });
